@@ -1,3 +1,4 @@
 <Solution>
-  <Project Path="SplendidWonders/SplendidWonders.csproj" />
+  <Project Path="SpendidWonders.Core/SpendidWonders.Core.csproj" />
+  <Project Path="SplendidWonders.Console/SplendidWonders.Console.csproj" />
 </Solution>

@@ -1,2 +1,3 @@
-/SplendidWonders/SplendidWonders/obj/
-/SplendidWonders/.vs/
+**/bin/
+**/.vs/
+**/obj/
