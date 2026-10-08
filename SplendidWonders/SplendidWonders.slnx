@@ -1,4 +1,5 @@
 <Solution>
   <Project Path="SpendidWonders.Core/SpendidWonders.Core.csproj" />
   <Project Path="SplendidWonders.Console/SplendidWonders.Console.csproj" />
+  <Project Path="SplendidWonders.Gameplay/SplendidWonders.Gameplay.csproj" />
 </Solution>

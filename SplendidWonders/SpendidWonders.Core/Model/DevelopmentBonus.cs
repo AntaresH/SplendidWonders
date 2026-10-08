@@ -1,6 +1,6 @@
 ﻿namespace SplendidWonders.Core.Model
 {
-    public enum BonusColor
+    public enum DevelopmentBonus
     {
         Yellow,
         Blue,
