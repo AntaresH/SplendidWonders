@@ -3,6 +3,9 @@ using SplendidWonders.CLI.Input;
 using SplendidWonders.CLI.View;
 
 
+Console.OutputEncoding = System.Text.Encoding.UTF8;
+Console.InputEncoding = System.Text.Encoding.UTF8;
+
 IGameView gameView = new ConsoleGameView();
 
 gameView.DisplayGameTitle();
