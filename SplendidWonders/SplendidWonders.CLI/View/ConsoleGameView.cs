@@ -83,9 +83,9 @@ namespace SplendidWonders.CLI.View
             {
                 return level switch
                 {
-                    3 => $"Csodák - {gameState.Decks.Level3.Count}",
-                    2 => $"Technológiák - {gameState.Decks.Level2.Count}",
-                    1 => $"Épületek - {gameState.Decks.Level1.Count}",
+                    3 => $"Csodák",
+                    2 => $"Technológiák",
+                    1 => $"Épületek",
                     _ => ""
                 };
             }
@@ -138,24 +138,61 @@ namespace SplendidWonders.CLI.View
                     return "| " + c.PadRight(contentWidth) + " |";
                 }
 
-                string bonus = card != null ? card.Bonus.ToString().Substring(0, 1) : " ";
-                string vp = card != null ? card.VictoryPoints.ToString() : " ";
-                string midContent = $"{bonus} VP:{vp}";
+                string MakeLineCentered(string content)
+                {
+                    var c = content ?? "";
+                    if (c.Length > contentWidth) c = ellipsize(c, contentWidth);
+                    int leftPad = (contentWidth - c.Length) / 2;
+                    int rightPad = contentWidth - c.Length - leftPad;
+                    return "| " + new string(' ', leftPad) + c + new string(' ', rightPad) + " |";
+                }
+
+                // map bonus to single-letter Hungarian codes: S,K,Z,B,P
+                string BonusLetter(DevelopmentBonus b)
+                {
+                    return b switch
+                    {
+                        DevelopmentBonus.Yellow => "S",
+                        DevelopmentBonus.Blue => "K",
+                        DevelopmentBonus.Green => "Z",
+                        DevelopmentBonus.Brown => "B",
+                        DevelopmentBonus.Red => "P",
+                        _ => " "
+                    };
+                }
+
+                string bonus = card != null ? BonusLetter(card.Bonus) : " ";
+                string vp = card != null && card.VictoryPoints > 0 ? "{" + card.VictoryPoints.ToString() + "}" : "";
+                string midContent = ""; // no longer used as a left-aligned mid; VP and bonus are on the first content row
 
                 string costSummary = "";
                 if (card?.Cost != null)
                 {
                     var c = card.Cost;
-                    costSummary = $"Req:Y{c.Yellow} K{c.Blue} Z{c.Green} B{c.Brown} P{c.Red}";
+                    var parts = new List<string>();
+                    if (c.Yellow > 0) parts.Add($"S{c.Yellow}");
+                    if (c.Blue > 0) parts.Add($"K{c.Blue}");
+                    if (c.Green > 0) parts.Add($"Z{c.Green}");
+                    if (c.Brown > 0) parts.Add($"B{c.Brown}");
+                    if (c.Red > 0) parts.Add($"P{c.Red}");
+                    costSummary = parts.Count > 0 ? string.Join(" ", parts) : "";
                     if (costSummary.Length > contentWidth) costSummary = ellipsize(costSummary, contentWidth);
                 }
 
+                // First content row: bonus on left, VP in braces on right (or blank if 0)
+                string leftPart = bonus ?? "";
+                string rightPart = vp ?? "";
+                if (leftPart.Length > contentWidth) leftPart = leftPart.Substring(0, contentWidth);
+                if (rightPart.Length > contentWidth) rightPart = rightPart.Substring(0, contentWidth);
+                int spaceBetween = Math.Max(0, contentWidth - leftPart.Length - rightPart.Length);
+                string firstLineContent = leftPart + new string(' ', spaceBetween) + rightPart;
+
                 lines[0] = top;
-                lines[1] = MakeLine(nameLines[0]);
-                lines[2] = MakeLine(nameLines[1]);
-                lines[3] = MakeLine(nameLines[2]);
-                lines[4] = MakeLine(midContent);
-                lines[5] = MakeLine(costSummary);
+                lines[1] = "| " + firstLineContent.PadRight(contentWidth) + " |";
+                lines[2] = MakeLineCentered(nameLines[0]);
+                lines[3] = MakeLineCentered(nameLines[1]);
+                lines[4] = MakeLineCentered(nameLines[2]);
+                lines[5] = "| " + costSummary.PadRight(contentWidth) + " |";
                 lines[6] = bottom;
 
                 return lines;
@@ -194,6 +231,16 @@ namespace SplendidWonders.CLI.View
                 canvas[r] = canvas[r].PadRight(tokenColWidth) + " ";
 
             // Deck column placed starting at deckStartRow
+            string DeckLineCentered(string content, int width)
+            {
+                int contentWidth = Math.Max(8, width - 4);
+                string ellipsizeLocal(string s, int max) => s.Length > max ? s.Substring(0, Math.Max(0, max - 3)) + "..." : s;
+                var c = content ?? "";
+                if (c.Length > contentWidth) c = ellipsizeLocal(c, contentWidth);
+                int leftPad = (contentWidth - c.Length) / 2;
+                int rightPad = contentWidth - c.Length - leftPad;
+                return "| " + new string(' ', leftPad) + c + new string(' ', rightPad) + " |";
+            }
             for (int level = 3; level >= 1; level--)
             {
                 int blockIndex = 3 - level; // 0 for level3
@@ -201,14 +248,15 @@ namespace SplendidWonders.CLI.View
 
                 string top = "+" + new string('=', deckColWidth - 2) + "+";
                 string bottom = "+" + new string('=', deckColWidth - 2) + "+";
-                string title = $"| {deckTitle(level)}".PadRight(deckColWidth - 1) + "|";
+                // title centered on line 2, remaining card count centered on line 3
                 string spacer = "|" + new string(' ', deckColWidth - 2) + "|";
 
                 for (int i = 0; i < deckBlockHeight; i++)
                 {
                     string line;
                     if (i == 0) line = top;
-                    else if (i == 1) line = title;
+                    else if (i == 2) line = DeckLineCentered(deckTitle(level), deckColWidth);
+                    else if (i == 4) line = DeckLineCentered(gameState.Decks[level].Count.ToString(), deckColWidth);
                     else if (i == deckBlockHeight - 1) line = bottom;
                     else line = spacer;
 
