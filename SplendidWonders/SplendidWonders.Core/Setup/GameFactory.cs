@@ -34,17 +34,17 @@ namespace SplendidWonders.Core.Setup
 
             var decks = new CardGroup
             {
-                Level1 = Cards.Level1.Shuffle().ToList(),
-                Level2 = Cards.Level2.Shuffle().ToList(),
-                Level3 = Cards.Level3.Shuffle().ToList()
+                Level1 = new Deck<DevelopmentCard>(Cards.Level1.Shuffle().ToList()),
+                Level2 = new Deck<DevelopmentCard>(Cards.Level2.Shuffle().ToList()),
+                Level3 = new Deck<DevelopmentCard>(Cards.Level3.Shuffle().ToList())
             };
 
             var market = new CardGroup
             {
-                Level1 = decks.Level1.Take(4).ToList(),
-                Level2 = decks.Level2.Take(4).ToList(),
-                Level3 = decks.Level3.Take(4).ToList()
-            };
+                Level1 = new Deck<DevelopmentCard>(decks.Level1.Draw(4)),
+                Level2 = new Deck<DevelopmentCard>(decks.Level2.Draw(4)),
+                Level3 = new Deck<DevelopmentCard>(decks.Level3.Draw(4))
+            };  
 
             return new GameState
             {

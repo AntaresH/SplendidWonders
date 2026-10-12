@@ -1,13 +1,15 @@
-﻿namespace SplendidWonders.Core.Model
+﻿using System;
+
+namespace SplendidWonders.Core.Model
 {
     public class CardGroup
     {
-        public IReadOnlyList<DevelopmentCard> Level1 { get; set; }
-        public IReadOnlyList<DevelopmentCard> Level2 { get; set; }
-        public IReadOnlyList<DevelopmentCard> Level3 { get; set; }
+        public Deck<DevelopmentCard> Level1 { get; set; }
+        public Deck<DevelopmentCard> Level2 { get; set; }
+        public Deck<DevelopmentCard> Level3 { get; set; }
 
         // Enables usage like: gameState.Market[level][column] where level is 1..3 (as in GameExecutor.cs)
-        public IReadOnlyList<DevelopmentCard> this[int level]
+        public Deck<DevelopmentCard> this[int level]
         {
             get => level switch
             {
