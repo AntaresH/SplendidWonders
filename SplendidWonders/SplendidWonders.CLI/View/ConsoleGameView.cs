@@ -94,29 +94,69 @@ namespace SplendidWonders.CLI.View
             string[] FormatCard(DevelopmentCard card, int width)
             {
                 var lines = new string[deckBlockHeight];
-                string pad(string s) => s.Length > width - 4 ? s.Substring(0, width - 7) + "..." : s;
+                string ellipsize(string s, int max) => s.Length > max ? s.Substring(0, Math.Max(0, max - 3)) + "..." : s;
 
                 string top = "+" + new string('-', width - 2) + "+";
                 string bottom = "+" + new string('-', width - 2) + "+";
 
-                string nameLine = $"| {pad(card?.Name ?? "Empty")}".PadRight(width - 1) + "|";
+                int contentWidth = Math.Max(8, width - 4); // safe content width
+
+                // Wrap name into up to 3 lines without breaking words
+                string name = card?.Name ?? "Empty";
+                var nameLines = new List<string>();
+                if (string.IsNullOrWhiteSpace(name)) nameLines.Add("");
+                else
+                {
+                    var words = name.Split(' ');
+                    var sb = new StringBuilder();
+                    foreach (var w in words)
+                    {
+                        if (sb.Length == 0)
+                            sb.Append(w);
+                        else if (sb.Length + 1 + w.Length <= contentWidth)
+                            sb.Append(' ').Append(w);
+                        else
+                        {
+                            nameLines.Add(sb.ToString());
+                            sb.Clear();
+                            sb.Append(w);
+                            if (nameLines.Count == 3) break;
+                        }
+                    }
+                    if (sb.Length > 0 && nameLines.Count < 3)
+                        nameLines.Add(sb.ToString());
+                }
+                // ensure exactly 3 entries
+                while (nameLines.Count < 3) nameLines.Add("");
+                for (int i = 0; i < nameLines.Count; i++)
+                    if (nameLines[i].Length > contentWidth) nameLines[i] = ellipsize(nameLines[i], contentWidth);
+
+                string MakeLine(string content)
+                {
+                    var c = content ?? "";
+                    if (c.Length > contentWidth) c = ellipsize(c, contentWidth);
+                    return "| " + c.PadRight(contentWidth) + " |";
+                }
+
                 string bonus = card != null ? card.Bonus.ToString().Substring(0, 1) : " ";
                 string vp = card != null ? card.VictoryPoints.ToString() : " ";
-                string mid = $"| {bonus} VP:{vp}".PadRight(width - 1) + "|";
+                string midContent = $"{bonus} VP:{vp}";
 
                 string costSummary = "";
                 if (card?.Cost != null)
                 {
                     var c = card.Cost;
                     costSummary = $"Req:Y{c.Yellow} K{c.Blue} Z{c.Green} B{c.Brown} P{c.Red}";
+                    if (costSummary.Length > contentWidth) costSummary = ellipsize(costSummary, contentWidth);
                 }
-                string costLine = $"| {pad(costSummary)}".PadRight(width - 1) + "|";
 
                 lines[0] = top;
-                lines[1] = nameLine;
-                lines[2] = mid;
-                lines[3] = costLine;
-                lines[4] = bottom;
+                lines[1] = MakeLine(nameLines[0]);
+                lines[2] = MakeLine(nameLines[1]);
+                lines[3] = MakeLine(nameLines[2]);
+                lines[4] = MakeLine(midContent);
+                lines[5] = MakeLine(costSummary);
+                lines[6] = bottom;
 
                 return lines;
             }
@@ -136,21 +176,22 @@ namespace SplendidWonders.CLI.View
             for (int i = 0; i < totalHeight; i++)
                 canvas[i] = "";
 
-            // Place token column vertically (leftmost)
+            // Place token column vertically (leftmost), centered to align with deck blocks
+            int tokenStartRow = (totalHeight - tokenTotalHeight) / 2;
+            if (tokenStartRow < 0) tokenStartRow = 0;
             for (int t = 0; t < tokenBlocks.Count; t++)
             {
-                int startRow = t * tokenBlockHeight;
+                int startRow = tokenStartRow + t * tokenBlockHeight;
                 var block = tokenBlocks[t];
                 for (int i = 0; i < tokenBlockHeight; i++)
                 {
-                    // ensure canvas row exists
                     canvas[startRow + i] += block[i].PadRight(tokenColWidth);
                 }
             }
 
-            // single separator
+            // Ensure token column width is reserved on every row, then add single separator
             for (int r = 0; r < totalHeight; r++)
-                canvas[r] += " ";
+                canvas[r] = canvas[r].PadRight(tokenColWidth) + " ";
 
             // Deck column placed starting at deckStartRow
             for (int level = 3; level >= 1; level--)
