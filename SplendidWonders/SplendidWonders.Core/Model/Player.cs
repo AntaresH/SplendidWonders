@@ -9,5 +9,6 @@
         public IReadOnlyList<DevelopmentCard> ReservedCards { get; set; }
 
         public IReadOnlyList<Leader> AcquiredLeaders { get; set; }
+        public string Name { get; internal set; }
     }
 }

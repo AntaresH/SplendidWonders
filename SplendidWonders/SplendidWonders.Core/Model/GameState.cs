@@ -14,6 +14,9 @@ namespace SplendidWonders.Core.Model
 
         public CardGroup Decks { get; set; }
 
-        public Market Market { get; set; }
+        public CardGroup Market { get; set; }
+
+        public Player CurrentPlayer { get; set; }
+
     }
 }

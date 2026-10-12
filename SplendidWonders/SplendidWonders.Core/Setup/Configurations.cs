@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SpendidWonders.Core.Setup
+namespace SplendidWonders.Core.Setup
 {
     internal class Configurations
     {

@@ -3,20 +3,20 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SpendidWonders.Core.Setup
+namespace SplendidWonders.Core.Setup
 {
     public class GameFactory
     {
-        public static GameState CreateGame(GameConfiguration configuration, int numberOfPlayers)
+        public static GameState GetNewGameState(GameConfiguration configuration, List<string> playerNames)
         {
             var players = new List<Player>();
 
-            for (int i = 0; i < numberOfPlayers; i++)
+            for (int i = 0; i < playerNames.Count; i++)
             {
-                players.Add(new Player());
+                players.Add(new Player() { Name = playerNames[i] });
             }
 
-            var tokenSupply = numberOfPlayers switch
+            var tokenSupply = playerNames.Count switch
             {
                 2 => new TokenGroup() { Yellow = 4, Blue = 4, Green = 4, Brown = 4, Red = 4, Polymath = 5 },
                 3 => new TokenGroup() { Yellow = 5, Blue = 5, Green = 5, Brown = 5, Red = 5, Polymath = 5 },
@@ -52,7 +52,8 @@ namespace SpendidWonders.Core.Setup
                 TokenSupply = tokenSupply,
                 Leaders = availableLeaders,
                 Decks = decks,
-                Market = market
+                Market = market,
+                CurrentPlayer = players[0]
             };
         }
     }

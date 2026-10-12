@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SplendidWonders.Core\SplendidWonders.Core.csproj" />
+  </ItemGroup>
+
 </Project>

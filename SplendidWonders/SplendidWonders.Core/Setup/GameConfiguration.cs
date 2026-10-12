@@ -1,4 +1,4 @@
-﻿namespace SpendidWonders.Core.Setup
+﻿namespace SplendidWonders.Core.Setup
 {
     public class GameConfiguration
     {
