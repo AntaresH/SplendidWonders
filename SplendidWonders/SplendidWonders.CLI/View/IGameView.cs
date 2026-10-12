@@ -19,6 +19,7 @@ namespace SplendidWonders.CLI.View
         void DisplayPurchaseArgumentRequest();
         void DisplayReserveFromBoardArgumentRequest();
         void DisplayReserveFromDeckArgumentRequest();
-
+        void DisplayInvalidCommand(GameAction command);
+        void DisplayGameTitle();
     }
 }

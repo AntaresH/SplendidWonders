@@ -53,12 +53,12 @@ namespace SplendidWonders.Gameplay
 
         public bool ValidateCommand(GameAction command)
         {
-            throw new NotImplementedException();
+            return ValidActions.Any(action => action.Equals(command));
         }
 
-        public void HandleCommand(GameAction command)
+        public void ExecuteCommand(GameAction command)
         {
-            throw new NotImplementedException();
+            GameState = GameRules.ReduceState(GameState, command);
         }
     }
 }

@@ -7,13 +7,13 @@ using System.Text.RegularExpressions;
 
 namespace SplendidWonders.CLI;
 
-internal class GameExecutor
+internal class GameOrchestrator
 {
     private GameInstance _game;
     private IGameView _gameView;
     private IGameInput _commandHandler;
 
-    internal GameExecutor(bool useExtendedLeaders, List<string> players, IGameView gameView, IGameInput gameInput)
+    internal GameOrchestrator(bool useExtendedLeaders, List<string> players, IGameView gameView, IGameInput gameInput)
     {
         _game = new GameInstance(useExtendedLeaders ? GameConfiguration.ExtendedLeaders : GameConfiguration.Standard, players);
         _gameView = gameView;
@@ -46,12 +46,24 @@ internal class GameExecutor
 
     private void ExecuteTurn()
     {
-        _gameView.DisplayGameState(_game.GameState);
+        while (true)
+        {
+            _gameView.DisplayGameState(_game.GameState);
 
-        var validActions = _game.ValidActions;
-        _gameView.DisplayValidActions(validActions);
+            var validActions = _game.ValidActions;
+            _gameView.DisplayValidActions(validActions);
 
-        var command = _commandHandler.GetCommand(validActions, _game.GameState);
-        _game.HandleCommand(command);
+            var command = _commandHandler.GetCommand(validActions, _game.GameState);
+
+            if (_game.ValidateCommand(command))
+            {
+                _game.ExecuteCommand(command);
+                return;
+            }
+            else
+            {
+                _gameView.DisplayInvalidCommand(command);
+            }
+        }
     }
 }

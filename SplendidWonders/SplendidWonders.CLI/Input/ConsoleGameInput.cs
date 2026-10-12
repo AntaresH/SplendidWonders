@@ -32,19 +32,8 @@ namespace SplendidWonders.CLI.Input
                     if (!GenericUtils.CommandShortHandMap.ContainsValue(userInput))
                         continue;
 
-                    var userCommand = CreateCommandFromUserInput(userInput, gameState);
+                    return CreateCommandFromUserInput(userInput, gameState);
 
-                    if (userCommand != null)
-                    {
-                        if (validActions.Any(x => x.Equals(userCommand)))
-                        {
-                            return userCommand;
-                        }
-                        else
-                        {
-                            _gameView.DisplayInvalidCommandMessage();
-                        }
-                    }
                 }
                 catch (UserCancelException)
                 {
