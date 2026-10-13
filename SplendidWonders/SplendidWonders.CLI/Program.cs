@@ -38,12 +38,12 @@ internal class Program
 
             for (int i = 1; i < 3; i++)
             {
-                Console.WriteLine($"Kérlek add meg a(z) {i}. játékos nevét:");
+                Console.WriteLine(string.Format(SplendidWonders.CLI.Properties.Resources.EnterPlayerNameFormat, i));
                 var userInput = Console.ReadLine().Trim();
 
                 while (string.IsNullOrWhiteSpace(userInput))
                 {
-                    Console.WriteLine("A név nem lehet üres. Kérlek add meg újra a játékos nevét:");
+                    Console.WriteLine(SplendidWonders.CLI.Properties.Resources.NameCannotBeEmpty);
 
                     userInput = Console.ReadLine();
                 }
@@ -55,7 +55,7 @@ internal class Program
 
             while (true)
             {
-                Console.WriteLine("Használod az extra vezetőket? (i/n):");
+                Console.WriteLine(SplendidWonders.CLI.Properties.Resources.UseExtendedLeaders);
 
                 string input = Console.ReadLine().Trim().ToLower();
 
@@ -71,7 +71,7 @@ internal class Program
                 }
                 else
                 {
-                    Console.WriteLine("Érvénytelen válasz. Kérlek válassz 'i' vagy 'n'!");
+                    Console.WriteLine(SplendidWonders.CLI.Properties.Resources.InvalidYesNo);
                 }
             }
 
@@ -81,7 +81,7 @@ internal class Program
 
             while (true)
             {
-                Console.WriteLine("Szeretnél újra játszani? (i/n):");
+                Console.WriteLine(SplendidWonders.CLI.Properties.Resources.PlayAgain);
 
                 var userInput = Console.ReadLine().Trim();
 

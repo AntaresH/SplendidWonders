@@ -36,11 +36,11 @@ internal class GameOrchestrator
         }
         catch (UserAbortException ex)
         {
-            Console.WriteLine($"A felhasználó megszakította a játékot!");
+            Console.WriteLine(SplendidWonders.CLI.Properties.Resources.UserAborted);
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Hiba történt a játék során: {ex.Message}");
+            Console.WriteLine(string.Format(SplendidWonders.CLI.Properties.Resources.ErrorDuringGameFormat, ex.Message));
         }
     }
 

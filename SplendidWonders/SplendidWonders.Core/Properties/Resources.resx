@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+	<value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+	<value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+	<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+	<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+
+  <!-- Color abbreviations -->
+  <data name="ColorYellow" xml:space="preserve"><value>S</value></data>
+  <data name="ColorBlue" xml:space="preserve"><value>K</value></data>
+  <data name="ColorGreen" xml:space="preserve"><value>Z</value></data>
+  <data name="ColorBrown" xml:space="preserve"><value>B</value></data>
+  <data name="ColorRed" xml:space="preserve"><value>P</value></data>
+
+  <!-- Card names -->
+  <data name="Card_Birosag" xml:space="preserve"><value>Bíróság</value></data>
+  <data name="Card_Boraszat" xml:space="preserve"><value>Borászat</value></data>
+  <data name="Card_Kereskedohaz" xml:space="preserve"><value>Kereskedőház</value></data>
+  <data name="Card_Kikoto" xml:space="preserve"><value>Kikötő</value></data>
+  <data name="Card_Magtar" xml:space="preserve"><value>Magtár</value></data>
+  <data name="Card_Piac" xml:space="preserve"><value>Piac</value></data>
+  <data name="Card_Tanacs" xml:space="preserve"><value>Tanács</value></data>
+  <data name="Card_Varoshaza" xml:space="preserve"><value>Városháza</value></data>
+  <data name="Card_Cirkusz" xml:space="preserve"><value>Cirkusz</value></data>
+  <data name="Card_Furdo" xml:space="preserve"><value>Fürdő</value></data>
+  <data name="Card_Kertek" xml:space="preserve"><value>Kertek</value></data>
+  <data name="Card_Palota" xml:space="preserve"><value>Palota</value></data>
+  <data name="Card_Sirkamra" xml:space="preserve"><value>Sírkamra</value></data>
+  <data name="Card_Szentely" xml:space="preserve"><value>Szentély</value></data>
+  <data name="Card_Szinhaz" xml:space="preserve"><value>Színház</value></data>
+  <data name="Card_Templom" xml:space="preserve"><value>Templom</value></data>
+  <data name="Card_Iskola" xml:space="preserve"><value>Iskola</value></data>
+  <data name="Card_Korhaz" xml:space="preserve"><value>Kórház</value></data>
+  <data name="Card_Konyvtar" xml:space="preserve"><value>Könyvtár</value></data>
+  <data name="Card_Laboratorium" xml:space="preserve"><value>Laboratórium</value></data>
+  <data name="Card_Leveltar" xml:space="preserve"><value>Levéltár</value></data>
+  <data name="Card_Papiruszgyar" xml:space="preserve"><value>Papíruszgyár</value></data>
+  <data name="Card_Patika" xml:space="preserve"><value>Patika</value></data>
+  <data name="Card_Uveggyar" xml:space="preserve"><value>Üveggyár</value></data>
+  <data name="Card_Acsmuhely" xml:space="preserve"><value>Ácsműhely</value></data>
+  <data name="Card_Banya" xml:space="preserve"><value>Bánya</value></data>
+  <data name="Card_Furesztelep" xml:space="preserve"><value>Fűrésztelep</value></data>
+  <data name="Card_Hajogyar" xml:space="preserve"><value>Hajógyár</value></data>
+  <data name="Card_Kofejto" xml:space="preserve"><value>Kőfejtő</value></data>
+  <data name="Card_Ontode" xml:space="preserve"><value>Öntöde</value></data>
+  <data name="Card_Teglagyar" xml:space="preserve"><value>Téglagyár</value></data>
+  <data name="Card_Vizvezetek" xml:space="preserve"><value>Vízvezeték</value></data>
+  <data name="Card_Arena" xml:space="preserve"><value>Aréna</value></data>
+  <data name="Card_Erod" xml:space="preserve"><value>Erőd</value></data>
+  <data name="Card_Fegyverkovacs" xml:space="preserve"><value>Fegyverkovács</value></data>
+  <data name="Card_Helyors" xml:space="preserve"><value>Helyőrség</value></data>
+  <data name="Card_Istallo" xml:space="preserve"><value>Istálló</value></data>
+  <data name="Card_Laktanya" xml:space="preserve"><value>Laktanya</value></data>
+  <data name="Card_Ortorony" xml:space="preserve"><value>Őrtorony</value></data>
+  <data name="Card_Varosfal" xml:space="preserve"><value>Városfal</value></data>
+
+</root>
