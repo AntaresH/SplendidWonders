@@ -12,7 +12,7 @@ namespace SplendidWonders.CLI.View
         private const int DeckColumnWidth = 21;
         private const int MarketColumnWidth = 24;
         private const int MarketColumnCount = 4;
-        private const int DeckBlockHeight = 7;
+        private const int DeckBlockHeight = 8;
         private const int TokenBlockHeight = 3;
 
         public void Render(GameState gameState)
@@ -53,15 +53,15 @@ namespace SplendidWonders.CLI.View
                 int blockIndex = 3 - level;
                 int startRow = deckStartRow + blockIndex * DeckBlockHeight;
                 string border = "+" + new string('=', DeckColumnWidth - 2) + "+";
-                string spacer = "|" + new string(' ', DeckColumnWidth - 2) + "|";
+                string spacer = (char)0x2551 + new string(' ', DeckColumnWidth - 2) + (char)0x2551;
 
                 for (int row = 0; row < DeckBlockHeight; row++)
                 {
                     string line = row switch
                     {
                         0 => border,
-                        2 => DeckLineCentered(GetDeckTitle(level), DeckColumnWidth),
-                        4 => DeckLineCentered(gameState.Decks[level].Count.ToString(), DeckColumnWidth),
+                        3 => DeckLineCentered(GetDeckTitle(level), DeckColumnWidth),
+                        5 => DeckLineCentered(gameState.Decks[level].Count.ToString(), DeckColumnWidth),
                         DeckBlockHeight - 1 => border,
                         _ => spacer
                     };
@@ -207,11 +207,12 @@ namespace SplendidWonders.CLI.View
 
             lines[0] = top;
             lines[1] = "| " + firstLineContent.PadRight(contentWidth) + " |";
-            lines[2] = CenterCardLine(nameLines[0], contentWidth);
-            lines[3] = CenterCardLine(nameLines[1], contentWidth);
-            lines[4] = CenterCardLine(nameLines[2], contentWidth);
-            lines[5] = "| " + costSummary.PadRight(contentWidth) + " |";
-            lines[6] = top;
+            lines[2] = "|" + new string(' ', width - 2) + "|";
+            lines[3] = CenterCardLine(nameLines[0], contentWidth);
+            lines[4] = CenterCardLine(nameLines[1], contentWidth);
+            lines[5] = CenterCardLine(nameLines[2], contentWidth);
+            lines[6] = "| " + costSummary.PadRight(contentWidth) + " |";
+            lines[7] = top;
             return lines;
         }
 
@@ -227,14 +228,14 @@ namespace SplendidWonders.CLI.View
 
         private static string DeckLineCentered(string content, int width)
         {
-            int contentWidth = Math.Max(8, width - 4);
+            int contentWidth = width - 4;
             string value = content ?? string.Empty;
             if (value.Length > contentWidth)
                 value = Ellipsize(value, contentWidth);
 
             int leftPadding = (contentWidth - value.Length) / 2;
             int rightPadding = contentWidth - value.Length - leftPadding;
-            return "| " + new string(' ', leftPadding) + value + new string(' ', rightPadding) + " |";
+            return (char)0x2551 + " " + new string(' ', leftPadding) + value + new string(' ', rightPadding) + " " + (char)0x2551;
         }
 
         private static string CenterCardLine(string content, int width)
