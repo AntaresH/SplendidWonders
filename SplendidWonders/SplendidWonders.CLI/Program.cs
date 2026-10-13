@@ -1,70 +1,102 @@
 ﻿using SplendidWonders.CLI;
 using SplendidWonders.CLI.Input;
 using SplendidWonders.CLI.View;
-
-
-Console.OutputEncoding = System.Text.Encoding.UTF8;
-Console.InputEncoding = System.Text.Encoding.UTF8;
-
-IGameView gameView = new ConsoleGameView();
-
-gameView.DisplayGameTitle();
-
-bool stayInGame = true;
-
-while (stayInGame)
+using System.Diagnostics;
+using System.Runtime.InteropServices;
+internal class Program
 {
-    List<string> playerNames = new List<string>();
+    [DllImport("kernel32.dll")]
+    private static extern IntPtr GetConsoleWindow();
 
-    for (int i = 1; i < 3; i++)
+    [DllImport("user32.dll")]
+    private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+    private const int SW_MAXIMIZE = 3;
+
+    static void Main(string[] args)
     {
-        Console.WriteLine($"Kérlek add meg a(z) {i}. játékos nevét:");
-        var userInput = Console.ReadLine().Trim();
+        // Maximize console window
+        IntPtr handle = GetConsoleWindow();
 
-        while (string.IsNullOrWhiteSpace(userInput))
+        if (handle != IntPtr.Zero)
         {
-            Console.WriteLine("A név nem lehet üres. Kérlek add meg újra a játékos nevét:");
-
-            userInput = Console.ReadLine();
+            ShowWindow(handle, SW_MAXIMIZE);
         }
 
-        playerNames.Add(userInput);
-    }
+        Console.OutputEncoding = System.Text.Encoding.UTF8;
+        Console.InputEncoding = System.Text.Encoding.UTF8;
+        
+        IGameView gameView = new ConsoleGameView();
 
-    bool useExtendedLeaders = false;
+        gameView.DisplayGameTitle();
 
-    while (true)
-    {
-        Console.WriteLine("Használod az extra vezetőket? (i/n):");
+        bool stayInGame = true;
 
-        string input = Console.ReadLine().Trim().ToLower();
-
-        if (input == "i" || input == "igen")
+        while (stayInGame)
         {
-            useExtendedLeaders = true;
-            break;
-        }
-        else if (input == "n" || input == "nem")
-        {
-            useExtendedLeaders = false;
-            break;
-        }
-        else
-        {
-            Console.WriteLine("Érvénytelen válasz. Kérlek válassz 'i' vagy 'n'!");
-        }
-    }
+            List<string> playerNames = new List<string>();
 
-    IGameInput gameInput = new ConsoleGameInput(gameView);
-    GameOrchestrator executor = new GameOrchestrator(useExtendedLeaders, playerNames, gameView, gameInput);
-    executor.Start();
+            for (int i = 1; i < 3; i++)
+            {
+                Console.WriteLine($"Kérlek add meg a(z) {i}. játékos nevét:");
+                var userInput = Console.ReadLine().Trim();
 
-    while (true)
-    {
-        Console.WriteLine("Szeretnél újra játszani? (i/n):");
+                while (string.IsNullOrWhiteSpace(userInput))
+                {
+                    Console.WriteLine("A név nem lehet üres. Kérlek add meg újra a játékos nevét:");
 
-        if (Boolean.TryParse(Console.ReadLine(), out stayInGame))
-            break;
+                    userInput = Console.ReadLine();
+                }
+
+                playerNames.Add(userInput);
+            }
+
+            bool useExtendedLeaders = false;
+
+            while (true)
+            {
+                Console.WriteLine("Használod az extra vezetőket? (i/n):");
+
+                string input = Console.ReadLine().Trim().ToLower();
+
+                if (input == "i" || input == "igen")
+                {
+                    useExtendedLeaders = true;
+                    break;
+                }
+                else if (input == "n" || input == "nem")
+                {
+                    useExtendedLeaders = false;
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Érvénytelen válasz. Kérlek válassz 'i' vagy 'n'!");
+                }
+            }
+
+            IGameInput gameInput = new ConsoleGameInput(gameView);
+            GameOrchestrator executor = new GameOrchestrator(useExtendedLeaders, playerNames, gameView, gameInput);
+            executor.Start();
+
+            while (true)
+            {
+                Console.WriteLine("Szeretnél újra játszani? (i/n):");
+
+                var userInput = Console.ReadLine().Trim();
+
+                if (userInput == "i" || userInput == "igen")
+                {
+                    stayInGame = true;
+                    break;
+                }
+                else if (userInput == "n" || userInput == "nem")
+                {
+                    stayInGame = false;
+                    break;
+                }
+            }
+        }
     }
 }
 

@@ -54,7 +54,7 @@ namespace SplendidWonders.CLI.View
                 // top dashes
                 lines[0] = "  " + new string(horizBorderLetter, innerWidth) + "  ";
                 // middle with letter+count centered
-                string content = (isPolymath ? 'O'.ToString() : letter.ToString()) + count.ToString();
+                string content = letter.ToString() + count.ToString();
                 if (content.Length > innerWidth)
                     content = content.Substring(0, innerWidth);
                 int leftPad = (innerWidth - content.Length) / 2;
@@ -76,7 +76,7 @@ namespace SplendidWonders.CLI.View
                 BuildTokenBlock('Z', gameState.TokenSupply.Green),
                 BuildTokenBlock('B', gameState.TokenSupply.Brown),
                 BuildTokenBlock('P', gameState.TokenSupply.Red),
-                BuildTokenBlock('O', gameState.TokenSupply.Polymath, isPolymath: true)
+                BuildTokenBlock((char)0x2736, gameState.TokenSupply.Polymath, isPolymath: true)
             };
 
             string deckTitle(int level)
