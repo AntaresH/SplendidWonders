@@ -81,8 +81,8 @@ namespace SplendidWonders.Core.Setup
 
             new DevelopmentCard { Id = 59, Name = Resources.Card_Epiteszet, Bonus = DevelopmentBonus.Brown, Cost = new TokenGroup { Yellow = 1, Blue = 4, Green = 2 }, VictoryPoints = 2 },
             new DevelopmentCard { Id = 60, Name = Resources.Card_Hidepites, Bonus = DevelopmentBonus.Brown, Cost = new TokenGroup { Yellow = 3, Red = 5 }, VictoryPoints = 2 },
-            new DevelopmentCard { Id = 61, Name = Resources.Card_Mezogazdasag, Bonus = DevelopmentBonus.Brown, Cost = new TokenGroup { Yellow = 2, Green = 2, Red = 3 }, VictoryPoints = 1 },
-            new DevelopmentCard { Id = 62, Name = Resources.Card_Mernokseg, Bonus = DevelopmentBonus.Brown, Cost = new TokenGroup { Red = 6 }, VictoryPoints = 3 },
+            new DevelopmentCard { Id = 61, Name = Resources.Card_Mezogazdasag, Bonus = DevelopmentBonus.Brown, Cost = new TokenGroup { Yellow = 2, Brown = 2, Red = 3 }, VictoryPoints = 1 },
+            new DevelopmentCard { Id = 62, Name = Resources.Card_Mernokseg, Bonus = DevelopmentBonus.Brown, Cost = new TokenGroup { Brown = 6 }, VictoryPoints = 3 },
             new DevelopmentCard { Id = 63, Name = Resources.Card_Utrendszer, Bonus = DevelopmentBonus.Brown, Cost = new TokenGroup { Red = 5 }, VictoryPoints = 2 },
             new DevelopmentCard { Id = 64, Name = Resources.Card_Varostervezes, Bonus = DevelopmentBonus.Brown, Cost = new TokenGroup { Blue = 3, Brown = 2, Red = 3 }, VictoryPoints = 1 },
 

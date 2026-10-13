@@ -106,6 +106,15 @@ namespace SplendidWonders.CLI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to (üres).
+        /// </summary>
+        internal static string EmptyTableau {
+            get {
+                return ResourceManager.GetString("EmptyTableau", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Kérlek adj meg egy végrehajtandó parancsot az alábbiak közül: {0}.
         /// </summary>
         internal static string EnterCommandFromChoicesFormat {
@@ -223,6 +232,33 @@ namespace SplendidWonders.CLI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Saját készlet.
+        /// </summary>
+        internal static string PlayerStorageTitle {
+            get {
+                return ResourceManager.GetString("PlayerStorageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kijátszott kártyák.
+        /// </summary>
+        internal static string PlayerTableauTitle {
+            get {
+                return ResourceManager.GetString("PlayerTableauTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Játékos {0}.
+        /// </summary>
+        internal static string PlayerTitleFormat {
+            get {
+                return ResourceManager.GetString("PlayerTitleFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} köre..
         /// </summary>
         internal static string PlayerTurnFormat {
@@ -246,6 +282,15 @@ namespace SplendidWonders.CLI.Properties {
         internal static string PromptChooseDoubleColor {
             get {
                 return ResourceManager.GetString("PromptChooseDoubleColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🂠 : {0}.
+        /// </summary>
+        internal static string ReservedCardsCountFormat {
+            get {
+                return ResourceManager.GetString("ReservedCardsCountFormat", resourceCulture);
             }
         }
         
@@ -300,51 +345,6 @@ namespace SplendidWonders.CLI.Properties {
         internal static string ValidCommands {
             get {
                 return ResourceManager.GetString("ValidCommands", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to (üres).
-        /// </summary>
-        internal static string EmptyTableau {
-            get {
-                return ResourceManager.GetString("EmptyTableau", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Játékos {0}.
-        /// </summary>
-        internal static string PlayerTitleFormat {
-            get {
-                return ResourceManager.GetString("PlayerTitleFormat", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Saját készlet.
-        /// </summary>
-        internal static string PlayerStorageTitle {
-            get {
-                return ResourceManager.GetString("PlayerStorageTitle", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Kijátszott kártyák.
-        /// </summary>
-        internal static string PlayerTableauTitle {
-            get {
-                return ResourceManager.GetString("PlayerTableauTitle", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up the reserved card count label.
-        /// </summary>
-        internal static string ReservedCardsCountFormat {
-            get {
-                return ResourceManager.GetString("ReservedCardsCountFormat", resourceCulture);
             }
         }
     }

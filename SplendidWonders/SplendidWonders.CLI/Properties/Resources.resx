@@ -211,6 +211,6 @@
     <value>(üres)</value>
   </data>
   <data name="ReservedCardsCountFormat" xml:space="preserve">
-    <value>🂠: {0}</value>
+    <value>🂠 : {0}</value>
   </data>
 </root>
