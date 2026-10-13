@@ -12,6 +12,7 @@ namespace SplendidWonders.CLI.View
         private const int DeckColumnWidth = 21;
         private const int MarketColumnWidth = 24;
         private const int MarketColumnCount = 4;
+        private const int DeckLevelCount = 3;
         private const int DeckBlockHeight = 8;
         private const int TokenBlockHeight = 3;
         private const int PlayerPanelWidth = 36;
@@ -19,16 +20,8 @@ namespace SplendidWonders.CLI.View
         public void Render(GameState gameState)
         {
             var playerPanels = BuildPlayerPanels(gameState);
-            int deckTotalHeight = 3 * DeckBlockHeight;
-            int tokenTotalHeight = 6 * TokenBlockHeight;
-            int playerPanelsHeight = 0;
-            foreach (var playerPanel in playerPanels)
-                playerPanelsHeight = Math.Max(playerPanelsHeight, playerPanel.Count);
-
-            int totalHeight = Math.Max(Math.Max(deckTotalHeight, tokenTotalHeight), playerPanelsHeight);
-            int deckStartRow = 0;
-
-            var tokenBlocks = new List<string[]>
+            int deckTotalHeight = DeckLevelCount * DeckBlockHeight;
+            var tokenBlocks = new[]
             {
                 BuildTokenBlock(Resources.ColorYellow[0], gameState.TokenSupply.Yellow),
                 BuildTokenBlock(Resources.ColorBlue[0], gameState.TokenSupply.Blue),
@@ -37,13 +30,18 @@ namespace SplendidWonders.CLI.View
                 BuildTokenBlock(Resources.ColorRed[0], gameState.TokenSupply.Red),
                 BuildTokenBlock((char)0x2736, gameState.TokenSupply.Polymath, isPolymath: true)
             };
+            int tokenTotalHeight = tokenBlocks.Length * TokenBlockHeight;
+            int playerPanelsHeight = 0;
+            foreach (var playerPanel in playerPanels)
+                playerPanelsHeight = Math.Max(playerPanelsHeight, playerPanel.Count);
+
+            int totalHeight = Math.Max(Math.Max(deckTotalHeight, tokenTotalHeight), playerPanelsHeight);
 
             var canvas = new string[totalHeight];
-            for (int row = 0; row < totalHeight; row++)
-                canvas[row] = string.Empty;
+            Array.Fill(canvas, string.Empty);
 
             int tokenStartRow = Math.Max(0, (totalHeight - tokenTotalHeight) / 2);
-            for (int tokenIndex = 0; tokenIndex < tokenBlocks.Count; tokenIndex++)
+            for (int tokenIndex = 0; tokenIndex < tokenBlocks.Length; tokenIndex++)
             {
                 int startRow = tokenStartRow + tokenIndex * TokenBlockHeight;
                 var block = tokenBlocks[tokenIndex];
@@ -54,9 +52,9 @@ namespace SplendidWonders.CLI.View
             for (int row = 0; row < totalHeight; row++)
                 canvas[row] = canvas[row].PadRight(TokenColumnWidth) + " ";
 
-            for (int level = 3, blockIndex = 0; level >= 1; level--, blockIndex++)
+            for (int level = DeckLevelCount; level >= 1; level--)
             {
-                int startRow = deckStartRow + blockIndex * DeckBlockHeight;
+                int startRow = (DeckLevelCount - level) * DeckBlockHeight;
                 string border = "+" + new string('=', DeckColumnWidth - 2) + "+";
                 string spacer = (char)0x2551 + new string(' ', DeckColumnWidth - 2) + (char)0x2551;
 
@@ -80,21 +78,10 @@ namespace SplendidWonders.CLI.View
 
             for (int column = 1; column <= MarketColumnCount; column++)
             {
-                for (int level = 3; level >= 1; level--)
+                for (int level = DeckLevelCount; level >= 1; level--)
                 {
-                    int blockIndex = 3 - level;
-                    int startRow = deckStartRow + blockIndex * DeckBlockHeight;
-                    DevelopmentCard? card;
-                    try
-                    {
-                        card = gameState.Market[level, column];
-                    }
-                    catch
-                    {
-                        card = null;
-                    }
-
-                    var block = card is not null ? FormatCard(card, MarketColumnWidth) : EmptyCardBlock(MarketColumnWidth);
+                    int startRow = (DeckLevelCount - level) * DeckBlockHeight;
+                    var block = FormatCard(gameState.Market[level, column], MarketColumnWidth);
                     for (int row = 0; row < DeckBlockHeight; row++)
                         canvas[startRow + row] += block[row];
                 }
@@ -110,7 +97,7 @@ namespace SplendidWonders.CLI.View
                     string panelLine = row < playerPanel.Count
                         ? playerPanel[row]
                         : new string(' ', PlayerPanelWidth);
-                    canvas[row] += " " + panelLine;
+                    canvas[row] += "   " + panelLine;
                 }
             }
 
@@ -285,13 +272,13 @@ namespace SplendidWonders.CLI.View
             };
         }
 
-        private static string[] FormatCard(DevelopmentCard? card, int width)
+        private static string[] FormatCard(DevelopmentCard card, int width)
         {
             var lines = new string[DeckBlockHeight];
             string top = "+" + new string('-', width - 2) + "+";
             int contentWidth = Math.Max(8, width - 4);
 
-            string name = card?.Name ?? "Empty";
+            string name = card.Name;
             var nameLines = new List<string>();
             if (string.IsNullOrWhiteSpace(name))
             {
@@ -330,21 +317,20 @@ namespace SplendidWonders.CLI.View
                     nameLines[index] = Ellipsize(nameLines[index], contentWidth);
             }
 
-            string bonus = card is not null ? GetBonusLetter(card.Bonus) : " ";
-            string victoryPoints = card is not null && card.VictoryPoints > 0 ? "{" + card.VictoryPoints + "}" : string.Empty;
+            string bonus = GetBonusLetter(card.Bonus);
+            string victoryPoints = card.VictoryPoints > 0 ? "{" + card.VictoryPoints + "}" : string.Empty;
             string costSummary = string.Empty;
-            if (card?.Cost is not null)
+            var cost = card.Cost;
+            var parts = new List<string>();
+            if (cost.Yellow > 0) parts.Add($"{Resources.ColorYellow}{cost.Yellow}");
+            if (cost.Blue > 0) parts.Add($"{Resources.ColorBlue}{cost.Blue}");
+            if (cost.Green > 0) parts.Add($"{Resources.ColorGreen}{cost.Green}");
+            if (cost.Brown > 0) parts.Add($"{Resources.ColorBrown}{cost.Brown}");
+            if (cost.Red > 0) parts.Add($"{Resources.ColorRed}{cost.Red}");
+            costSummary = string.Join(" ", parts);
+            if (costSummary.Length > contentWidth)
             {
-                var cost = card.Cost;
-                var parts = new List<string>();
-                if (cost.Yellow > 0) parts.Add($"{Resources.ColorYellow}{cost.Yellow}");
-                if (cost.Blue > 0) parts.Add($"{Resources.ColorBlue}{cost.Blue}");
-                if (cost.Green > 0) parts.Add($"{Resources.ColorGreen}{cost.Green}");
-                if (cost.Brown > 0) parts.Add($"{Resources.ColorBrown}{cost.Brown}");
-                if (cost.Red > 0) parts.Add($"{Resources.ColorRed}{cost.Red}");
-                costSummary = string.Join(" ", parts);
-                if (costSummary.Length > contentWidth)
-                    costSummary = Ellipsize(costSummary, contentWidth);
+                costSummary = Ellipsize(costSummary, contentWidth);
             }
 
             if (bonus.Length > contentWidth) bonus = bonus.Substring(0, contentWidth);
@@ -360,16 +346,6 @@ namespace SplendidWonders.CLI.View
             lines[5] = CenterCardLine(nameLines[2], contentWidth);
             lines[6] = "| " + costSummary.PadRight(contentWidth) + " |";
             lines[7] = top;
-            return lines;
-        }
-
-        private static string[] EmptyCardBlock(int width)
-        {
-            var lines = new string[DeckBlockHeight];
-            lines[0] = "+" + new string('-', width - 2) + "+";
-            for (int row = 1; row < DeckBlockHeight - 1; row++)
-                lines[row] = "|" + new string(' ', width - 2) + "|";
-            lines[DeckBlockHeight - 1] = "+" + new string('-', width - 2) + "+";
             return lines;
         }
 
