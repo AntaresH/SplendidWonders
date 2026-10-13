@@ -54,9 +54,8 @@ namespace SplendidWonders.CLI.View
             for (int row = 0; row < totalHeight; row++)
                 canvas[row] = canvas[row].PadRight(TokenColumnWidth) + " ";
 
-            for (int level = 3; level >= 1; level--)
+            for (int level = 3, blockIndex = 0; level >= 1; level--, blockIndex++)
             {
-                int blockIndex = 3 - level;
                 int startRow = deckStartRow + blockIndex * DeckBlockHeight;
                 string border = "+" + new string('=', DeckColumnWidth - 2) + "+";
                 string spacer = (char)0x2551 + new string(' ', DeckColumnWidth - 2) + (char)0x2551;
@@ -131,8 +130,12 @@ namespace SplendidWonders.CLI.View
                 if (player is null)
                 {
                     AddPlayerBlock(lines, string.Empty, WrapPlayerText(Resources.EmptyTableau, PlayerPanelWidth - 4));
-                    AddPlayerBlock(lines, Resources.PlayerStorageTitle, WrapPlayerText(Resources.EmptyTableau, PlayerPanelWidth - 4));
-                    AddTableauBlock(lines, new List<string> { Resources.EmptyTableau }, DeckBlockHeight * 3);
+                    AddPlayerBlock(lines, Resources.PlayerStorageTitle, new List<string>
+                    {
+                        string.Empty,
+                        string.Format(Resources.ReservedCardsCountFormat, 0)
+                    });
+                    AddTableauBlock(lines, new List<string> { string.Empty, Resources.EmptyTableau }, DeckBlockHeight * 3);
                     panels.Add(lines);
                     continue;
                 }
@@ -143,14 +146,19 @@ namespace SplendidWonders.CLI.View
                 AddPlayerBlock(lines, string.Empty, WrapPlayerText(playerName, PlayerPanelWidth - 4));
 
                 var storage = player.Store;
-                string tokenStorage = string.Join(" ",
-                    $"{Resources.ColorYellow}:{storage?.Yellow ?? 0}",
-                    $"{Resources.ColorBlue}:{storage?.Blue ?? 0}",
-                    $"{Resources.ColorGreen}:{storage?.Green ?? 0}",
-                    $"{Resources.ColorBrown}:{storage?.Brown ?? 0}",
-                    $"{Resources.ColorRed}:{storage?.Red ?? 0}",
-                    $"{(char)0x2736}:{storage?.Polymath ?? 0}");
-                AddPlayerBlock(lines, Resources.PlayerStorageTitle, WrapPlayerText(tokenStorage, PlayerPanelWidth - 4));
+                var playerStorageLines = new List<string>
+                {
+                    string.Empty,
+                    $"{Resources.ColorYellow}:{storage?.Yellow ?? 0} " +
+                    $"{Resources.ColorBlue}:{storage?.Blue ?? 0} " +
+                    $"{Resources.ColorGreen}:{storage?.Green ?? 0} " +
+                    $"{Resources.ColorBrown}:{storage?.Brown ?? 0} " +
+                    $"{Resources.ColorRed}:{storage?.Red ?? 0}  " +
+                    $"{(char)0x2736}:{storage?.Polymath ?? 0}   " +
+                    string.Format(Resources.ReservedCardsCountFormat, player.ReservedCards?.Count ?? 0)
+                };
+
+                AddPlayerBlock(lines, Resources.PlayerStorageTitle, playerStorageLines);
 
                 var tableauLines = new List<string>();
                 if (player.Tableau is not null)
@@ -158,13 +166,14 @@ namespace SplendidWonders.CLI.View
                     foreach (var card in player.Tableau)
                     {
                         if (card is not null)
-                            tableauLines.AddRange(WrapPlayerText("- " + card.Name, PlayerPanelWidth - 4));
+                            tableauLines.AddRange(WrapPlayerText("-  " + card.Name, PlayerPanelWidth - 4));
                     }
                 }
 
                 if (tableauLines.Count == 0)
                     tableauLines.Add(Resources.EmptyTableau);
 
+                tableauLines.Insert(0, string.Empty);
                 AddTableauBlock(lines, tableauLines, DeckBlockHeight * 3);
                 panels.Add(lines);
             }
@@ -178,8 +187,11 @@ namespace SplendidWonders.CLI.View
             lines.Add(border);
             if (!string.IsNullOrEmpty(title))
                 lines.Add(FormatPlayerPanelLine(title));
-            foreach (var contentLine in contentLines)
-                lines.Add(FormatPlayerPanelLine(contentLine));
+            for (int i = 0; i < contentLines.Count; i++)
+            {
+                bool isReservedCardCount = title == Resources.PlayerStorageTitle && i == contentLines.Count - 1;
+                lines.Add(FormatPlayerPanelLine(contentLines[i], isReservedCardCount));
+            }
             lines.Add(border);
         }
 
@@ -192,10 +204,11 @@ namespace SplendidWonders.CLI.View
             AddPlayerBlock(lines, Resources.PlayerTableauTitle, contentLines);
         }
 
-        private static string FormatPlayerPanelLine(string content)
+        private static string FormatPlayerPanelLine(string content, bool extraSpaceBeforeRightBorder = false)
         {
             int contentWidth = PlayerPanelWidth - 4;
-            return "| " + content.PadRight(contentWidth) + " |";
+            string rightBorder = extraSpaceBeforeRightBorder ? "  |" : " |";
+            return "| " + content.PadRight(contentWidth) + rightBorder;
         }
 
         private static List<string> WrapPlayerText(string text, int width)

@@ -202,12 +202,15 @@
     <value>Játékos {0}</value>
   </data>
   <data name="PlayerStorageTitle" xml:space="preserve">
-    <value>Tokenkészlet</value>
+    <value>Saját készlet</value>
   </data>
   <data name="PlayerTableauTitle" xml:space="preserve">
     <value>Kijátszott kártyák</value>
   </data>
   <data name="EmptyTableau" xml:space="preserve">
     <value>(üres)</value>
+  </data>
+  <data name="ReservedCardsCountFormat" xml:space="preserve">
+    <value>🂠: {0}</value>
   </data>
 </root>

@@ -322,7 +322,7 @@ namespace SplendidWonders.CLI.Properties {
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to Tokenkészlet.
+        ///   Looks up a localized string similar to Saját készlet.
         /// </summary>
         internal static string PlayerStorageTitle {
             get {
@@ -336,6 +336,15 @@ namespace SplendidWonders.CLI.Properties {
         internal static string PlayerTableauTitle {
             get {
                 return ResourceManager.GetString("PlayerTableauTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up the reserved card count label.
+        /// </summary>
+        internal static string ReservedCardsCountFormat {
+            get {
+                return ResourceManager.GetString("ReservedCardsCountFormat", resourceCulture);
             }
         }
     }
