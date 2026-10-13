@@ -302,5 +302,41 @@ namespace SplendidWonders.CLI.Properties {
                 return ResourceManager.GetString("ValidCommands", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to (üres).
+        /// </summary>
+        internal static string EmptyTableau {
+            get {
+                return ResourceManager.GetString("EmptyTableau", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Játékos {0}.
+        /// </summary>
+        internal static string PlayerTitleFormat {
+            get {
+                return ResourceManager.GetString("PlayerTitleFormat", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Tokenkészlet.
+        /// </summary>
+        internal static string PlayerStorageTitle {
+            get {
+                return ResourceManager.GetString("PlayerStorageTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Kijátszott kártyák.
+        /// </summary>
+        internal static string PlayerTableauTitle {
+            get {
+                return ResourceManager.GetString("PlayerTableauTitle", resourceCulture);
+            }
+        }
     }
 }

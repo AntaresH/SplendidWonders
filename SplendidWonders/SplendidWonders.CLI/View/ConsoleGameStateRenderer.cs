@@ -14,13 +14,19 @@ namespace SplendidWonders.CLI.View
         private const int MarketColumnCount = 4;
         private const int DeckBlockHeight = 8;
         private const int TokenBlockHeight = 3;
+        private const int PlayerPanelWidth = 36;
 
         public void Render(GameState gameState)
         {
+            var playerPanels = BuildPlayerPanels(gameState);
             int deckTotalHeight = 3 * DeckBlockHeight;
             int tokenTotalHeight = 6 * TokenBlockHeight;
-            int totalHeight = Math.Max(deckTotalHeight, tokenTotalHeight);
-            int deckStartRow = (totalHeight - deckTotalHeight) / 2;
+            int playerPanelsHeight = 0;
+            foreach (var playerPanel in playerPanels)
+                playerPanelsHeight = Math.Max(playerPanelsHeight, playerPanel.Count);
+
+            int totalHeight = Math.Max(Math.Max(deckTotalHeight, tokenTotalHeight), playerPanelsHeight);
+            int deckStartRow = 0;
 
             var tokenBlocks = new List<string[]>
             {
@@ -98,10 +104,138 @@ namespace SplendidWonders.CLI.View
                     canvas[row] += " ";
             }
 
+            foreach (var playerPanel in playerPanels)
+            {
+                for (int row = 0; row < totalHeight; row++)
+                {
+                    string panelLine = row < playerPanel.Count
+                        ? playerPanel[row]
+                        : new string(' ', PlayerPanelWidth);
+                    canvas[row] += " " + panelLine;
+                }
+            }
+
             Console.WriteLine();
             foreach (var line in canvas)
                 Console.WriteLine(line);
             Console.WriteLine();
+        }
+
+        private static List<List<string>> BuildPlayerPanels(GameState gameState)
+        {
+            var panels = new List<List<string>>();
+            for (int playerIndex = 0; gameState.Players is not null && playerIndex < gameState.Players.Count; playerIndex++)
+            {
+                var lines = new List<string>();
+                var player = gameState.Players[playerIndex];
+                if (player is null)
+                {
+                    AddPlayerBlock(lines, string.Empty, WrapPlayerText(Resources.EmptyTableau, PlayerPanelWidth - 4));
+                    AddPlayerBlock(lines, Resources.PlayerStorageTitle, WrapPlayerText(Resources.EmptyTableau, PlayerPanelWidth - 4));
+                    AddTableauBlock(lines, new List<string> { Resources.EmptyTableau }, DeckBlockHeight * 3);
+                    panels.Add(lines);
+                    continue;
+                }
+
+                string playerName = ReferenceEquals(player, gameState.CurrentPlayer)
+                    ? $"*** {player.Name} ***"
+                    : player.Name;
+                AddPlayerBlock(lines, string.Empty, WrapPlayerText(playerName, PlayerPanelWidth - 4));
+
+                var storage = player.Store;
+                string tokenStorage = string.Join(" ",
+                    $"{Resources.ColorYellow}:{storage?.Yellow ?? 0}",
+                    $"{Resources.ColorBlue}:{storage?.Blue ?? 0}",
+                    $"{Resources.ColorGreen}:{storage?.Green ?? 0}",
+                    $"{Resources.ColorBrown}:{storage?.Brown ?? 0}",
+                    $"{Resources.ColorRed}:{storage?.Red ?? 0}",
+                    $"{(char)0x2736}:{storage?.Polymath ?? 0}");
+                AddPlayerBlock(lines, Resources.PlayerStorageTitle, WrapPlayerText(tokenStorage, PlayerPanelWidth - 4));
+
+                var tableauLines = new List<string>();
+                if (player.Tableau is not null)
+                {
+                    foreach (var card in player.Tableau)
+                    {
+                        if (card is not null)
+                            tableauLines.AddRange(WrapPlayerText("- " + card.Name, PlayerPanelWidth - 4));
+                    }
+                }
+
+                if (tableauLines.Count == 0)
+                    tableauLines.Add(Resources.EmptyTableau);
+
+                AddTableauBlock(lines, tableauLines, DeckBlockHeight * 3);
+                panels.Add(lines);
+            }
+
+            return panels;
+        }
+
+        private static void AddPlayerBlock(List<string> lines, string title, List<string> contentLines)
+        {
+            string border = "+" + new string('-', PlayerPanelWidth - 2) + "+";
+            lines.Add(border);
+            if (!string.IsNullOrEmpty(title))
+                lines.Add(FormatPlayerPanelLine(title));
+            foreach (var contentLine in contentLines)
+                lines.Add(FormatPlayerPanelLine(contentLine));
+            lines.Add(border);
+        }
+
+        private static void AddTableauBlock(List<string> lines, List<string> contentLines, int minimumPanelHeight)
+        {
+            int minimumContentHeight = minimumPanelHeight - lines.Count - 3;
+            while (contentLines.Count < minimumContentHeight)
+                contentLines.Add(string.Empty);
+
+            AddPlayerBlock(lines, Resources.PlayerTableauTitle, contentLines);
+        }
+
+        private static string FormatPlayerPanelLine(string content)
+        {
+            int contentWidth = PlayerPanelWidth - 4;
+            return "| " + content.PadRight(contentWidth) + " |";
+        }
+
+        private static List<string> WrapPlayerText(string text, int width)
+        {
+            var lines = new List<string>();
+            var currentLine = new StringBuilder();
+
+            foreach (var word in text.Split(' ', StringSplitOptions.RemoveEmptyEntries))
+            {
+                if (currentLine.Length > 0 && currentLine.Length + 1 + word.Length > width)
+                {
+                    lines.Add(currentLine.ToString());
+                    currentLine.Clear();
+                }
+
+                string remaining = word;
+                while (remaining.Length > width)
+                {
+                    if (currentLine.Length > 0)
+                    {
+                        lines.Add(currentLine.ToString());
+                        currentLine.Clear();
+                    }
+
+                    lines.Add(remaining.Substring(0, width));
+                    remaining = remaining.Substring(width);
+                }
+
+                if (currentLine.Length > 0)
+                    currentLine.Append(' ');
+                currentLine.Append(remaining);
+            }
+
+            if (currentLine.Length > 0)
+                lines.Add(currentLine.ToString());
+
+            if (lines.Count == 0)
+                lines.Add(string.Empty);
+
+            return lines;
         }
 
         private static string[] BuildTokenBlock(char letter, int count, bool isPolymath = false)

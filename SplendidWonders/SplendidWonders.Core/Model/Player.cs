@@ -2,13 +2,14 @@
 {
     public class Player
     {
-        public TokenGroup Store { get; set; }
-
-        public IReadOnlyList<DevelopmentCard> Tableau { get; set; }
-
-        public IReadOnlyList<DevelopmentCard> ReservedCards { get; set; }
-
-        public IReadOnlyList<Leader> AcquiredLeaders { get; set; }
         public string Name { get; internal set; }
+
+        public TokenGroup Store { get; set; } = new();
+
+        public IReadOnlyList<DevelopmentCard> Tableau { get; set; } = Array.Empty<DevelopmentCard>();
+
+        public IReadOnlyList<DevelopmentCard> ReservedCards { get; set; } = Array.Empty<DevelopmentCard>();
+
+        public IReadOnlyList<Leader> AcquiredLeaders { get; set; } = Array.Empty<Leader>();
     }
 }

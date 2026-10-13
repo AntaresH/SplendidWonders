@@ -198,4 +198,16 @@
   <data name="ValidCommands" xml:space="preserve">
     <value>Érvényes akciók:</value>
   </data>
+  <data name="PlayerTitleFormat" xml:space="preserve">
+    <value>Játékos {0}</value>
+  </data>
+  <data name="PlayerStorageTitle" xml:space="preserve">
+    <value>Tokenkészlet</value>
+  </data>
+  <data name="PlayerTableauTitle" xml:space="preserve">
+    <value>Kijátszott kártyák</value>
+  </data>
+  <data name="EmptyTableau" xml:space="preserve">
+    <value>(üres)</value>
+  </data>
 </root>
