@@ -116,7 +116,7 @@ namespace SplendidWonders.CLI.View
                 var player = gameState.Players[playerIndex];
                 if (player is null)
                 {
-                    AddPlayerBlock(lines, string.Empty, WrapPlayerText(Resources.EmptyTableau, PlayerPanelWidth - 4));
+                    AddPlayerBlock(lines, string.Empty, WrapText(Resources.EmptyTableau, PlayerPanelWidth - 4));
                     AddPlayerBlock(lines, Resources.PlayerStorageTitle, new List<string>
                     {
                         string.Empty,
@@ -130,7 +130,7 @@ namespace SplendidWonders.CLI.View
                 string playerName = ReferenceEquals(player, gameState.CurrentPlayer)
                     ? $"*** {player.Name} ***"
                     : player.Name;
-                AddPlayerBlock(lines, string.Empty, WrapPlayerText(playerName, PlayerPanelWidth - 4));
+                AddPlayerBlock(lines, string.Empty, WrapText(playerName, PlayerPanelWidth - 4));
 
                 var storage = player.Store;
                 var playerStorageLines = new List<string>
@@ -153,7 +153,7 @@ namespace SplendidWonders.CLI.View
                     foreach (var card in player.Tableau)
                     {
                         if (card is not null)
-                            tableauLines.AddRange(WrapPlayerText("-  " + card.Name, PlayerPanelWidth - 4));
+                            tableauLines.AddRange(WrapText("-  " + card.Name, PlayerPanelWidth - 4));
                     }
                 }
 
@@ -198,7 +198,7 @@ namespace SplendidWonders.CLI.View
             return "| " + content.PadRight(contentWidth) + rightBorder;
         }
 
-        private static List<string> WrapPlayerText(string text, int width)
+        private static List<string> WrapText(string text, int width, int maxLines = int.MaxValue)
         {
             var lines = new List<string>();
             var currentLine = new StringBuilder();
@@ -208,6 +208,8 @@ namespace SplendidWonders.CLI.View
                 if (currentLine.Length > 0 && currentLine.Length + 1 + word.Length > width)
                 {
                     lines.Add(currentLine.ToString());
+                    if (lines.Count == maxLines)
+                        return lines;
                     currentLine.Clear();
                 }
 
@@ -217,11 +219,15 @@ namespace SplendidWonders.CLI.View
                     if (currentLine.Length > 0)
                     {
                         lines.Add(currentLine.ToString());
+                        if (lines.Count == maxLines)
+                            return lines;
                         currentLine.Clear();
                     }
 
-                    lines.Add(remaining.Substring(0, width));
-                    remaining = remaining.Substring(width);
+                    lines.Add(remaining[..width]);
+                    if (lines.Count == maxLines)
+                        return lines;
+                    remaining = remaining[width..];
                 }
 
                 if (currentLine.Length > 0)
@@ -229,7 +235,7 @@ namespace SplendidWonders.CLI.View
                 currentLine.Append(remaining);
             }
 
-            if (currentLine.Length > 0)
+            if (currentLine.Length > 0 && lines.Count < maxLines)
                 lines.Add(currentLine.ToString());
 
             if (lines.Count == 0)
@@ -278,48 +284,13 @@ namespace SplendidWonders.CLI.View
             string top = "+" + new string('-', width - 2) + "+";
             int contentWidth = Math.Max(8, width - 4);
 
-            string name = card.Name;
-            var nameLines = new List<string>();
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                nameLines.Add(string.Empty);
-            }
-            else
-            {
-                var words = name.Split(' ');
-                var builder = new StringBuilder();
-                foreach (var word in words)
-                {
-                    if (builder.Length == 0)
-                        builder.Append(word);
-                    else if (builder.Length + 1 + word.Length <= contentWidth)
-                        builder.Append(' ').Append(word);
-                    else
-                    {
-                        nameLines.Add(builder.ToString());
-                        builder.Clear();
-                        builder.Append(word);
-                        if (nameLines.Count == 3)
-                            break;
-                    }
-                }
-
-                if (builder.Length > 0 && nameLines.Count < 3)
-                    nameLines.Add(builder.ToString());
-            }
+            var nameLines = WrapText(card.Name ?? string.Empty, contentWidth, 3);
 
             while (nameLines.Count < 3)
                 nameLines.Add(string.Empty);
 
-            for (int index = 0; index < nameLines.Count; index++)
-            {
-                if (nameLines[index].Length > contentWidth)
-                    nameLines[index] = Ellipsize(nameLines[index], contentWidth);
-            }
-
             string bonus = GetBonusLetter(card.Bonus);
             string victoryPoints = card.VictoryPoints > 0 ? "{" + card.VictoryPoints + "}" : string.Empty;
-            string costSummary = string.Empty;
             var cost = card.Cost;
             var parts = new List<string>();
             if (cost.Yellow > 0) parts.Add($"{Resources.ColorYellow}{cost.Yellow}");
@@ -327,7 +298,7 @@ namespace SplendidWonders.CLI.View
             if (cost.Green > 0) parts.Add($"{Resources.ColorGreen}{cost.Green}");
             if (cost.Brown > 0) parts.Add($"{Resources.ColorBrown}{cost.Brown}");
             if (cost.Red > 0) parts.Add($"{Resources.ColorRed}{cost.Red}");
-            costSummary = string.Join(" ", parts);
+            string costSummary = string.Join(" ", parts);
             if (costSummary.Length > contentWidth)
             {
                 costSummary = Ellipsize(costSummary, contentWidth);
@@ -352,24 +323,22 @@ namespace SplendidWonders.CLI.View
         private static string DeckLineCentered(string content, int width)
         {
             int contentWidth = width - 4;
-            string value = content ?? string.Empty;
-            if (value.Length > contentWidth)
-                value = Ellipsize(value, contentWidth);
-
-            int leftPadding = (contentWidth - value.Length) / 2;
-            int rightPadding = contentWidth - value.Length - leftPadding;
-            return (char)0x2551 + " " + new string(' ', leftPadding) + value + new string(' ', rightPadding) + " " + (char)0x2551;
+            return (char)0x2551 + " " + CenterText(content, contentWidth) + " " + (char)0x2551;
         }
 
         private static string CenterCardLine(string content, int width)
+        {
+            return "| " + CenterText(content, width) + " |";
+        }
+
+        private static string CenterText(string content, int width)
         {
             string value = content ?? string.Empty;
             if (value.Length > width)
                 value = Ellipsize(value, width);
 
             int leftPadding = (width - value.Length) / 2;
-            int rightPadding = width - value.Length - leftPadding;
-            return "| " + new string(' ', leftPadding) + value + new string(' ', rightPadding) + " |";
+            return new string(' ', leftPadding) + value + new string(' ', width - value.Length - leftPadding);
         }
 
         private static string GetBonusLetter(DevelopmentBonus bonus)
