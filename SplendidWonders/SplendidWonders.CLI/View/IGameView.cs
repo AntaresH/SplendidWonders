@@ -1,5 +1,5 @@
 ﻿using SplendidWonders.Core.Model;
-using SplendidWonders.Gameplay.Commands;
+using SplendidWonders.Gameplay.Actions;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,7 +9,7 @@ namespace SplendidWonders.CLI.View
     public interface IGameView
     {
         void DisplayGameOver(Dictionary<string, int> value);
-        void DisplayGameState(GameState gameState);
+        void DisplayGame(GameState gameState, List<GameAction> validActions);
         void DisplayValidActions(List<GameAction> validActions);
         void DisplayTurnStart(Player currentPlayer);
         void DisplayInvalidCommandMessage();

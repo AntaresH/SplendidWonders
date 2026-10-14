@@ -1,5 +1,5 @@
 ﻿using SplendidWonders.Core.Model;
-using SplendidWonders.Gameplay.Commands;
+using SplendidWonders.Gameplay.Actions;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,6 +8,6 @@ namespace SplendidWonders.CLI.Input
 {
     public interface IGameInput
     {
-        GameAction GetCommand(List<GameAction> validActions, GameState gameState);
+        GameAction GetCommand(GameState gameState, List<GameAction> validActions);
     }
 }

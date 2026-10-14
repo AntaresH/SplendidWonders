@@ -49,12 +49,9 @@ internal class GameOrchestrator
     {
         while (true)
         {
-            _gameView.DisplayGameState(_game.GameState);
+            _gameView.DisplayGame(_game.GameState, _game.ValidActions);
 
-            var validActions = _game.ValidActions;
-            _gameView.DisplayValidActions(validActions);
-
-            var command = _commandHandler.GetCommand(validActions, _game.GameState);
+            var command = _commandHandler.GetCommand(_game.GameState, _game.ValidActions);
 
             if (_game.ValidateCommand(command))
             {

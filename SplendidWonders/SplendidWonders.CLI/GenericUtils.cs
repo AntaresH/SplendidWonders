@@ -1,4 +1,4 @@
-﻿using SplendidWonders.Gameplay.Commands;
+﻿using SplendidWonders.Gameplay.Actions;
 using System;
 using System.Collections.Generic;
 using System.Text;

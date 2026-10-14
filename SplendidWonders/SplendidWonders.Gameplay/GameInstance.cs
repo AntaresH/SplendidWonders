@@ -1,6 +1,6 @@
 ﻿using SplendidWonders.Core.Setup;
 using SplendidWonders.Core.Model;
-using SplendidWonders.Gameplay.Commands;
+using SplendidWonders.Gameplay.Actions;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -16,11 +16,17 @@ namespace SplendidWonders.Gameplay
 
         public GameState GameState { get; internal set; }
 
+        private List<GameAction> _validActions;
         public List<GameAction> ValidActions
         {
             get
             {
-                throw new NotImplementedException();
+                if (_validActions == null)
+                {
+                    _validActions = GameRules.GetValidActions(GameState);
+                }
+
+                return _validActions;
             }
         }
 

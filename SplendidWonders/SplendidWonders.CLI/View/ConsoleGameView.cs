@@ -1,6 +1,6 @@
 ﻿using SplendidWonders.CLI.Properties;
 using SplendidWonders.Core.Model;
-using SplendidWonders.Gameplay.Commands;
+using SplendidWonders.Gameplay.Actions;
 using System;
 using System.Collections.Generic;
 
@@ -9,6 +9,7 @@ namespace SplendidWonders.CLI.View
     public class ConsoleGameView : IGameView
     {
         private readonly ConsoleGameStateRenderer _gameStateRenderer = new();
+        private readonly ConsoleGameActionsRenderer _gameActionsRenderer = new();
 
         public void DisplayGameOver(Dictionary<string, int> value)
         {
@@ -23,9 +24,10 @@ namespace SplendidWonders.CLI.View
             }
         }
 
-        public void DisplayGameState(GameState gameState)
+        public void DisplayGame(GameState gameState, List<GameAction> validActions)
         {
             _gameStateRenderer.Render(gameState);
+            _gameActionsRenderer.Render(validActions);
         }
 
         public void DisplayValidActions(List<GameAction> validActions)

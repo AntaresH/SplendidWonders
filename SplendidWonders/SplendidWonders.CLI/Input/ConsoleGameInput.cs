@@ -1,6 +1,6 @@
 ﻿using SplendidWonders.CLI.View;
 using SplendidWonders.Core.Model;
-using SplendidWonders.Gameplay.Commands;
+using SplendidWonders.Gameplay.Actions;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -17,7 +17,7 @@ namespace SplendidWonders.CLI.Input
             _gameView = gameView;
         }
 
-        public GameAction GetCommand(List<GameAction> validActions, GameState gameState)
+        public GameAction GetCommand(GameState gameState, List<GameAction> validActions)
         {
             while (true)
             {

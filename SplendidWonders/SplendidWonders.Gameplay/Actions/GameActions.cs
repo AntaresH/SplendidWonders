@@ -1,7 +1,7 @@
 ﻿using SplendidWonders.Core.Setup;
 using SplendidWonders.Core.Model;
 
-namespace SplendidWonders.Gameplay.Commands
+namespace SplendidWonders.Gameplay.Actions
 {
     public class GameAction
     {
@@ -21,8 +21,9 @@ namespace SplendidWonders.Gameplay.Commands
         {
             if (obj is DrawThreeTokensAction other)
             {
-                return Tokens.Equals(other.Tokens);
+                return Tokens == other.Tokens;
             }
+
             return base.Equals(obj);
         }
     }
