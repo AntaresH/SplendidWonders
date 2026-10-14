@@ -19,26 +19,37 @@ namespace SplendidWonders.Gameplay
         {
             List<DrawThreeTokensAction> actions = new List<DrawThreeTokensAction>();
 
-            if (gameState.TokenSupply.Yellow > 0 
-                && gameState.TokenSupply.Blue > 0 
-                && gameState.TokenSupply.Green > 0 
-                && gameState.TokenSupply.Brown > 0 
-                && gameState.TokenSupply.Red > 0)
+            bool[] ignoredColors =
             {
-                for (int i = 0; i < 5; i++)
-                {
-                    for (int j = i + 1; j < 5; j++)
-                    {
-                        for (int k = j + 1; k < 5; k++)
-                        {
-                            var values = new int[5];
-                            values[i] = 1;
-                            values[j] = 1;
-                            values[k] = 1;
+                gameState.TokenSupply.Yellow == 0,
+                gameState.TokenSupply.Blue == 0,
+                gameState.TokenSupply.Green == 0,
+                gameState.TokenSupply.Brown == 0,
+                gameState.TokenSupply.Red == 0,
+            };
 
-                            var group = TokenGroup.FromArray(values);
-                            actions.Add(new DrawThreeTokensAction() { Tokens = group });
-                        }
+            for (int i = 0; i < 5; i++)
+            {
+                if (ignoredColors[i])
+                    continue;
+
+                for (int j = i + 1; j < 5; j++)
+                {
+                    if (ignoredColors[j])
+                        continue;
+
+                    for (int k = j + 1; k < 5; k++)
+                    {
+                        if (ignoredColors[k])
+                            continue;
+
+                        var values = new int[5];
+                        values[i] = 1;
+                        values[j] = 1;
+                        values[k] = 1;
+
+                        var group = TokenGroup.FromArray(values);
+                        actions.Add(new DrawThreeTokensAction() { Tokens = group });
                     }
                 }
             }
