@@ -2,7 +2,7 @@
 {
     public class Player
     {
-        public string Name { get; internal set; }
+        public string Name { get; set; }
 
         public TokenGroup Store { get; set; } = new();
 

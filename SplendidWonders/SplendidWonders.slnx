@@ -1,5 +1,6 @@
 <Solution>
   <Project Path="SplendidWonders.CLI/SplendidWonders.CLI.csproj" />
   <Project Path="SplendidWonders.Core/SplendidWonders.Core.csproj" />
+  <Project Path="SplendidWonders.Gameplay.Tests/SplendidWonders.Gameplay.Tests.csproj" Id="b4490402-6d9a-48a2-a81d-7e27e1649111" />
   <Project Path="SplendidWonders.Gameplay/SplendidWonders.Gameplay.csproj" />
 </Solution>

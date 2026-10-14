@@ -183,12 +183,12 @@ namespace SplendidWonders.CLI.View
                 var storage = player.Store;
                 var storageText = new StringBuilder();
                 var storageColorRanges = new List<ColorRange>();
-                AppendColoredNumber(storageText, storageColorRanges, storage?.Yellow ?? 0, GetRgbColor(DevelopmentBonus.Yellow));
-                AppendColoredNumber(storageText, storageColorRanges, storage?.Blue ?? 0, GetRgbColor(DevelopmentBonus.Blue));
-                AppendColoredNumber(storageText, storageColorRanges, storage?.Green ?? 0, GetRgbColor(DevelopmentBonus.Green));
-                AppendColoredNumber(storageText, storageColorRanges, storage?.Brown ?? 0, GetRgbColor(DevelopmentBonus.Brown));
-                AppendColoredNumber(storageText, storageColorRanges, storage?.Red ?? 0, GetRgbColor(DevelopmentBonus.Red));
-                AppendColoredNumber(storageText, storageColorRanges, storage?.Polymath ?? 0, new RgbColor(255, 255, 255), "  ");
+                AppendColoredNumber(storageText, storageColorRanges, storage.Yellow, GetRgbColor(DevelopmentBonus.Yellow));
+                AppendColoredNumber(storageText, storageColorRanges, storage.Blue, GetRgbColor(DevelopmentBonus.Blue));
+                AppendColoredNumber(storageText, storageColorRanges, storage.Green, GetRgbColor(DevelopmentBonus.Green));
+                AppendColoredNumber(storageText, storageColorRanges, storage.Brown, GetRgbColor(DevelopmentBonus.Brown));
+                AppendColoredNumber(storageText, storageColorRanges, storage.Red, GetRgbColor(DevelopmentBonus.Red));
+                AppendColoredNumber(storageText, storageColorRanges, storage.Polymath, new RgbColor(255, 255, 255), "  ");
                 storageText.Append("   ").Append(string.Format(Resources.ReservedCardsCountFormat, player.ReservedCards?.Count ?? 0));
                 var playerStorageLines = new List<string>
                 {
