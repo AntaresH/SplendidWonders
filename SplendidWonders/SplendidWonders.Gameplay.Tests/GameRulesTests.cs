@@ -13,7 +13,7 @@ namespace SplendidWonders.Gameplay.Tests
         }
 
         [TestCaseSource(nameof(DrawThreeTokensActionCases))]
-        public void GetValidActions_Configurable_ShouldReturnTenDifferentThreeTokensActions(TokenGroup setup, DrawThreeTokensAction[] expectedActions)
+        public void GetValidActions_WithDifferentTokenSupplies_ShouldReturnExpectedThreeTokenActions(TokenGroup setup, DrawThreeTokensAction[] expectedActions)
         {
             // Arrange
             var players = new List<string> { "Player 1", "Player 2" };

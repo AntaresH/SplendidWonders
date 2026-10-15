@@ -17,9 +17,9 @@ namespace SplendidWonders.Gameplay
 
         private static IEnumerable<GameAction> GetDrawThreeTokensActions(GameState gameState)
         {
-            List<DrawThreeTokensAction> actions = new List<DrawThreeTokensAction>();
+            List<DrawThreeTokensAction> validDrawThreeActions = new List<DrawThreeTokensAction>();
 
-            bool[] ignoredColors =
+            bool[] emptyColors =
             {
                 gameState.TokenSupply.Yellow == 0,
                 gameState.TokenSupply.Blue == 0,
@@ -28,19 +28,43 @@ namespace SplendidWonders.Gameplay
                 gameState.TokenSupply.Red == 0,
             };
 
+            if (emptyColors.Count(true) < 2)
+            {
+                var permutationActions = CalculateThreeTokensActionPermutations(emptyColors);
+                validDrawThreeActions.AddRange(permutationActions);
+            }
+            else
+            {
+                var values = new int[5];
+
+                for (int i = 0; i < emptyColors.Length; i++)
+                {
+                    values[i] = emptyColors[i] ? 0 : 1;
+                }
+
+                validDrawThreeActions.Add(new DrawThreeTokensAction() { Tokens = TokenGroup.FromArray(values) });
+            }
+
+            return validDrawThreeActions;
+        }
+
+        private static IEnumerable<DrawThreeTokensAction> CalculateThreeTokensActionPermutations(bool[] emptyColors)
+        {
+            List<DrawThreeTokensAction> permutationActions = new List<DrawThreeTokensAction>();
+
             for (int i = 0; i < 5; i++)
             {
-                if (ignoredColors[i])
+                if (emptyColors[i])
                     continue;
 
                 for (int j = i + 1; j < 5; j++)
                 {
-                    if (ignoredColors[j])
+                    if (emptyColors[j])
                         continue;
 
                     for (int k = j + 1; k < 5; k++)
                     {
-                        if (ignoredColors[k])
+                        if (emptyColors[k])
                             continue;
 
                         var values = new int[5];
@@ -49,12 +73,12 @@ namespace SplendidWonders.Gameplay
                         values[k] = 1;
 
                         var group = TokenGroup.FromArray(values);
-                        actions.Add(new DrawThreeTokensAction() { Tokens = group });
+                        permutationActions.Add(new DrawThreeTokensAction() { Tokens = group });
                     }
                 }
             }
 
-            return actions;
+            return permutationActions;
         }
 
         private static IEnumerable<GameAction> GetDrawDoubleTokensActions(GameState gameState)
