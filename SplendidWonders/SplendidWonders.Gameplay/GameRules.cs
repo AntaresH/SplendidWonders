@@ -86,15 +86,15 @@ namespace SplendidWonders.Gameplay
             List<DrawDoubleTokensAction> gameActions = new List<DrawDoubleTokensAction>();
 
             if (gameState.TokenSupply.Yellow >= 4)
-                gameActions.Add(new DrawDoubleTokensAction() { Tokens = TokenGroup.FromArray(new int[] { 1, 0, 0, 0, 0 }) });
+                gameActions.Add(new DrawDoubleTokensAction() { Tokens = TokenGroup.FromArray(new int[] { 2, 0, 0, 0, 0 }) });
             if (gameState.TokenSupply.Blue >= 4)
-                gameActions.Add(new DrawDoubleTokensAction() { Tokens = TokenGroup.FromArray(new int[] { 0, 1, 0, 0, 0 }) });
+                gameActions.Add(new DrawDoubleTokensAction() { Tokens = TokenGroup.FromArray(new int[] { 0, 2, 0, 0, 0 }) });
             if (gameState.TokenSupply.Green >= 4)
-                gameActions.Add(new DrawDoubleTokensAction() { Tokens = TokenGroup.FromArray(new int[] { 0, 0, 1, 0, 0 }) });
+                gameActions.Add(new DrawDoubleTokensAction() { Tokens = TokenGroup.FromArray(new int[] { 0, 0, 2, 0, 0 }) });
             if (gameState.TokenSupply.Brown >= 4)
-                gameActions.Add(new DrawDoubleTokensAction() { Tokens = TokenGroup.FromArray(new int[] { 0, 0, 0, 1, 0 }) });
+                gameActions.Add(new DrawDoubleTokensAction() { Tokens = TokenGroup.FromArray(new int[] { 0, 0, 0, 2, 0 }) });
             if (gameState.TokenSupply.Red >= 4)
-                gameActions.Add(new DrawDoubleTokensAction() { Tokens = TokenGroup.FromArray(new int[] { 0, 0, 0, 0, 1 }) });
+                gameActions.Add(new DrawDoubleTokensAction() { Tokens = TokenGroup.FromArray(new int[] { 0, 0, 0, 0, 2 }) });
 
             return gameActions;
         }
