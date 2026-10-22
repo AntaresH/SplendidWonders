@@ -14,6 +14,7 @@ namespace SplendidWonders.Gameplay.Tests
         private Player _currentPlayer;
 
         private List<Player> _players;
+        private CardGroup _decks;
 
         public GameStateBuilder()
         {
@@ -31,8 +32,9 @@ namespace SplendidWonders.Gameplay.Tests
             return this;
         }
 
-        public GameStateBuilder WithDecks()
+        public GameStateBuilder WithDecks(CardGroup decks)
         {
+            _decks = decks;
             return this;
         }
 
@@ -59,6 +61,7 @@ namespace SplendidWonders.Gameplay.Tests
             return new GameState()
             {
                 CurrentPlayer = _currentPlayer,
+                Decks = _decks,
                 Players = _players,
                 Market =_market,
                 TokenSupply = _tokenSupply,
