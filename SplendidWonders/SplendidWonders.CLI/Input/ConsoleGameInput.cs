@@ -78,7 +78,7 @@ namespace SplendidWonders.CLI.Input
             throw new InvalidOperationException();
         }
 
-        private GameAction ResolvePurchase(PurchaseAction command, GameState gameState)
+        private GameAction ResolvePurchase(PurchaseAction action, GameState gameState)
         {
             while (true)
             {
@@ -92,14 +92,14 @@ namespace SplendidWonders.CLI.Input
                 {
                     int level = int.Parse(match.Groups[1].Value);
                     int column = int.Parse(match.Groups[2].Value);
-                    command.Card = gameState.Market[level][column];
+                    action.Card = gameState.Market[level][column];
 
-                    return command;
+                    return action;
                 }
             }
         }
 
-        private GameAction ResolveReserveFromDeck(ReserveFromDeckAction command)
+        private GameAction ResolveReserveFromDeck(ReserveFromDeckAction action)
         {
             while (true)
             {
@@ -112,14 +112,14 @@ namespace SplendidWonders.CLI.Input
                 if (match.Success)
                 {
                     int level = int.Parse(match.Groups[1].Value);
-                    command.Level = level;
+                    action.Level = level;
 
-                    return command;
+                    return action;
                 }
             }
         }
 
-        private GameAction ResolveReserveFromBoard(ReserveFromBoardAction command, GameState gameState)
+        private GameAction ResolveReserveFromBoard(ReserveFromBoardAction action, GameState gameState)
         {
             while (true)
             {
@@ -133,14 +133,14 @@ namespace SplendidWonders.CLI.Input
                 {
                     int level = int.Parse(match.Groups[1].Value);
                     int column = int.Parse(match.Groups[2].Value);
-                    command.Card = gameState.Market[level][column];
+                    action.Card = gameState.Market[level][column];
 
-                    return command;
+                    return action;
                 }
             }
         }
 
-        private GameAction ResolveDoubleTokens(DrawDoubleTokensAction command)
+        private GameAction ResolveDoubleTokens(DrawDoubleTokensAction action)
         {
             while (true)
             {
@@ -148,20 +148,20 @@ namespace SplendidWonders.CLI.Input
 
                 string userInput = ReadAndApplyDefaultHandling();
 
-                Match match = Regex.Match(userInput, @"^[SKZBP]{1}$");
+                Match match = Regex.Match(userInput, @"^[SsKkZzBbPp]{1}$");
 
                 if (match.Success)
                 {
-                    command.Tokens = new TokenGroup
+                    action.Tokens = new TokenGroup
                     {
-                        Yellow = userInput.Contains('S') ? 2 : 0,
-                        Blue = userInput.Contains('K') ? 2 : 0,
-                        Green = userInput.Contains('Z') ? 2 : 0,
-                        Brown = userInput.Contains('B') ? 2 : 0,
-                        Red = userInput.Contains('P') ? 2 : 0
+                        Yellow = userInput.Contains('S', StringComparison.OrdinalIgnoreCase) ? 2 : 0,
+                        Blue = userInput.Contains('K', StringComparison.OrdinalIgnoreCase) ? 2 : 0,
+                        Green = userInput.Contains('Z', StringComparison.OrdinalIgnoreCase) ? 2 : 0,
+                        Brown = userInput.Contains('B', StringComparison.OrdinalIgnoreCase) ? 2 : 0,
+                        Red = userInput.Contains('P', StringComparison.OrdinalIgnoreCase) ? 2 : 0
                     };
 
-                    return command;
+                    return action;
                 }
             }
         }
@@ -174,17 +174,17 @@ namespace SplendidWonders.CLI.Input
 
                 string userInput = ReadAndApplyDefaultHandling();
 
-                Match match = Regex.Match(userInput, @"^[SKZBP ]{1,3}$");
+                Match match = Regex.Match(userInput, @"^[SKZBPskzbp] [SKZBPskzbp]* [SKZBPskzbp]*$");
 
                 if (match.Success)
                 {
                     action.Tokens = new TokenGroup
                     {
-                        Yellow = userInput.Contains('S') ? 1 : 0,
-                        Blue = userInput.Contains('K') ? 1 : 0,
-                        Green = userInput.Contains('Z') ? 1 : 0,
-                        Brown = userInput.Contains('B') ? 1 : 0,
-                        Red = userInput.Contains('P') ? 1 : 0
+                        Yellow = userInput.Contains('S', StringComparison.OrdinalIgnoreCase) ? 2 : 0,
+                        Blue = userInput.Contains('K', StringComparison.OrdinalIgnoreCase) ? 2 : 0,
+                        Green = userInput.Contains('Z', StringComparison.OrdinalIgnoreCase) ? 2 : 0,
+                        Brown = userInput.Contains('B', StringComparison.OrdinalIgnoreCase) ? 2 : 0,
+                        Red = userInput.Contains('P', StringComparison.OrdinalIgnoreCase) ? 2 : 0
                     };
 
                     return action;

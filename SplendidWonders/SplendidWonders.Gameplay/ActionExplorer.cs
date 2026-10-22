@@ -256,10 +256,5 @@ namespace SplendidWonders.Gameplay
                 current[colorIndex] = 0;
             }
         }
-
-        public static GameState ReduceState(GameState gameState, GameAction command)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

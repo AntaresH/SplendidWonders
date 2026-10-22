@@ -35,69 +35,79 @@ internal class Program
 
         while (stayInGame)
         {
-            List<string> playerNames = new List<string>();
-
-            for (int i = 1; i < 3; i++)
-            {
-                Console.WriteLine(string.Format(Strings.EnterPlayerNameFormat, i));
-                var userInput = Console.ReadLine().Trim();
-
-                while (string.IsNullOrWhiteSpace(userInput))
-                {
-                    Console.WriteLine(Strings.NameCannotBeEmpty);
-
-                    userInput = Console.ReadLine();
-                }
-
-                playerNames.Add(userInput);
-            }
-
-            bool useExtendedLeaders = false;
-
-            while (true)
-            {
-                Console.WriteLine(Strings.UseExtendedLeaders);
-
-                string input = Console.ReadLine().Trim().ToLower();
-
-                if (input == "i" || input == "igen")
-                {
-                    useExtendedLeaders = true;
-                    break;
-                }
-                else if (input == "n" || input == "nem")
-                {
-                    useExtendedLeaders = false;
-                    break;
-                }
-                else
-                {
-                    Console.WriteLine(Strings.InvalidYesNo);
-                }
-            }
-
+            //List<string> playerNames = PlayerPrompter();
+            //bool useExtendedLeaders = LeaderPrompter();
+            
             IGameInput gameInput = new ConsoleGameInput(gameView);
-            GameOrchestrator executor = new GameOrchestrator(useExtendedLeaders, playerNames, gameView, gameInput);
-            executor.Start();
+            GameOrchestrator orchestrator = new GameOrchestrator(true, new List<string>() { "Ambrus", "Brünhilda" }, gameView, gameInput);
+            orchestrator.Start();
 
-            while (true)
+            stayInGame = StayPrompter();
+        }
+    }
+
+    private static bool StayPrompter()
+    {
+        while (true)
+        {
+            Console.WriteLine(Strings.PlayAgain);
+
+            var userInput = Console.ReadLine().Trim();
+
+            if (userInput == "i" || userInput == "igen")
             {
-                Console.WriteLine(Strings.PlayAgain);
-
-                var userInput = Console.ReadLine().Trim();
-
-                if (userInput == "i" || userInput == "igen")
-                {
-                    stayInGame = true;
-                    break;
-                }
-                else if (userInput == "n" || userInput == "nem")
-                {
-                    stayInGame = false;
-                    break;
-                }
+                return true;
+            }
+            else if (userInput == "n" || userInput == "nem")
+            {
+                return false;
             }
         }
+    }
+
+    private static bool LeaderPrompter()
+    {
+        while (true)
+        {
+            Console.WriteLine(Strings.UseExtendedLeaders);
+
+            string input = Console.ReadLine().Trim().ToLower();
+
+            if (input == "i" || input == "igen")
+            {
+                return true;
+            }
+            else if (input == "n" || input == "nem")
+            {
+                return false;
+            }
+            else
+            {
+                Console.WriteLine(Strings.InvalidYesNo);
+            }
+        }
+    }
+
+    private static List<string> PlayerPrompter()
+    {
+        var playerNames = new List<string>();
+
+        for (int i = 1; i < 3; i++)
+        {
+            Console.WriteLine(string.Format(Strings.EnterPlayerNameFormat, i));
+            var userInput = Console.ReadLine().Trim();
+
+            while (string.IsNullOrWhiteSpace(userInput))
+            {
+                Console.WriteLine(Strings.NameCannotBeEmpty);
+
+                userInput = Console.ReadLine();
+            }
+
+            playerNames.Add(userInput);
+        }
+
+        return playerNames;
     }
 }
 

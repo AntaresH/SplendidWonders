@@ -45,43 +45,36 @@ namespace SplendidWonders.CLI.View
         public void DisplayTurnStart(Player player)
         {
             Console.WriteLine(string.Format(Strings.PlayerTurnFormat, player.Name));
-            Console.WriteLine();
         }
 
         public void DisplayInvalidCommandMessage()
         {
             Console.WriteLine(Strings.InvalidCommandState);
-            Console.WriteLine();
         }
 
         public void DisplayThreeTokensArgumentRequest()
         {
             Console.WriteLine(Strings.PromptChooseColors);
-            Console.WriteLine();
         }
 
         public void DisplayDoubleTokensArgumentRequest()
         {
             Console.WriteLine(Strings.PromptChooseDoubleColor);
-            Console.WriteLine();
         }
 
         public void DisplayPurchaseArgumentRequest()
         {
             Console.WriteLine(Strings.SelectCardToBuy);
-            Console.WriteLine();
         }
 
         public void DisplayReserveFromDeckArgumentRequest()
         {
             Console.WriteLine(Strings.SelectDeckToReserve);
-            Console.WriteLine();
         }
 
         public void DisplayReserveFromBoardArgumentRequest()
         {
             Console.WriteLine(Strings.SelectCardToReserve);
-            Console.WriteLine();
         }
 
         public void DisplayInvalidCommand(GameAction command)

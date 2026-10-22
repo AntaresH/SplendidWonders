@@ -64,7 +64,7 @@ namespace SplendidWonders.Gameplay
 
         public void ExecuteCommand(GameAction command)
         {
-            GameState = ActionExplorer.ReduceState(GameState, command);
+            GameState = ActionResolver.ReduceState(GameState, command);
         }
     }
 }
