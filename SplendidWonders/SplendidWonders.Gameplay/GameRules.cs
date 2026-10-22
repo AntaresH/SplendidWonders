@@ -9,8 +9,18 @@ namespace SplendidWonders.Gameplay
         {
             var validActions = new List<GameAction>();
 
-            validActions.AddRange(GetDrawThreeTokensActions(gameState));
-            validActions.AddRange(GetDrawDoubleTokensActions(gameState));
+            var returnTokensActions = GetReturnTokensActions(gameState);
+
+            if (returnTokensActions.Any())
+            {
+                validActions.AddRange(returnTokensActions);
+                return validActions;
+            }
+            else
+            {
+                validActions.AddRange(GetDrawThreeTokensActions(gameState));
+                validActions.AddRange(GetDrawDoubleTokensActions(gameState));
+            }
 
             return validActions;
         }
@@ -48,6 +58,53 @@ namespace SplendidWonders.Gameplay
             return validDrawThreeActions;
         }
 
+        private static IEnumerable<GameAction> GetDrawDoubleTokensActions(GameState gameState)
+        {
+            List<DrawDoubleTokensAction> gameActions = new List<DrawDoubleTokensAction>();
+
+            if (gameState.TokenSupply.Yellow >= 4)
+                gameActions.Add(new DrawDoubleTokensAction() { Tokens = TokenGroup.FromArray(new int[] { 2, 0, 0, 0, 0 }) });
+            if (gameState.TokenSupply.Blue >= 4)
+                gameActions.Add(new DrawDoubleTokensAction() { Tokens = TokenGroup.FromArray(new int[] { 0, 2, 0, 0, 0 }) });
+            if (gameState.TokenSupply.Green >= 4)
+                gameActions.Add(new DrawDoubleTokensAction() { Tokens = TokenGroup.FromArray(new int[] { 0, 0, 2, 0, 0 }) });
+            if (gameState.TokenSupply.Brown >= 4)
+                gameActions.Add(new DrawDoubleTokensAction() { Tokens = TokenGroup.FromArray(new int[] { 0, 0, 0, 2, 0 }) });
+            if (gameState.TokenSupply.Red >= 4)
+                gameActions.Add(new DrawDoubleTokensAction() { Tokens = TokenGroup.FromArray(new int[] { 0, 0, 0, 0, 2 }) });
+
+            return gameActions;
+        }
+
+        private static IEnumerable<GameAction> GetReturnTokensActions(GameState gameState)
+        {
+            List<ReturnTokensAction> validReturnTokensActions = new List<ReturnTokensAction>();
+
+            var playerStore = gameState.CurrentPlayer.Store;
+            var tokenCount = playerStore.Yellow + playerStore.Blue + playerStore.Green + playerStore.Brown + playerStore.Red + playerStore.Polymath;
+
+            if (tokenCount > 10)
+            {
+                List<ReturnTokensAction> returnTokensActions = new List<ReturnTokensAction>();
+
+                var current = new int[5];
+
+                var availableTokens = new[]
+                {
+                    playerStore.Yellow,
+                    playerStore.Blue,
+                    playerStore.Green,
+                    playerStore.Brown,
+                    playerStore.Red
+                };
+
+                GenerateVariations(availableTokens, current, 0, tokenCount - 10, returnTokensActions);
+                validReturnTokensActions.AddRange(returnTokensActions);
+            }
+
+            return validReturnTokensActions;
+        }
+
         private static IEnumerable<DrawThreeTokensAction> CalculateThreeTokensActionPermutations(bool[] emptyColors)
         {
             List<DrawThreeTokensAction> permutationActions = new List<DrawThreeTokensAction>();
@@ -81,22 +138,40 @@ namespace SplendidWonders.Gameplay
             return permutationActions;
         }
 
-        private static IEnumerable<GameAction> GetDrawDoubleTokensActions(GameState gameState)
+        private static void GenerateVariations(
+                int[] available,
+                int[] current,
+                int colorIndex,
+                int remaining,
+                List<ReturnTokensAction> result)
         {
-            List<DrawDoubleTokensAction> gameActions = new List<DrawDoubleTokensAction>();
+            {
+                // All tokens have been allocated.
+                if (colorIndex == 5)
+                {
+                    if (remaining == 0)
+                    {
+                        result.Add(
+                            new ReturnTokensAction()
+                            {
+                                Tokens = TokenGroup.FromArray([current[0], current[1], current[2], current[3], current[4]])
+                            });
+                    }
 
-            if (gameState.TokenSupply.Yellow >= 4)
-                gameActions.Add(new DrawDoubleTokensAction() { Tokens = TokenGroup.FromArray(new int[] { 2, 0, 0, 0, 0 }) });
-            if (gameState.TokenSupply.Blue >= 4)
-                gameActions.Add(new DrawDoubleTokensAction() { Tokens = TokenGroup.FromArray(new int[] { 0, 2, 0, 0, 0 }) });
-            if (gameState.TokenSupply.Green >= 4)
-                gameActions.Add(new DrawDoubleTokensAction() { Tokens = TokenGroup.FromArray(new int[] { 0, 0, 2, 0, 0 }) });
-            if (gameState.TokenSupply.Brown >= 4)
-                gameActions.Add(new DrawDoubleTokensAction() { Tokens = TokenGroup.FromArray(new int[] { 0, 0, 0, 2, 0 }) });
-            if (gameState.TokenSupply.Red >= 4)
-                gameActions.Add(new DrawDoubleTokensAction() { Tokens = TokenGroup.FromArray(new int[] { 0, 0, 0, 0, 2 }) });
+                    return;
+                }
 
-            return gameActions;
+                // Try every possible quantity of this color.
+                int max = Math.Min(available[colorIndex], remaining);
+
+                for (int count = 0; count <= max; count++)
+                {
+                    current[colorIndex] = count;
+                    GenerateVariations(available, current, colorIndex + 1, remaining - count, result);
+                }
+
+                current[colorIndex] = 0;
+            }
         }
 
         public static GameState ReduceState(GameState gameState, GameAction command)

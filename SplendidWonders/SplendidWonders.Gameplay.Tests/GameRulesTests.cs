@@ -13,11 +13,14 @@ namespace SplendidWonders.Gameplay.Tests
         }
 
         [TestCaseSource(nameof(DrawThreeTokensActionCases))]
-        public void GetValidActions_WithDifferentTokenSupplies_ShouldReturnExpectedThreeTokenActions(TokenGroup setup, DrawThreeTokensAction[] expectedActions)
+        public void GetValidActions_WithDifferentTokenSupplies_ShouldReturnExpectedThreeTokenActions(TokenGroup tokenSupplySetup, List<Player> playerSetup, DrawThreeTokensAction[] expectedActions)
         {
             // Arrange
+
             var gameState = new GameStateBuilder()
-                .WithTokenSupply(setup)
+                .WithPlayers(playerSetup)
+                .WithTokenSupply(tokenSupplySetup)
+                .WithCurrentPlayer(playerSetup[0])
                 .Build();
 
             // Act
@@ -34,11 +37,13 @@ namespace SplendidWonders.Gameplay.Tests
         }
 
         [TestCaseSource(nameof(DrawDoubleTokensActionCases))]
-        public void GetValidActions_WithDifferentTokenSupplies_ShouldReturnExpectedDoubleTokensActions(TokenGroup setup, DrawDoubleTokensAction[] expectedActions)
+        public void GetValidActions_WithDifferentTokenSupplies_ShouldReturnExpectedDoubleTokensActions(TokenGroup setup, List<Player> playerSetup, DrawDoubleTokensAction[] expectedActions)
         {
             // Arrange
             var gameState = new GameStateBuilder()
+                .WithPlayers(playerSetup)
                 .WithTokenSupply(setup)
+                .WithCurrentPlayer(playerSetup[0])
                 .Build();
 
             // Act
@@ -55,11 +60,12 @@ namespace SplendidWonders.Gameplay.Tests
         }
 
         [TestCaseSource(nameof(ReturnTokensActionCases))]
-        public void GetValidActions_WithDifferentTokenSupplies_ShouldReturnExpectedDoubleTokensActions(TokenGroup setup, ReturnTokensAction[] expectedActions)
+        public void GetValidActions_WithDifferentTokenSupplies_ShouldReturnExpectedDoubleTokensActions(List<Player> playerSetup, ReturnTokensAction[] expectedActions)
         {
             // Arrange
             var gameState = new GameStateBuilder()
-                .WithTokenSupply(setup)
+                .WithPlayers(playerSetup)
+                .WithCurrentPlayer(playerSetup[0])
                 .Build();
 
             // Act
