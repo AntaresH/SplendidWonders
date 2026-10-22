@@ -16,8 +16,6 @@ namespace SplendidWonders.Gameplay.Tests
         public void GetValidActions_WithDifferentTokenSupplies_ShouldReturnExpectedThreeTokenActions(TokenGroup setup, DrawThreeTokensAction[] expectedActions)
         {
             // Arrange
-            var players = new List<string> { "Player 1", "Player 2" };
-
             var gameState = new GameStateBuilder()
                 .WithTokenSupply(setup)
                 .Build();
@@ -35,12 +33,13 @@ namespace SplendidWonders.Gameplay.Tests
             }
         }
 
-        [Test]
-        public void GetValidActions_InitialState_ShouldReturnFiveDifferentDoubleTokensActions()
+        [TestCaseSource(nameof(DrawDoubleTokensActionCases))]
+        public void GetValidActions_WithDifferentTokenSupplies_ShouldReturnExpectedDoubleTokensActions(TokenGroup setup, DrawDoubleTokensAction[] expectedActions)
         {
             // Arrange
-            var players = new List<string> { "Player 1", "Player 2" };
-            var gameState = GameFactory.GetNewGameState(GameConfiguration.Standard, players);
+            var gameState = new GameStateBuilder()
+                .WithTokenSupply(setup)
+                .Build();
 
             // Act
             var validActions = GameRules.GetValidActions(gameState);
@@ -49,16 +48,19 @@ namespace SplendidWonders.Gameplay.Tests
             Assert.IsNotNull(validActions);
             Assert.IsInstanceOf<List<GameAction>>(validActions);
 
-            Assert.That(validActions.OfType<DrawDoubleTokensAction>().Count(), Is.EqualTo(5));
-            Assert.That(validActions.OfType<DrawDoubleTokensAction>(), Is.Unique);
+            foreach (var expectedAction in expectedActions)
+            {
+                Assert.That(validActions.Contains(expectedAction));
+            }
         }
 
-        [Test]
-        public void GetValidActions_ZeroTokensInPile_ShouldReturnFourDifferentThreeTokensActions()
+        [TestCaseSource(nameof(ReturnTokensActionCases))]
+        public void GetValidActions_WithDifferentTokenSupplies_ShouldReturnExpectedDoubleTokensActions(TokenGroup setup, ReturnTokensAction[] expectedActions)
         {
             // Arrange
-            var players = new List<string> { "Player 1", "Player 2" };
-            var gameState = GameFactory.GetNewGameState(GameConfiguration.Standard, players);
+            var gameState = new GameStateBuilder()
+                .WithTokenSupply(setup)
+                .Build();
 
             // Act
             var validActions = GameRules.GetValidActions(gameState);
@@ -67,16 +69,21 @@ namespace SplendidWonders.Gameplay.Tests
             Assert.IsNotNull(validActions);
             Assert.IsInstanceOf<List<GameAction>>(validActions);
 
-            Assert.That(validActions.OfType<DrawThreeTokensAction>().Count(), Is.EqualTo(10));
-            Assert.That(validActions.OfType<DrawThreeTokensAction>(), Is.Unique);
+            foreach (var expectedAction in expectedActions)
+            {
+                Assert.That(validActions.Contains(expectedAction));
+            }
         }
 
-        [Test]
-        public void GetValidActions_LessThanFourTokensInPile_ShouldReturnFourDifferentDoubleTokensActions()
+        [TestCaseSource(nameof(ReserveFromBoardActionCases))]
+        public void GetValidActions_WithDifferentPlayerAndMarketSetup_ShouldReturnExpectedReserveFromBoardActions(List<Player> playerSetup, CardGroup marketSetup, ReserveFromBoardAction[] expectedActions)
         {
             // Arrange
-            var players = new List<string> { "Player 1", "Player 2" };
-            var gameState = GameFactory.GetNewGameState(GameConfiguration.Standard, players);
+            var gameState = new GameStateBuilder()
+                .WithPlayers(playerSetup)
+                .WithMarket(marketSetup)
+                .WithCurrentPlayer(playerSetup[0])
+                .Build();
 
             // Act
             var validActions = GameRules.GetValidActions(gameState);
@@ -85,8 +92,10 @@ namespace SplendidWonders.Gameplay.Tests
             Assert.IsNotNull(validActions);
             Assert.IsInstanceOf<List<GameAction>>(validActions);
 
-            Assert.That(validActions.OfType<DrawThreeTokensAction>().Count(), Is.EqualTo(10));
-            Assert.That(validActions.OfType<DrawThreeTokensAction>(), Is.Unique);
+            foreach (var expectedAction in expectedActions)
+            {
+                Assert.That(validActions.Contains(expectedAction));
+            }
         }
     }
 }

@@ -9,6 +9,12 @@ namespace SplendidWonders.Gameplay.Tests
     {
         private TokenGroup _tokenSupply;
 
+        private CardGroup _market;
+
+        private Player _currentPlayer;
+
+        private List<Player> _players;
+
         public GameStateBuilder()
         {
 
@@ -19,8 +25,9 @@ namespace SplendidWonders.Gameplay.Tests
             return this;
         }
 
-        public GameStateBuilder WithMarket()
+        public GameStateBuilder WithMarket(CardGroup market)
         {
+            _market = market;
             return this;
         }
 
@@ -29,13 +36,15 @@ namespace SplendidWonders.Gameplay.Tests
             return this;
         }
 
-        public GameStateBuilder WithPlayers()
+        public GameStateBuilder WithPlayers(List<Player> players)
         {
+            _players = players;
             return this;
         }
 
-        public GameStateBuilder WithCurrentPlayer()
+        public GameStateBuilder WithCurrentPlayer(Player currentPlayer)
         {
+            _currentPlayer = currentPlayer;
             return this;
         }
 
@@ -49,7 +58,10 @@ namespace SplendidWonders.Gameplay.Tests
         {
             return new GameState()
             {
-                TokenSupply = _tokenSupply
+                CurrentPlayer = _currentPlayer,
+                Players = _players,
+                Market =_market,
+                TokenSupply = _tokenSupply,
             };
         }
     }

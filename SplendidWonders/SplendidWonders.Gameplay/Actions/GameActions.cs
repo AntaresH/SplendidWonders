@@ -8,14 +8,30 @@ namespace SplendidWonders.Gameplay.Actions
         public string Description { get; set; }
     }
 
-    public class DrawTokensAction : GameAction
+    public class TokensAction : GameAction
     {
         public TokenGroup Tokens { get; set; }
     }
 
-    public class DrawThreeTokensAction : DrawTokensAction
+    public class ReturnTokensAction : TokensAction
     {
-        public DrawThreeTokensAction() { Description = "Draw three tokens, each from a different type."; }
+        public ReturnTokensAction() { Description = "Tegyél vissza fejlődéslapkákat a játéktérre!"; }
+
+        override public bool Equals(object? obj)
+        {
+            if (obj is DrawThreeTokensAction other)
+            {
+                return Tokens == other.Tokens;
+            }
+
+            return base.Equals(obj);
+        }
+
+    }
+
+    public class DrawThreeTokensAction : TokensAction
+    {
+        public DrawThreeTokensAction() { Description = "Húzz 1-1 fejlődéslapkát három különböző kategóriákból!"; }
 
         override public bool Equals(object? obj)
         {
@@ -28,9 +44,9 @@ namespace SplendidWonders.Gameplay.Actions
         }
     }
 
-    public class DrawDoubleTokensAction : DrawTokensAction
+    public class DrawDoubleTokensAction : TokensAction
     {
-        public DrawDoubleTokensAction() { Description = "Draw two tokens of the same type."; }
+        public DrawDoubleTokensAction() { Description = "Húzz 2 azonos kategóriájú fejlődéslapkát!"; }
 
         public override bool Equals(object? obj)
         {
@@ -47,7 +63,7 @@ namespace SplendidWonders.Gameplay.Actions
     {
         public DevelopmentCard Card { get; set; }
 
-        public PurchaseAction() { Description = "Purchase a card from the board."; }
+        public PurchaseAction() { Description = "Vásárolj meg egy kártyát a játéktérről vagy a korábban általad foglaltak közül!"; }
 
         public override bool Equals(object? obj)
         {
@@ -66,7 +82,7 @@ namespace SplendidWonders.Gameplay.Actions
     public class ReserveFromBoardAction : ReserveAction
     {
         public DevelopmentCard Card { get; set; }
-        public ReserveFromBoardAction() { Description = "Reserve a card from the board."; }
+        public ReserveFromBoardAction() { Description = "Fogljalj le 1 kártyát a játéktérről!"; }
 
         public override bool Equals(object? obj)
         {
@@ -83,7 +99,7 @@ namespace SplendidWonders.Gameplay.Actions
     {
         public int Level { get; set; }
 
-        public ReserveFromDeckAction() { Description = "Reserve a card from the deck."; }
+        public ReserveFromDeckAction() { Description = "Foglald le egy általad kiválasztott pakli legfelső kártyáját!"; }
 
         public override bool Equals(object? obj)
         {
