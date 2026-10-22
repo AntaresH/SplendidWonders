@@ -23,7 +23,7 @@ namespace SplendidWonders.Gameplay
             {
                 if (_validActions == null)
                 {
-                    _validActions = GameRules.GetValidActions(GameState);
+                    _validActions = ActionExplorer.GetValidActions(GameState);
                 }
 
                 return _validActions;
@@ -64,7 +64,7 @@ namespace SplendidWonders.Gameplay
 
         public void ExecuteCommand(GameAction command)
         {
-            GameState = GameRules.ReduceState(GameState, command);
+            GameState = ActionExplorer.ReduceState(GameState, command);
         }
     }
 }

@@ -1,9 +1,10 @@
 ﻿using SplendidWonders.Core.Model;
+using SplendidWonders.Core.Setup;
 using SplendidWonders.Gameplay.Actions;
 
 namespace SplendidWonders.Gameplay
 {
-    public class GameRules
+    public class ActionExplorer
     {
         public static List<GameAction>? GetValidActions(GameState gameState)
         {
@@ -20,6 +21,8 @@ namespace SplendidWonders.Gameplay
             {
                 validActions.AddRange(GetDrawThreeTokensActions(gameState));
                 validActions.AddRange(GetDrawDoubleTokensActions(gameState));
+                validActions.AddRange(GetReserveCardFromBoardActions(gameState));
+                validActions.AddRange(GetReserveCardFromDeckActions(gameState));
             }
 
             return validActions;
@@ -103,6 +106,42 @@ namespace SplendidWonders.Gameplay
             }
 
             return validReturnTokensActions;
+        }
+
+        private static IEnumerable<GameAction> GetReserveCardFromBoardActions(GameState gameState)
+        {
+            List<ReserveFromBoardAction> reserveFromBoardActions = new List<ReserveFromBoardAction>();
+
+            for (int i = 1; i < 4; i++)
+            {
+                var cardList = gameState.Market[i];
+
+                for (int j = 0; j < cardList.Count; j++)
+                {
+                    var card = cardList[j];
+
+                    reserveFromBoardActions.Add(new ReserveFromBoardAction() { Card = card });
+                }
+            }
+
+            return reserveFromBoardActions;
+        }
+
+        private static IEnumerable<GameAction> GetReserveCardFromDeckActions(GameState gameState)
+        {
+            List<ReserveFromDeckAction> reserveFromDeckActions = new List<ReserveFromDeckAction>();
+
+            for (int i = 1; i < 4; i++)
+            {
+                var deck = gameState.Decks[i];
+
+                if (deck.Count > 0)
+                {
+                    reserveFromDeckActions.Add(new ReserveFromDeckAction() { Level = i });
+                }
+            }
+
+            return reserveFromDeckActions;
         }
 
         private static IEnumerable<DrawThreeTokensAction> CalculateThreeTokensActionPermutations(bool[] emptyColors)
