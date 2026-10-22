@@ -925,6 +925,15 @@ namespace SplendidWonders.Core.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Asoka.
+        /// </summary>
+        internal static string Leader_Asoka {
+            get {
+                return ResourceManager.GetString("Leader_Asoka", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Asszurbanipál.
         /// </summary>
         internal static string Leader_Asszurbanipal {
@@ -979,15 +988,6 @@ namespace SplendidWonders.Core.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hannibál.
-        /// </summary>
-        internal static string Leader_Hannibal {
-            get {
-                return ResourceManager.GetString("Leader_Hannibal", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Han Vu Ti.
         /// </summary>
         internal static string Leader_HanVuTi {
@@ -997,11 +997,11 @@ namespace SplendidWonders.Core.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hirám.
+        ///   Looks up a localized string similar to Huszrau.
         /// </summary>
-        internal static string Leader_Hiram {
+        internal static string Leader_Huszrau {
             get {
-                return ResourceManager.GetString("Leader_Hiram", resourceCulture);
+                return ResourceManager.GetString("Leader_Huszrau", resourceCulture);
             }
         }
         
@@ -1011,6 +1011,15 @@ namespace SplendidWonders.Core.Properties {
         internal static string Leader_JuliusCaesar {
             get {
                 return ResourceManager.GetString("Leader_JuliusCaesar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Jusztiniánusz.
+        /// </summary>
+        internal static string Leader_Jusztinianusz {
+            get {
+                return ResourceManager.GetString("Leader_Jusztinianusz", resourceCulture);
             }
         }
         
@@ -1056,15 +1065,6 @@ namespace SplendidWonders.Core.Properties {
         internal static string Leader_Ptolemaiosz {
             get {
                 return ResourceManager.GetString("Leader_Ptolemaiosz", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Ramszesz.
-        /// </summary>
-        internal static string Leader_Ramszesz {
-            get {
-                return ResourceManager.GetString("Leader_Ramszesz", resourceCulture);
             }
         }
         
