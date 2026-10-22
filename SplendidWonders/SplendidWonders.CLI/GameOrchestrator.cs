@@ -1,9 +1,9 @@
 ﻿using SplendidWonders.CLI.Input;
 using SplendidWonders.CLI.View;
+using SplendidWonders.Common;
 using SplendidWonders.Core.Model;
 using SplendidWonders.Core.Setup;
 using SplendidWonders.Gameplay;
-using Resources = SplendidWonders.CLI.Properties.Resources;
 using System.Text.RegularExpressions;
 
 namespace SplendidWonders.CLI;
@@ -37,11 +37,11 @@ internal class GameOrchestrator
         }
         catch (UserAbortException ex)
         {
-            Console.WriteLine(Resources.UserAborted);
+            Console.WriteLine(Strings.UserAborted);
         }
         catch (Exception ex)
         {
-            Console.WriteLine(string.Format(Resources.ErrorDuringGameFormat, ex.Message));
+            Console.WriteLine(string.Format(Strings.ErrorDuringGameFormat, ex.Message));
         }
     }
 

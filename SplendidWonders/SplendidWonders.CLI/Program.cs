@@ -1,7 +1,7 @@
 ﻿using SplendidWonders.CLI;
 using SplendidWonders.CLI.Input;
 using SplendidWonders.CLI.View;
-using Resources = SplendidWonders.CLI.Properties.Resources;
+using SplendidWonders.Common;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 internal class Program
@@ -39,12 +39,12 @@ internal class Program
 
             for (int i = 1; i < 3; i++)
             {
-                Console.WriteLine(string.Format(Resources.EnterPlayerNameFormat, i));
+                Console.WriteLine(string.Format(Strings.EnterPlayerNameFormat, i));
                 var userInput = Console.ReadLine().Trim();
 
                 while (string.IsNullOrWhiteSpace(userInput))
                 {
-                    Console.WriteLine(Resources.NameCannotBeEmpty);
+                    Console.WriteLine(Strings.NameCannotBeEmpty);
 
                     userInput = Console.ReadLine();
                 }
@@ -56,7 +56,7 @@ internal class Program
 
             while (true)
             {
-                Console.WriteLine(Resources.UseExtendedLeaders);
+                Console.WriteLine(Strings.UseExtendedLeaders);
 
                 string input = Console.ReadLine().Trim().ToLower();
 
@@ -72,7 +72,7 @@ internal class Program
                 }
                 else
                 {
-                    Console.WriteLine(Resources.InvalidYesNo);
+                    Console.WriteLine(Strings.InvalidYesNo);
                 }
             }
 
@@ -82,7 +82,7 @@ internal class Program
 
             while (true)
             {
-                Console.WriteLine(Resources.PlayAgain);
+                Console.WriteLine(Strings.PlayAgain);
 
                 var userInput = Console.ReadLine().Trim();
 

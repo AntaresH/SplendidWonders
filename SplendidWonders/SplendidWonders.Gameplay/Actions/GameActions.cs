@@ -5,7 +5,6 @@ namespace SplendidWonders.Gameplay.Actions
 {
     public class GameAction
     {
-        public string Description { get; set; }
     }
 
     public class TokensAction : GameAction

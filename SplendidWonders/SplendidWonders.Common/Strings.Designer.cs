@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SplendidWonders.Core.Properties {
+namespace SplendidWonders.Common {
     using System;
     
     
@@ -22,24 +22,24 @@ namespace SplendidWonders.Core.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Strings {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resources() {
+        internal Strings() {
         }
         
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SplendidWonders.Core.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SplendidWonders.Common.Strings", typeof(Strings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -51,7 +51,7 @@ namespace SplendidWonders.Core.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Ábécé.
         /// </summary>
-        internal static string Card_Abece {
+        public static string Card_Abece {
             get {
                 return ResourceManager.GetString("Card_Abece", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Ácsműhely.
         /// </summary>
-        internal static string Card_Acsmuhely {
+        public static string Card_Acsmuhely {
             get {
                 return ResourceManager.GetString("Card_Acsmuhely", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Agyaghadsereg.
         /// </summary>
-        internal static string Card_Agyaghadsereg {
+        public static string Card_Agyaghadsereg {
             get {
                 return ResourceManager.GetString("Card_Agyaghadsereg", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Alexandriai Nagy Könyvtár.
         /// </summary>
-        internal static string Card_AlexandriaiNagyKonyvtar {
+        public static string Card_AlexandriaiNagyKonyvtar {
             get {
                 return ResourceManager.GetString("Card_AlexandriaiNagyKonyvtar", resourceCulture);
             }
@@ -99,7 +99,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Alexandriai Világítótorony.
         /// </summary>
-        internal static string Card_AlexandriaiVilagitotorony {
+        public static string Card_AlexandriaiVilagitotorony {
             get {
                 return ResourceManager.GetString("Card_AlexandriaiVilagitotorony", resourceCulture);
             }
@@ -108,7 +108,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Alkímia.
         /// </summary>
-        internal static string Card_Alkimia {
+        public static string Card_Alkimia {
             get {
                 return ResourceManager.GetString("Card_Alkimia", resourceCulture);
             }
@@ -117,7 +117,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Államigazgatás.
         /// </summary>
-        internal static string Card_Allamigazgatas {
+        public static string Card_Allamigazgatas {
             get {
                 return ResourceManager.GetString("Card_Allamigazgatas", resourceCulture);
             }
@@ -126,7 +126,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Aréna.
         /// </summary>
-        internal static string Card_Arena {
+        public static string Card_Arena {
             get {
                 return ResourceManager.GetString("Card_Arena", resourceCulture);
             }
@@ -135,7 +135,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Armada.
         /// </summary>
-        internal static string Card_Armada {
+        public static string Card_Armada {
             get {
                 return ResourceManager.GetString("Card_Armada", resourceCulture);
             }
@@ -144,7 +144,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Babiloni Függőkertek.
         /// </summary>
-        internal static string Card_BabiloniFuggokertek {
+        public static string Card_BabiloniFuggokertek {
             get {
                 return ResourceManager.GetString("Card_BabiloniFuggokertek", resourceCulture);
             }
@@ -153,7 +153,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Bánya.
         /// </summary>
-        internal static string Card_Banya {
+        public static string Card_Banya {
             get {
                 return ResourceManager.GetString("Card_Banya", resourceCulture);
             }
@@ -162,7 +162,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Bíróság.
         /// </summary>
-        internal static string Card_Birosag {
+        public static string Card_Birosag {
             get {
                 return ResourceManager.GetString("Card_Birosag", resourceCulture);
             }
@@ -171,7 +171,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Borászat.
         /// </summary>
-        internal static string Card_Boraszat {
+        public static string Card_Boraszat {
             get {
                 return ResourceManager.GetString("Card_Boraszat", resourceCulture);
             }
@@ -180,7 +180,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Cirkusz.
         /// </summary>
-        internal static string Card_Cirkusz {
+        public static string Card_Cirkusz {
             get {
                 return ResourceManager.GetString("Card_Cirkusz", resourceCulture);
             }
@@ -189,7 +189,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Csillagászat.
         /// </summary>
-        internal static string Card_Csillagaszat {
+        public static string Card_Csillagaszat {
             get {
                 return ResourceManager.GetString("Card_Csillagaszat", resourceCulture);
             }
@@ -198,7 +198,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Epheszoszi Artemisz Templom.
         /// </summary>
-        internal static string Card_EpheszosziArtemiszTemplom {
+        public static string Card_EpheszosziArtemiszTemplom {
             get {
                 return ResourceManager.GetString("Card_EpheszosziArtemiszTemplom", resourceCulture);
             }
@@ -207,7 +207,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Építészet.
         /// </summary>
-        internal static string Card_Epiteszet {
+        public static string Card_Epiteszet {
             get {
                 return ResourceManager.GetString("Card_Epiteszet", resourceCulture);
             }
@@ -216,7 +216,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Erőd.
         /// </summary>
-        internal static string Card_Erod {
+        public static string Card_Erod {
             get {
                 return ResourceManager.GetString("Card_Erod", resourceCulture);
             }
@@ -225,7 +225,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Fegyverkovács.
         /// </summary>
-        internal static string Card_Fegyverkovacs {
+        public static string Card_Fegyverkovacs {
             get {
                 return ResourceManager.GetString("Card_Fegyverkovacs", resourceCulture);
             }
@@ -234,7 +234,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Filozófia.
         /// </summary>
-        internal static string Card_Filozofia {
+        public static string Card_Filozofia {
             get {
                 return ResourceManager.GetString("Card_Filozofia", resourceCulture);
             }
@@ -243,7 +243,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Fürdő.
         /// </summary>
-        internal static string Card_Furdo {
+        public static string Card_Furdo {
             get {
                 return ResourceManager.GetString("Card_Furdo", resourceCulture);
             }
@@ -252,7 +252,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Fűrésztelep.
         /// </summary>
-        internal static string Card_Furesztelep {
+        public static string Card_Furesztelep {
             get {
                 return ResourceManager.GetString("Card_Furesztelep", resourceCulture);
             }
@@ -261,7 +261,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Gízai Piramisok.
         /// </summary>
-        internal static string Card_GizaiPiramisok {
+        public static string Card_GizaiPiramisok {
             get {
                 return ResourceManager.GetString("Card_GizaiPiramisok", resourceCulture);
             }
@@ -270,7 +270,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Gundésápur Egyetem.
         /// </summary>
-        internal static string Card_GundesapurEgyetem {
+        public static string Card_GundesapurEgyetem {
             get {
                 return ResourceManager.GetString("Card_GundesapurEgyetem", resourceCulture);
             }
@@ -279,7 +279,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Hadvezetés.
         /// </summary>
-        internal static string Card_Hadvezetes {
+        public static string Card_Hadvezetes {
             get {
                 return ResourceManager.GetString("Card_Hadvezetes", resourceCulture);
             }
@@ -288,7 +288,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Hagia Sophia.
         /// </summary>
-        internal static string Card_HagiaSophia {
+        public static string Card_HagiaSophia {
             get {
                 return ResourceManager.GetString("Card_HagiaSophia", resourceCulture);
             }
@@ -297,7 +297,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Hajógyár.
         /// </summary>
-        internal static string Card_Hajogyar {
+        public static string Card_Hajogyar {
             get {
                 return ResourceManager.GetString("Card_Hajogyar", resourceCulture);
             }
@@ -306,7 +306,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Halikarnasszoszi Mauzóleum.
         /// </summary>
-        internal static string Card_HalikarnasszosziMauzoleum {
+        public static string Card_HalikarnasszosziMauzoleum {
             get {
                 return ResourceManager.GetString("Card_HalikarnasszosziMauzoleum", resourceCulture);
             }
@@ -315,7 +315,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Harci Szekerek.
         /// </summary>
-        internal static string Card_HarciSzekerek {
+        public static string Card_HarciSzekerek {
             get {
                 return ResourceManager.GetString("Card_HarciSzekerek", resourceCulture);
             }
@@ -324,7 +324,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Helyőrség.
         /// </summary>
-        internal static string Card_Helyors {
+        public static string Card_Helyors {
             get {
                 return ResourceManager.GetString("Card_Helyors", resourceCulture);
             }
@@ -333,7 +333,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Hídépítés.
         /// </summary>
-        internal static string Card_Hidepites {
+        public static string Card_Hidepites {
             get {
                 return ResourceManager.GetString("Card_Hidepites", resourceCulture);
             }
@@ -342,7 +342,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Iparművészet.
         /// </summary>
-        internal static string Card_Iparmuveszet {
+        public static string Card_Iparmuveszet {
             get {
                 return ResourceManager.GetString("Card_Iparmuveszet", resourceCulture);
             }
@@ -351,7 +351,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Irodalom.
         /// </summary>
-        internal static string Card_Irodalom {
+        public static string Card_Irodalom {
             get {
                 return ResourceManager.GetString("Card_Irodalom", resourceCulture);
             }
@@ -360,7 +360,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Iskola.
         /// </summary>
-        internal static string Card_Iskola {
+        public static string Card_Iskola {
             get {
                 return ResourceManager.GetString("Card_Iskola", resourceCulture);
             }
@@ -369,7 +369,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Istálló.
         /// </summary>
-        internal static string Card_Istallo {
+        public static string Card_Istallo {
             get {
                 return ResourceManager.GetString("Card_Istallo", resourceCulture);
             }
@@ -378,7 +378,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Istár Kapuja.
         /// </summary>
-        internal static string Card_IstarKapuja {
+        public static string Card_IstarKapuja {
             get {
                 return ResourceManager.GetString("Card_IstarKapuja", resourceCulture);
             }
@@ -387,7 +387,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Képzőművészet.
         /// </summary>
-        internal static string Card_Kepzomuveszet {
+        public static string Card_Kepzomuveszet {
             get {
                 return ResourceManager.GetString("Card_Kepzomuveszet", resourceCulture);
             }
@@ -396,7 +396,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Kereskedőház.
         /// </summary>
-        internal static string Card_Kereskedohaz {
+        public static string Card_Kereskedohaz {
             get {
                 return ResourceManager.GetString("Card_Kereskedohaz", resourceCulture);
             }
@@ -405,7 +405,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Kertek.
         /// </summary>
-        internal static string Card_Kertek {
+        public static string Card_Kertek {
             get {
                 return ResourceManager.GetString("Card_Kertek", resourceCulture);
             }
@@ -414,7 +414,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Kikötő.
         /// </summary>
-        internal static string Card_Kikoto {
+        public static string Card_Kikoto {
             get {
                 return ResourceManager.GetString("Card_Kikoto", resourceCulture);
             }
@@ -423,7 +423,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Kínai Nagy Fal.
         /// </summary>
-        internal static string Card_KinaiNagyFal {
+        public static string Card_KinaiNagyFal {
             get {
                 return ResourceManager.GetString("Card_KinaiNagyFal", resourceCulture);
             }
@@ -432,7 +432,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Knósszoszi Palota.
         /// </summary>
-        internal static string Card_KnosszosziPalota {
+        public static string Card_KnosszosziPalota {
             get {
                 return ResourceManager.GetString("Card_KnosszosziPalota", resourceCulture);
             }
@@ -441,7 +441,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Kőfejtő.
         /// </summary>
-        internal static string Card_Kofejto {
+        public static string Card_Kofejto {
             get {
                 return ResourceManager.GetString("Card_Kofejto", resourceCulture);
             }
@@ -450,7 +450,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Kolosszeum.
         /// </summary>
-        internal static string Card_Kolosszeum {
+        public static string Card_Kolosszeum {
             get {
                 return ResourceManager.GetString("Card_Kolosszeum", resourceCulture);
             }
@@ -459,7 +459,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Könyvtár.
         /// </summary>
-        internal static string Card_Konyvtar {
+        public static string Card_Konyvtar {
             get {
                 return ResourceManager.GetString("Card_Konyvtar", resourceCulture);
             }
@@ -468,7 +468,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Kórház.
         /// </summary>
-        internal static string Card_Korhaz {
+        public static string Card_Korhaz {
             get {
                 return ResourceManager.GetString("Card_Korhaz", resourceCulture);
             }
@@ -477,7 +477,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Köztársaság.
         /// </summary>
-        internal static string Card_Koztarsasag {
+        public static string Card_Koztarsasag {
             get {
                 return ResourceManager.GetString("Card_Koztarsasag", resourceCulture);
             }
@@ -486,7 +486,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Laboratórium.
         /// </summary>
-        internal static string Card_Laboratorium {
+        public static string Card_Laboratorium {
             get {
                 return ResourceManager.GetString("Card_Laboratorium", resourceCulture);
             }
@@ -495,7 +495,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Laktanya.
         /// </summary>
-        internal static string Card_Laktanya {
+        public static string Card_Laktanya {
             get {
                 return ResourceManager.GetString("Card_Laktanya", resourceCulture);
             }
@@ -504,7 +504,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Levéltár.
         /// </summary>
-        internal static string Card_Leveltar {
+        public static string Card_Leveltar {
             get {
                 return ResourceManager.GetString("Card_Leveltar", resourceCulture);
             }
@@ -513,7 +513,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Lovas Íjászat.
         /// </summary>
-        internal static string Card_LovasIjaszat {
+        public static string Card_LovasIjaszat {
             get {
                 return ResourceManager.GetString("Card_LovasIjaszat", resourceCulture);
             }
@@ -522,7 +522,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Magtár.
         /// </summary>
-        internal static string Card_Magtar {
+        public static string Card_Magtar {
             get {
                 return ResourceManager.GetString("Card_Magtar", resourceCulture);
             }
@@ -531,7 +531,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Matematika.
         /// </summary>
-        internal static string Card_Matematika {
+        public static string Card_Matematika {
             get {
                 return ResourceManager.GetString("Card_Matematika", resourceCulture);
             }
@@ -540,7 +540,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Mérnökség.
         /// </summary>
-        internal static string Card_Mernokseg {
+        public static string Card_Mernokseg {
             get {
                 return ResourceManager.GetString("Card_Mernokseg", resourceCulture);
             }
@@ -549,7 +549,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Mezőgazdaság.
         /// </summary>
-        internal static string Card_Mezogazdasag {
+        public static string Card_Mezogazdasag {
             get {
                 return ResourceManager.GetString("Card_Mezogazdasag", resourceCulture);
             }
@@ -558,7 +558,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Misztika.
         /// </summary>
-        internal static string Card_Misztika {
+        public static string Card_Misztika {
             get {
                 return ResourceManager.GetString("Card_Misztika", resourceCulture);
             }
@@ -567,7 +567,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Monarchia.
         /// </summary>
-        internal static string Card_Monarchia {
+        public static string Card_Monarchia {
             get {
                 return ResourceManager.GetString("Card_Monarchia", resourceCulture);
             }
@@ -576,7 +576,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Nalanda Kolostor.
         /// </summary>
-        internal static string Card_NalandaKolostor {
+        public static string Card_NalandaKolostor {
             get {
                 return ResourceManager.GetString("Card_NalandaKolostor", resourceCulture);
             }
@@ -585,7 +585,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Naptár.
         /// </summary>
-        internal static string Card_Naptar {
+        public static string Card_Naptar {
             get {
                 return ResourceManager.GetString("Card_Naptar", resourceCulture);
             }
@@ -594,7 +594,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Olümpiai Zeusz Szobor.
         /// </summary>
-        internal static string Card_OlumpiaiZeuszSzobor {
+        public static string Card_OlumpiaiZeuszSzobor {
             get {
                 return ResourceManager.GetString("Card_OlumpiaiZeuszSzobor", resourceCulture);
             }
@@ -603,7 +603,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Öntöde.
         /// </summary>
-        internal static string Card_Ontode {
+        public static string Card_Ontode {
             get {
                 return ResourceManager.GetString("Card_Ontode", resourceCulture);
             }
@@ -612,7 +612,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Őrtorony.
         /// </summary>
-        internal static string Card_Ortorony {
+        public static string Card_Ortorony {
             get {
                 return ResourceManager.GetString("Card_Ortorony", resourceCulture);
             }
@@ -621,7 +621,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Ostromszakértelem.
         /// </summary>
-        internal static string Card_Ostromszakertelem {
+        public static string Card_Ostromszakertelem {
             get {
                 return ResourceManager.GetString("Card_Ostromszakertelem", resourceCulture);
             }
@@ -630,7 +630,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Palota.
         /// </summary>
-        internal static string Card_Palota {
+        public static string Card_Palota {
             get {
                 return ResourceManager.GetString("Card_Palota", resourceCulture);
             }
@@ -639,7 +639,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Pantheon.
         /// </summary>
-        internal static string Card_Pantheon {
+        public static string Card_Pantheon {
             get {
                 return ResourceManager.GetString("Card_Pantheon", resourceCulture);
             }
@@ -648,7 +648,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Papíruszgyár.
         /// </summary>
-        internal static string Card_Papiruszgyar {
+        public static string Card_Papiruszgyar {
             get {
                 return ResourceManager.GetString("Card_Papiruszgyar", resourceCulture);
             }
@@ -657,7 +657,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Patika.
         /// </summary>
-        internal static string Card_Patika {
+        public static string Card_Patika {
             get {
                 return ResourceManager.GetString("Card_Patika", resourceCulture);
             }
@@ -666,7 +666,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Pénzverés.
         /// </summary>
-        internal static string Card_Penzveres {
+        public static string Card_Penzveres {
             get {
                 return ResourceManager.GetString("Card_Penzveres", resourceCulture);
             }
@@ -675,7 +675,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Perszepolisz.
         /// </summary>
-        internal static string Card_Perszepolisz {
+        public static string Card_Perszepolisz {
             get {
                 return ResourceManager.GetString("Card_Perszepolisz", resourceCulture);
             }
@@ -684,7 +684,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Petra.
         /// </summary>
-        internal static string Card_Petra {
+        public static string Card_Petra {
             get {
                 return ResourceManager.GetString("Card_Petra", resourceCulture);
             }
@@ -693,7 +693,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Piac.
         /// </summary>
-        internal static string Card_Piac {
+        public static string Card_Piac {
             get {
                 return ResourceManager.GetString("Card_Piac", resourceCulture);
             }
@@ -702,7 +702,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Rodoszi Kolosszus.
         /// </summary>
-        internal static string Card_RodosziKolosszus {
+        public static string Card_RodosziKolosszus {
             get {
                 return ResourceManager.GetString("Card_RodosziKolosszus", resourceCulture);
             }
@@ -711,7 +711,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Sírkamra.
         /// </summary>
-        internal static string Card_Sirkamra {
+        public static string Card_Sirkamra {
             get {
                 return ResourceManager.GetString("Card_Sirkamra", resourceCulture);
             }
@@ -720,7 +720,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Szentély.
         /// </summary>
-        internal static string Card_Szentely {
+        public static string Card_Szentely {
             get {
                 return ResourceManager.GetString("Card_Szentely", resourceCulture);
             }
@@ -729,7 +729,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Színház.
         /// </summary>
-        internal static string Card_Szinhaz {
+        public static string Card_Szinhaz {
             get {
                 return ResourceManager.GetString("Card_Szinhaz", resourceCulture);
             }
@@ -738,7 +738,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Tanács.
         /// </summary>
-        internal static string Card_Tanacs {
+        public static string Card_Tanacs {
             get {
                 return ResourceManager.GetString("Card_Tanacs", resourceCulture);
             }
@@ -747,7 +747,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Téglagyár.
         /// </summary>
-        internal static string Card_Teglagyar {
+        public static string Card_Teglagyar {
             get {
                 return ResourceManager.GetString("Card_Teglagyar", resourceCulture);
             }
@@ -756,7 +756,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Templom.
         /// </summary>
-        internal static string Card_Templom {
+        public static string Card_Templom {
             get {
                 return ResourceManager.GetString("Card_Templom", resourceCulture);
             }
@@ -765,7 +765,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Tengerészet.
         /// </summary>
-        internal static string Card_Tengereszet {
+        public static string Card_Tengereszet {
             get {
                 return ResourceManager.GetString("Card_Tengereszet", resourceCulture);
             }
@@ -774,7 +774,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Térképészet.
         /// </summary>
-        internal static string Card_Terkepeszet {
+        public static string Card_Terkepeszet {
             get {
                 return ResourceManager.GetString("Card_Terkepeszet", resourceCulture);
             }
@@ -783,7 +783,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Törvénykönyv.
         /// </summary>
-        internal static string Card_Torvenykonyv {
+        public static string Card_Torvenykonyv {
             get {
                 return ResourceManager.GetString("Card_Torvenykonyv", resourceCulture);
             }
@@ -792,7 +792,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Uri Nagy Ziggurat.
         /// </summary>
-        internal static string Card_UriNagyZiggurat {
+        public static string Card_UriNagyZiggurat {
             get {
                 return ResourceManager.GetString("Card_UriNagyZiggurat", resourceCulture);
             }
@@ -801,7 +801,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Útrendszer.
         /// </summary>
-        internal static string Card_Utrendszer {
+        public static string Card_Utrendszer {
             get {
                 return ResourceManager.GetString("Card_Utrendszer", resourceCulture);
             }
@@ -810,7 +810,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Üveggyár.
         /// </summary>
-        internal static string Card_Uveggyar {
+        public static string Card_Uveggyar {
             get {
                 return ResourceManager.GetString("Card_Uveggyar", resourceCulture);
             }
@@ -819,7 +819,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Városfal.
         /// </summary>
-        internal static string Card_Varosfal {
+        public static string Card_Varosfal {
             get {
                 return ResourceManager.GetString("Card_Varosfal", resourceCulture);
             }
@@ -828,7 +828,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Városháza.
         /// </summary>
-        internal static string Card_Varoshaza {
+        public static string Card_Varoshaza {
             get {
                 return ResourceManager.GetString("Card_Varoshaza", resourceCulture);
             }
@@ -837,7 +837,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Várostervezés.
         /// </summary>
-        internal static string Card_Varostervezes {
+        public static string Card_Varostervezes {
             get {
                 return ResourceManager.GetString("Card_Varostervezes", resourceCulture);
             }
@@ -846,7 +846,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Vasművesség.
         /// </summary>
-        internal static string Card_Vasmuvesseg {
+        public static string Card_Vasmuvesseg {
             get {
                 return ResourceManager.GetString("Card_Vasmuvesseg", resourceCulture);
             }
@@ -855,7 +855,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Vízvezeték.
         /// </summary>
-        internal static string Card_Vizvezetek {
+        public static string Card_Vizvezetek {
             get {
                 return ResourceManager.GetString("Card_Vizvezetek", resourceCulture);
             }
@@ -864,7 +864,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Zene.
         /// </summary>
-        internal static string Card_Zene {
+        public static string Card_Zene {
             get {
                 return ResourceManager.GetString("Card_Zene", resourceCulture);
             }
@@ -873,52 +873,187 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to K.
         /// </summary>
-        internal static string ColorBlue {
+        public static string ColorBlue {
             get {
                 return ResourceManager.GetString("ColorBlue", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to K.
+        /// </summary>
+        public static string ColorBlue1 {
+            get {
+                return ResourceManager.GetString("ColorBlue1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to B.
         /// </summary>
-        internal static string ColorBrown {
+        public static string ColorBrown {
             get {
                 return ResourceManager.GetString("ColorBrown", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to B.
+        /// </summary>
+        public static string ColorBrown1 {
+            get {
+                return ResourceManager.GetString("ColorBrown1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Z.
         /// </summary>
-        internal static string ColorGreen {
+        public static string ColorGreen {
             get {
                 return ResourceManager.GetString("ColorGreen", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Z.
+        /// </summary>
+        public static string ColorGreen1 {
+            get {
+                return ResourceManager.GetString("ColorGreen1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to P.
         /// </summary>
-        internal static string ColorRed {
+        public static string ColorRed {
             get {
                 return ResourceManager.GetString("ColorRed", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to P.
+        /// </summary>
+        public static string ColorRed1 {
+            get {
+                return ResourceManager.GetString("ColorRed1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to S.
         /// </summary>
-        internal static string ColorYellow {
+        public static string ColorYellow {
             get {
                 return ResourceManager.GetString("ColorYellow", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to S.
+        /// </summary>
+        public static string ColorYellow1 {
+            get {
+                return ResourceManager.GetString("ColorYellow1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Húzz 1-1 fejlődéslapkát három különböző kategóriákból!.
+        /// </summary>
+        public static string DrawDoubleTokensActionDescription {
+            get {
+                return ResourceManager.GetString("DrawDoubleTokensActionDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Húzz 2 azonos kategóriájú fejlődéslapkát!.
+        /// </summary>
+        public static string DrawThreeTokensActionDescription {
+            get {
+                return ResourceManager.GetString("DrawThreeTokensActionDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (üres).
+        /// </summary>
+        public static string EmptyTableau {
+            get {
+                return ResourceManager.GetString("EmptyTableau", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kérlek add meg a(z) {0}. játékos nevét:.
+        /// </summary>
+        public static string EnterPlayerNameFormat {
+            get {
+                return ResourceManager.GetString("EnterPlayerNameFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hiba történt a játék során: {0}.
+        /// </summary>
+        public static string ErrorDuringGameFormat {
+            get {
+                return ResourceManager.GetString("ErrorDuringGameFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Végső pontszámok:.
+        /// </summary>
+        public static string FinalScores {
+            get {
+                return ResourceManager.GetString("FinalScores", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vége a játéknak!.
+        /// </summary>
+        public static string GameOverTitle {
+            get {
+                return ResourceManager.GetString("GameOverTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A megadott parancs nem érvényes a jelenlegi játékállapotban!.
+        /// </summary>
+        public static string InvalidCommandState {
+            get {
+                return ResourceManager.GetString("InvalidCommandState", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A megadott parancs ({0}) nem érvényes a jelenlegi játékállapotban!.
+        /// </summary>
+        public static string InvalidCommandTypeStateFormat {
+            get {
+                return ResourceManager.GetString("InvalidCommandTypeStateFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Érvénytelen válasz. Kérlek válassz &apos;i&apos; vagy &apos;n&apos;!.
+        /// </summary>
+        public static string InvalidYesNo {
+            get {
+                return ResourceManager.GetString("InvalidYesNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Amenhotep.
         /// </summary>
-        internal static string Leader_Amenhotep {
+        public static string Leader_Amenhotep {
             get {
                 return ResourceManager.GetString("Leader_Amenhotep", resourceCulture);
             }
@@ -927,7 +1062,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Asoka.
         /// </summary>
-        internal static string Leader_Asoka {
+        public static string Leader_Asoka {
             get {
                 return ResourceManager.GetString("Leader_Asoka", resourceCulture);
             }
@@ -936,7 +1071,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Asszurbanipál.
         /// </summary>
-        internal static string Leader_Asszurbanipal {
+        public static string Leader_Asszurbanipal {
             get {
                 return ResourceManager.GetString("Leader_Asszurbanipal", resourceCulture);
             }
@@ -945,7 +1080,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Augustus Caesar.
         /// </summary>
-        internal static string Leader_AugustusCaesar {
+        public static string Leader_AugustusCaesar {
             get {
                 return ResourceManager.GetString("Leader_AugustusCaesar", resourceCulture);
             }
@@ -954,7 +1089,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Csandragupta.
         /// </summary>
-        internal static string Leader_Csandragupta {
+        public static string Leader_Csandragupta {
             get {
                 return ResourceManager.GetString("Leader_Csandragupta", resourceCulture);
             }
@@ -963,7 +1098,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Csin Si Huang Ti.
         /// </summary>
-        internal static string Leader_CsinSiHuangTi {
+        public static string Leader_CsinSiHuangTi {
             get {
                 return ResourceManager.GetString("Leader_CsinSiHuangTi", resourceCulture);
             }
@@ -972,7 +1107,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Dárius.
         /// </summary>
-        internal static string Leader_Darius {
+        public static string Leader_Darius {
             get {
                 return ResourceManager.GetString("Leader_Darius", resourceCulture);
             }
@@ -981,7 +1116,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Hammurapi.
         /// </summary>
-        internal static string Leader_Hammurapi {
+        public static string Leader_Hammurapi {
             get {
                 return ResourceManager.GetString("Leader_Hammurapi", resourceCulture);
             }
@@ -990,7 +1125,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Han Vu Ti.
         /// </summary>
-        internal static string Leader_HanVuTi {
+        public static string Leader_HanVuTi {
             get {
                 return ResourceManager.GetString("Leader_HanVuTi", resourceCulture);
             }
@@ -999,7 +1134,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Huszrau.
         /// </summary>
-        internal static string Leader_Huszrau {
+        public static string Leader_Huszrau {
             get {
                 return ResourceManager.GetString("Leader_Huszrau", resourceCulture);
             }
@@ -1008,7 +1143,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Julius Caesar.
         /// </summary>
-        internal static string Leader_JuliusCaesar {
+        public static string Leader_JuliusCaesar {
             get {
                 return ResourceManager.GetString("Leader_JuliusCaesar", resourceCulture);
             }
@@ -1017,7 +1152,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Jusztiniánusz.
         /// </summary>
-        internal static string Leader_Jusztinianusz {
+        public static string Leader_Jusztinianusz {
             get {
                 return ResourceManager.GetString("Leader_Jusztinianusz", resourceCulture);
             }
@@ -1026,7 +1161,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Nabukodonozor.
         /// </summary>
-        internal static string Leader_Nabukodonozor {
+        public static string Leader_Nabukodonozor {
             get {
                 return ResourceManager.GetString("Leader_Nabukodonozor", resourceCulture);
             }
@@ -1035,7 +1170,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Nagy Kürosz.
         /// </summary>
-        internal static string Leader_NagyKurosz {
+        public static string Leader_NagyKurosz {
             get {
                 return ResourceManager.GetString("Leader_NagyKurosz", resourceCulture);
             }
@@ -1044,7 +1179,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Nagy Sándor.
         /// </summary>
-        internal static string Leader_NagySandor {
+        public static string Leader_NagySandor {
             get {
                 return ResourceManager.GetString("Leader_NagySandor", resourceCulture);
             }
@@ -1053,7 +1188,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Periklész.
         /// </summary>
-        internal static string Leader_Periklesz {
+        public static string Leader_Periklesz {
             get {
                 return ResourceManager.GetString("Leader_Periklesz", resourceCulture);
             }
@@ -1062,7 +1197,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Ptolemaiosz.
         /// </summary>
-        internal static string Leader_Ptolemaiosz {
+        public static string Leader_Ptolemaiosz {
             get {
                 return ResourceManager.GetString("Leader_Ptolemaiosz", resourceCulture);
             }
@@ -1071,7 +1206,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Salamon.
         /// </summary>
-        internal static string Leader_Salamon {
+        public static string Leader_Salamon {
             get {
                 return ResourceManager.GetString("Leader_Salamon", resourceCulture);
             }
@@ -1080,7 +1215,7 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Sarrukín.
         /// </summary>
-        internal static string Leader_Sarrukin {
+        public static string Leader_Sarrukin {
             get {
                 return ResourceManager.GetString("Leader_Sarrukin", resourceCulture);
             }
@@ -1089,9 +1224,225 @@ namespace SplendidWonders.Core.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Szuppiluliumasz.
         /// </summary>
-        internal static string Leader_Szuppiluliumasz {
+        public static string Leader_Szuppiluliumasz {
             get {
                 return ResourceManager.GetString("Leader_Szuppiluliumasz", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Épületek.
+        /// </summary>
+        public static string Level1Title {
+            get {
+                return ResourceManager.GetString("Level1Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Technológiák.
+        /// </summary>
+        public static string Level2Title {
+            get {
+                return ResourceManager.GetString("Level2Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Csodák.
+        /// </summary>
+        public static string Level3Title {
+            get {
+                return ResourceManager.GetString("Level3Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A név nem lehet üres. Kérlek add meg újra a játékos nevét:.
+        /// </summary>
+        public static string NameCannotBeEmpty {
+            get {
+                return ResourceManager.GetString("NameCannotBeEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Paraméterek száma:.
+        /// </summary>
+        public static string ParameterCount {
+            get {
+                return ResourceManager.GetString("ParameterCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Szeretnél újra játszani? (i/n):.
+        /// </summary>
+        public static string PlayAgain {
+            get {
+                return ResourceManager.GetString("PlayAgain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Saját készlet.
+        /// </summary>
+        public static string PlayerStorageTitle {
+            get {
+                return ResourceManager.GetString("PlayerStorageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kijátszott kártyák.
+        /// </summary>
+        public static string PlayerTableauTitle {
+            get {
+                return ResourceManager.GetString("PlayerTableauTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Játékos {0}.
+        /// </summary>
+        public static string PlayerTitleFormat {
+            get {
+                return ResourceManager.GetString("PlayerTitleFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} köre..
+        /// </summary>
+        public static string PlayerTurnFormat {
+            get {
+                return ResourceManager.GetString("PlayerTurnFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kérlek add meg, hogy milyen színű lapkákat szeretnél húzni (S - sárga, K - kék, Z - zöld, B - barna, P - piros). Például, &quot;S B P&quot;. Háromnál kevesebb színt is megadhatsz, ha nem tudnál úgysem a játéktérről eleget felhúzni:.
+        /// </summary>
+        public static string PromptChooseColors {
+            get {
+                return ResourceManager.GetString("PromptChooseColors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kérlek add meg, hogy milyen színű lapkából szeretnél kettőt húzni (S - sárga, K - kék, Z - zöld, B - barna, P - piros). Például, &quot;K&quot;..
+        /// </summary>
+        public static string PromptChooseDoubleColor {
+            get {
+                return ResourceManager.GetString("PromptChooseDoubleColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vásárolj meg egy kártyát a játéktérről vagy a korábban általad foglaltak közül!.
+        /// </summary>
+        public static string PurchaseActionDescription {
+            get {
+                return ResourceManager.GetString("PurchaseActionDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🂠 : {0}.
+        /// </summary>
+        public static string ReservedCardsCountFormat {
+            get {
+                return ResourceManager.GetString("ReservedCardsCountFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fogljalj le 1 kártyát a játéktérről!.
+        /// </summary>
+        public static string ReserveFromBoardActionDescription {
+            get {
+                return ResourceManager.GetString("ReserveFromBoardActionDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Foglald le egy általad kiválasztott pakli legfelső kártyáját!.
+        /// </summary>
+        public static string ReserveFromDeckActionDescription {
+            get {
+                return ResourceManager.GetString("ReserveFromDeckActionDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tegyél vissza fejlődéslapkákat a játéktérre!.
+        /// </summary>
+        public static string ReturnTokensActionDescription {
+            get {
+                return ResourceManager.GetString("ReturnTokensActionDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kérlek válaszd ki a kártyát, amit meg szeretnél vásárolni. Add meg a kártya szintjét (1-3) és az oszlopszámot (1-4). Például: &quot;1,2&quot; vagy &quot;3,3&quot;:.
+        /// </summary>
+        public static string SelectCardToBuy {
+            get {
+                return ResourceManager.GetString("SelectCardToBuy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kérlek válaszd ki a kártyát, amit le szeretnél foglalni. Add meg a kártya szintjét (1-3) és az oszlopszámot (1-4). Például: &quot;1,2&quot; vagy &quot;3,3&quot;:.
+        /// </summary>
+        public static string SelectCardToReserve {
+            get {
+                return ResourceManager.GetString("SelectCardToReserve", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kérlek válaszd ki a paklit (1-3), aminek legfelső lapját le szeretnéd foglalni. Például: &quot;1&quot;.
+        /// </summary>
+        public static string SelectDeckToReserve {
+            get {
+                return ResourceManager.GetString("SelectDeckToReserve", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Válaszd ki a vezért, aki csatlakozzon a birodalmadhoz:.
+        /// </summary>
+        public static string SelectLeaderActionDescriptionFormat {
+            get {
+                return ResourceManager.GetString("SelectLeaderActionDescriptionFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Akarod használni az extra vezetőket? (i/n):.
+        /// </summary>
+        public static string UseExtendedLeaders {
+            get {
+                return ResourceManager.GetString("UseExtendedLeaders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A felhasználó megszakította a játékot!.
+        /// </summary>
+        public static string UserAborted {
+            get {
+                return ResourceManager.GetString("UserAborted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kérlek adj meg egy végrehajtandó parancsot az alábbiak közül:.
+        /// </summary>
+        public static string ValidCommands {
+            get {
+                return ResourceManager.GetString("ValidCommands", resourceCulture);
             }
         }
     }

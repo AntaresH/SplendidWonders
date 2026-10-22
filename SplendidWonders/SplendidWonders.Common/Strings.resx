@@ -1,0 +1,582 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Card_Abece" xml:space="preserve">
+    <value>Ábécé</value>
+  </data>
+  <data name="Card_Acsmuhely" xml:space="preserve">
+    <value>Ácsműhely</value>
+  </data>
+  <data name="Card_Agyaghadsereg" xml:space="preserve">
+    <value>Agyaghadsereg</value>
+  </data>
+  <data name="Card_AlexandriaiNagyKonyvtar" xml:space="preserve">
+    <value>Alexandriai Nagy Könyvtár</value>
+  </data>
+  <data name="Card_AlexandriaiVilagitotorony" xml:space="preserve">
+    <value>Alexandriai Világítótorony</value>
+  </data>
+  <data name="Card_Alkimia" xml:space="preserve">
+    <value>Alkímia</value>
+  </data>
+  <data name="Card_Allamigazgatas" xml:space="preserve">
+    <value>Államigazgatás</value>
+  </data>
+  <data name="Card_Arena" xml:space="preserve">
+    <value>Aréna</value>
+  </data>
+  <data name="Card_Armada" xml:space="preserve">
+    <value>Armada</value>
+  </data>
+  <data name="Card_BabiloniFuggokertek" xml:space="preserve">
+    <value>Babiloni Függőkertek</value>
+  </data>
+  <data name="Card_Banya" xml:space="preserve">
+    <value>Bánya</value>
+  </data>
+  <data name="Card_Birosag" xml:space="preserve">
+    <value>Bíróság</value>
+  </data>
+  <data name="Card_Boraszat" xml:space="preserve">
+    <value>Borászat</value>
+  </data>
+  <data name="Card_Cirkusz" xml:space="preserve">
+    <value>Cirkusz</value>
+  </data>
+  <data name="Card_Csillagaszat" xml:space="preserve">
+    <value>Csillagászat</value>
+  </data>
+  <data name="Card_EpheszosziArtemiszTemplom" xml:space="preserve">
+    <value>Epheszoszi Artemisz Templom</value>
+  </data>
+  <data name="Card_Epiteszet" xml:space="preserve">
+    <value>Építészet</value>
+  </data>
+  <data name="Card_Erod" xml:space="preserve">
+    <value>Erőd</value>
+  </data>
+  <data name="Card_Fegyverkovacs" xml:space="preserve">
+    <value>Fegyverkovács</value>
+  </data>
+  <data name="Card_Filozofia" xml:space="preserve">
+    <value>Filozófia</value>
+  </data>
+  <data name="Card_Furdo" xml:space="preserve">
+    <value>Fürdő</value>
+  </data>
+  <data name="Card_Furesztelep" xml:space="preserve">
+    <value>Fűrésztelep</value>
+  </data>
+  <data name="Card_GizaiPiramisok" xml:space="preserve">
+    <value>Gízai Piramisok</value>
+  </data>
+  <data name="Card_GundesapurEgyetem" xml:space="preserve">
+    <value>Gundésápur Egyetem</value>
+  </data>
+  <data name="Card_Hadvezetes" xml:space="preserve">
+    <value>Hadvezetés</value>
+  </data>
+  <data name="Card_HagiaSophia" xml:space="preserve">
+    <value>Hagia Sophia</value>
+  </data>
+  <data name="Card_Hajogyar" xml:space="preserve">
+    <value>Hajógyár</value>
+  </data>
+  <data name="Card_HalikarnasszosziMauzoleum" xml:space="preserve">
+    <value>Halikarnasszoszi Mauzóleum</value>
+  </data>
+  <data name="Card_HarciSzekerek" xml:space="preserve">
+    <value>Harci Szekerek</value>
+  </data>
+  <data name="Card_Helyors" xml:space="preserve">
+    <value>Helyőrség</value>
+  </data>
+  <data name="Card_Hidepites" xml:space="preserve">
+    <value>Hídépítés</value>
+  </data>
+  <data name="Card_Iparmuveszet" xml:space="preserve">
+    <value>Iparművészet</value>
+  </data>
+  <data name="Card_Irodalom" xml:space="preserve">
+    <value>Irodalom</value>
+  </data>
+  <data name="Card_Iskola" xml:space="preserve">
+    <value>Iskola</value>
+  </data>
+  <data name="Card_Istallo" xml:space="preserve">
+    <value>Istálló</value>
+  </data>
+  <data name="Card_IstarKapuja" xml:space="preserve">
+    <value>Istár Kapuja</value>
+  </data>
+  <data name="Card_Kepzomuveszet" xml:space="preserve">
+    <value>Képzőművészet</value>
+  </data>
+  <data name="Card_Kereskedohaz" xml:space="preserve">
+    <value>Kereskedőház</value>
+  </data>
+  <data name="Card_Kertek" xml:space="preserve">
+    <value>Kertek</value>
+  </data>
+  <data name="Card_Kikoto" xml:space="preserve">
+    <value>Kikötő</value>
+  </data>
+  <data name="Card_KinaiNagyFal" xml:space="preserve">
+    <value>Kínai Nagy Fal</value>
+  </data>
+  <data name="Card_KnosszosziPalota" xml:space="preserve">
+    <value>Knósszoszi Palota</value>
+  </data>
+  <data name="Card_Kofejto" xml:space="preserve">
+    <value>Kőfejtő</value>
+  </data>
+  <data name="Card_Kolosszeum" xml:space="preserve">
+    <value>Kolosszeum</value>
+  </data>
+  <data name="Card_Konyvtar" xml:space="preserve">
+    <value>Könyvtár</value>
+  </data>
+  <data name="Card_Korhaz" xml:space="preserve">
+    <value>Kórház</value>
+  </data>
+  <data name="Card_Koztarsasag" xml:space="preserve">
+    <value>Köztársaság</value>
+  </data>
+  <data name="Card_Laboratorium" xml:space="preserve">
+    <value>Laboratórium</value>
+  </data>
+  <data name="Card_Laktanya" xml:space="preserve">
+    <value>Laktanya</value>
+  </data>
+  <data name="Card_Leveltar" xml:space="preserve">
+    <value>Levéltár</value>
+  </data>
+  <data name="Card_LovasIjaszat" xml:space="preserve">
+    <value>Lovas Íjászat</value>
+  </data>
+  <data name="Card_Magtar" xml:space="preserve">
+    <value>Magtár</value>
+  </data>
+  <data name="Card_Matematika" xml:space="preserve">
+    <value>Matematika</value>
+  </data>
+  <data name="Card_Mernokseg" xml:space="preserve">
+    <value>Mérnökség</value>
+  </data>
+  <data name="Card_Mezogazdasag" xml:space="preserve">
+    <value>Mezőgazdaság</value>
+  </data>
+  <data name="Card_Misztika" xml:space="preserve">
+    <value>Misztika</value>
+  </data>
+  <data name="Card_Monarchia" xml:space="preserve">
+    <value>Monarchia</value>
+  </data>
+  <data name="Card_NalandaKolostor" xml:space="preserve">
+    <value>Nalanda Kolostor</value>
+  </data>
+  <data name="Card_Naptar" xml:space="preserve">
+    <value>Naptár</value>
+  </data>
+  <data name="Card_OlumpiaiZeuszSzobor" xml:space="preserve">
+    <value>Olümpiai Zeusz Szobor</value>
+  </data>
+  <data name="Card_Ontode" xml:space="preserve">
+    <value>Öntöde</value>
+  </data>
+  <data name="Card_Ortorony" xml:space="preserve">
+    <value>Őrtorony</value>
+  </data>
+  <data name="Card_Ostromszakertelem" xml:space="preserve">
+    <value>Ostromszakértelem</value>
+  </data>
+  <data name="Card_Palota" xml:space="preserve">
+    <value>Palota</value>
+  </data>
+  <data name="Card_Pantheon" xml:space="preserve">
+    <value>Pantheon</value>
+  </data>
+  <data name="Card_Papiruszgyar" xml:space="preserve">
+    <value>Papíruszgyár</value>
+  </data>
+  <data name="Card_Patika" xml:space="preserve">
+    <value>Patika</value>
+  </data>
+  <data name="Card_Penzveres" xml:space="preserve">
+    <value>Pénzverés</value>
+  </data>
+  <data name="Card_Perszepolisz" xml:space="preserve">
+    <value>Perszepolisz</value>
+  </data>
+  <data name="Card_Petra" xml:space="preserve">
+    <value>Petra</value>
+  </data>
+  <data name="Card_Piac" xml:space="preserve">
+    <value>Piac</value>
+  </data>
+  <data name="Card_RodosziKolosszus" xml:space="preserve">
+    <value>Rodoszi Kolosszus</value>
+  </data>
+  <data name="Card_Sirkamra" xml:space="preserve">
+    <value>Sírkamra</value>
+  </data>
+  <data name="Card_Szentely" xml:space="preserve">
+    <value>Szentély</value>
+  </data>
+  <data name="Card_Szinhaz" xml:space="preserve">
+    <value>Színház</value>
+  </data>
+  <data name="Card_Tanacs" xml:space="preserve">
+    <value>Tanács</value>
+  </data>
+  <data name="Card_Teglagyar" xml:space="preserve">
+    <value>Téglagyár</value>
+  </data>
+  <data name="Card_Templom" xml:space="preserve">
+    <value>Templom</value>
+  </data>
+  <data name="Card_Tengereszet" xml:space="preserve">
+    <value>Tengerészet</value>
+  </data>
+  <data name="Card_Terkepeszet" xml:space="preserve">
+    <value>Térképészet</value>
+  </data>
+  <data name="Card_Torvenykonyv" xml:space="preserve">
+    <value>Törvénykönyv</value>
+  </data>
+  <data name="Card_UriNagyZiggurat" xml:space="preserve">
+    <value>Uri Nagy Ziggurat</value>
+  </data>
+  <data name="Card_Utrendszer" xml:space="preserve">
+    <value>Útrendszer</value>
+  </data>
+  <data name="Card_Uveggyar" xml:space="preserve">
+    <value>Üveggyár</value>
+  </data>
+  <data name="Card_Varosfal" xml:space="preserve">
+    <value>Városfal</value>
+  </data>
+  <data name="Card_Varoshaza" xml:space="preserve">
+    <value>Városháza</value>
+  </data>
+  <data name="Card_Varostervezes" xml:space="preserve">
+    <value>Várostervezés</value>
+  </data>
+  <data name="Card_Vasmuvesseg" xml:space="preserve">
+    <value>Vasművesség</value>
+  </data>
+  <data name="Card_Vizvezetek" xml:space="preserve">
+    <value>Vízvezeték</value>
+  </data>
+  <data name="Card_Zene" xml:space="preserve">
+    <value>Zene</value>
+  </data>
+  <data name="ColorBlue" xml:space="preserve">
+    <value>K</value>
+  </data>
+  <data name="ColorBlue1" xml:space="preserve">
+    <value>K</value>
+  </data>
+  <data name="ColorBrown" xml:space="preserve">
+    <value>B</value>
+  </data>
+  <data name="ColorBrown1" xml:space="preserve">
+    <value>B</value>
+  </data>
+  <data name="ColorGreen" xml:space="preserve">
+    <value>Z</value>
+  </data>
+  <data name="ColorGreen1" xml:space="preserve">
+    <value>Z</value>
+  </data>
+  <data name="ColorRed" xml:space="preserve">
+    <value>P</value>
+  </data>
+  <data name="ColorRed1" xml:space="preserve">
+    <value>P</value>
+  </data>
+  <data name="ColorYellow" xml:space="preserve">
+    <value>S</value>
+  </data>
+  <data name="ColorYellow1" xml:space="preserve">
+    <value>S</value>
+  </data>
+  <data name="EmptyTableau" xml:space="preserve">
+    <value>(üres)</value>
+  </data>
+  <data name="EnterPlayerNameFormat" xml:space="preserve">
+    <value>Kérlek add meg a(z) {0}. játékos nevét:</value>
+  </data>
+  <data name="ErrorDuringGameFormat" xml:space="preserve">
+    <value>Hiba történt a játék során: {0}</value>
+  </data>
+  <data name="FinalScores" xml:space="preserve">
+    <value>Végső pontszámok:</value>
+  </data>
+  <data name="GameOverTitle" xml:space="preserve">
+    <value>Vége a játéknak!</value>
+  </data>
+  <data name="InvalidCommandState" xml:space="preserve">
+    <value>A megadott parancs nem érvényes a jelenlegi játékállapotban!</value>
+  </data>
+  <data name="InvalidCommandTypeStateFormat" xml:space="preserve">
+    <value>A megadott parancs ({0}) nem érvényes a jelenlegi játékállapotban!</value>
+  </data>
+  <data name="InvalidYesNo" xml:space="preserve">
+    <value>Érvénytelen válasz. Kérlek válassz 'i' vagy 'n'!</value>
+  </data>
+  <data name="Leader_Amenhotep" xml:space="preserve">
+    <value>Amenhotep</value>
+  </data>
+  <data name="Leader_Asoka" xml:space="preserve">
+    <value>Asoka</value>
+  </data>
+  <data name="Leader_Asszurbanipal" xml:space="preserve">
+    <value>Asszurbanipál</value>
+  </data>
+  <data name="Leader_AugustusCaesar" xml:space="preserve">
+    <value>Augustus Caesar</value>
+  </data>
+  <data name="Leader_Csandragupta" xml:space="preserve">
+    <value>Csandragupta</value>
+  </data>
+  <data name="Leader_CsinSiHuangTi" xml:space="preserve">
+    <value>Csin Si Huang Ti</value>
+  </data>
+  <data name="Leader_Darius" xml:space="preserve">
+    <value>Dárius</value>
+  </data>
+  <data name="Leader_Hammurapi" xml:space="preserve">
+    <value>Hammurapi</value>
+  </data>
+  <data name="Leader_HanVuTi" xml:space="preserve">
+    <value>Han Vu Ti</value>
+  </data>
+  <data name="Leader_Huszrau" xml:space="preserve">
+    <value>Huszrau</value>
+  </data>
+  <data name="Leader_JuliusCaesar" xml:space="preserve">
+    <value>Julius Caesar</value>
+  </data>
+  <data name="Leader_Jusztinianusz" xml:space="preserve">
+    <value>Jusztiniánusz</value>
+  </data>
+  <data name="Leader_Nabukodonozor" xml:space="preserve">
+    <value>Nabukodonozor</value>
+  </data>
+  <data name="Leader_NagyKurosz" xml:space="preserve">
+    <value>Nagy Kürosz</value>
+  </data>
+  <data name="Leader_NagySandor" xml:space="preserve">
+    <value>Nagy Sándor</value>
+  </data>
+  <data name="Leader_Periklesz" xml:space="preserve">
+    <value>Periklész</value>
+  </data>
+  <data name="Leader_Ptolemaiosz" xml:space="preserve">
+    <value>Ptolemaiosz</value>
+  </data>
+  <data name="Leader_Salamon" xml:space="preserve">
+    <value>Salamon</value>
+  </data>
+  <data name="Leader_Sarrukin" xml:space="preserve">
+    <value>Sarrukín</value>
+  </data>
+  <data name="Leader_Szuppiluliumasz" xml:space="preserve">
+    <value>Szuppiluliumasz</value>
+  </data>
+  <data name="Level1Title" xml:space="preserve">
+    <value>Épületek</value>
+  </data>
+  <data name="Level2Title" xml:space="preserve">
+    <value>Technológiák</value>
+  </data>
+  <data name="Level3Title" xml:space="preserve">
+    <value>Csodák</value>
+  </data>
+  <data name="NameCannotBeEmpty" xml:space="preserve">
+    <value>A név nem lehet üres. Kérlek add meg újra a játékos nevét:</value>
+  </data>
+  <data name="PlayAgain" xml:space="preserve">
+    <value>Szeretnél újra játszani? (i/n):</value>
+  </data>
+  <data name="PlayerStorageTitle" xml:space="preserve">
+    <value>Saját készlet</value>
+  </data>
+  <data name="PlayerTableauTitle" xml:space="preserve">
+    <value>Kijátszott kártyák</value>
+  </data>
+  <data name="PlayerTitleFormat" xml:space="preserve">
+    <value>Játékos {0}</value>
+  </data>
+  <data name="PlayerTurnFormat" xml:space="preserve">
+    <value>{0} köre.</value>
+  </data>
+  <data name="PromptChooseColors" xml:space="preserve">
+    <value>Kérlek add meg, hogy milyen színű lapkákat szeretnél húzni (S - sárga, K - kék, Z - zöld, B - barna, P - piros). Például, "S B P". Háromnál kevesebb színt is megadhatsz, ha nem tudnál úgysem a játéktérről eleget felhúzni:</value>
+  </data>
+  <data name="PromptChooseDoubleColor" xml:space="preserve">
+    <value>Kérlek add meg, hogy milyen színű lapkából szeretnél kettőt húzni (S - sárga, K - kék, Z - zöld, B - barna, P - piros). Például, "K".</value>
+  </data>
+  <data name="ReservedCardsCountFormat" xml:space="preserve">
+    <value>🂠 : {0}</value>
+  </data>
+  <data name="SelectCardToBuy" xml:space="preserve">
+    <value>Kérlek válaszd ki a kártyát, amit meg szeretnél vásárolni. Add meg a kártya szintjét (1-3) és az oszlopszámot (1-4). Például: "1,2" vagy "3,3":</value>
+  </data>
+  <data name="SelectCardToReserve" xml:space="preserve">
+    <value>Kérlek válaszd ki a kártyát, amit le szeretnél foglalni. Add meg a kártya szintjét (1-3) és az oszlopszámot (1-4). Például: "1,2" vagy "3,3":</value>
+  </data>
+  <data name="SelectDeckToReserve" xml:space="preserve">
+    <value>Kérlek válaszd ki a paklit (1-3), aminek legfelső lapját le szeretnéd foglalni. Például: "1"</value>
+  </data>
+  <data name="DrawThreeTokensActionDescription" xml:space="preserve">
+    <value>Húzz 2 azonos kategóriájú fejlődéslapkát!</value>
+  </data>
+  <data name="UseExtendedLeaders" xml:space="preserve">
+    <value>Akarod használni az extra vezetőket? (i/n):</value>
+  </data>
+  <data name="UserAborted" xml:space="preserve">
+    <value>A felhasználó megszakította a játékot!</value>
+  </data>
+  <data name="ValidCommands" xml:space="preserve">
+    <value>Kérlek adj meg egy végrehajtandó parancsot az alábbiak közül:</value>
+  </data>
+  <data name="ParameterCount" xml:space="preserve">
+    <value>Paraméterek száma:</value>
+  </data>
+  <data name="DrawDoubleTokensActionDescription" xml:space="preserve">
+    <value>Húzz 1-1 fejlődéslapkát három különböző kategóriákból!</value>
+  </data>
+  <data name="ReturnTokensActionDescription" xml:space="preserve">
+    <value>Tegyél vissza fejlődéslapkákat a játéktérre!</value>
+  </data>
+  <data name="SelectLeaderActionDescriptionFormat" xml:space="preserve">
+    <value>Válaszd ki a vezért, aki csatlakozzon a birodalmadhoz:</value>
+  </data>
+  <data name="ReserveFromBoardActionDescription" xml:space="preserve">
+    <value>Fogljalj le 1 kártyát a játéktérről!</value>
+  </data>
+  <data name="ReserveFromDeckActionDescription" xml:space="preserve">
+    <value>Foglald le egy általad kiválasztott pakli legfelső kártyáját!</value>
+  </data>
+  <data name="PurchaseActionDescription" xml:space="preserve">
+    <value>Vásárolj meg egy kártyát a játéktérről vagy a korábban általad foglaltak közül!</value>
+  </data>
+</root>

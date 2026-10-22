@@ -1,4 +1,4 @@
-﻿using SplendidWonders.CLI.Properties;
+﻿using SplendidWonders.Common;
 using SplendidWonders.Core.Model;
 using SplendidWonders.Gameplay.Actions;
 using System;
@@ -13,10 +13,10 @@ namespace SplendidWonders.CLI.View
 
         public void DisplayGameOver(Dictionary<string, int> value)
         {
-            Console.WriteLine(Resources.GameOverTitle);
+            Console.WriteLine(Strings.GameOverTitle);
             Console.WriteLine();
             Console.WriteLine();
-            Console.WriteLine(Resources.FinalScores);
+            Console.WriteLine(Strings.FinalScores);
 
             foreach (var item in value.OrderBy(x => x.Value).Reverse())
             {
@@ -26,13 +26,14 @@ namespace SplendidWonders.CLI.View
 
         public void DisplayGame(GameState gameState, List<GameAction> validActions)
         {
+            Console.Clear();
             _gameStateRenderer.Render(gameState);
             _gameActionsRenderer.Render(validActions);
         }
 
         public void DisplayValidActions(List<GameAction> validActions)
         {
-            Console.WriteLine(Resources.ValidCommands);
+            Console.WriteLine(Strings.ValidCommands);
 
             foreach (var command in validActions)
             {
@@ -43,55 +44,49 @@ namespace SplendidWonders.CLI.View
 
         public void DisplayTurnStart(Player player)
         {
-            Console.WriteLine(string.Format(Resources.PlayerTurnFormat, player.Name));
+            Console.WriteLine(string.Format(Strings.PlayerTurnFormat, player.Name));
             Console.WriteLine();
         }
 
         public void DisplayInvalidCommandMessage()
         {
-            Console.WriteLine(Resources.InvalidCommandState);
-            Console.WriteLine();
-        }
-
-        public void DisplayCommandCategoryRequest(List<string> validActionCategories)
-        {
-            Console.WriteLine(string.Format(Resources.EnterCommandFromChoicesFormat, String.Join(", ", validActionCategories)));
+            Console.WriteLine(Strings.InvalidCommandState);
             Console.WriteLine();
         }
 
         public void DisplayThreeTokensArgumentRequest()
         {
-            Console.WriteLine(Resources.PromptChooseColors);
+            Console.WriteLine(Strings.PromptChooseColors);
             Console.WriteLine();
         }
 
         public void DisplayDoubleTokensArgumentRequest()
         {
-            Console.WriteLine(Resources.PromptChooseDoubleColor);
+            Console.WriteLine(Strings.PromptChooseDoubleColor);
             Console.WriteLine();
         }
 
         public void DisplayPurchaseArgumentRequest()
         {
-            Console.WriteLine(Resources.SelectCardToBuy);
+            Console.WriteLine(Strings.SelectCardToBuy);
             Console.WriteLine();
         }
 
         public void DisplayReserveFromDeckArgumentRequest()
         {
-            Console.WriteLine(Resources.SelectDeckToReserve);
+            Console.WriteLine(Strings.SelectDeckToReserve);
             Console.WriteLine();
         }
 
         public void DisplayReserveFromBoardArgumentRequest()
         {
-            Console.WriteLine(Resources.SelectCardToReserve);
+            Console.WriteLine(Strings.SelectCardToReserve);
             Console.WriteLine();
         }
 
         public void DisplayInvalidCommand(GameAction command)
         {
-            Console.WriteLine(string.Format(Resources.InvalidCommandTypeStateFormat, command.GetType().Name));
+            Console.WriteLine(string.Format(Strings.InvalidCommandTypeStateFormat, command.GetType().Name));
         }
 
         public void DisplayGameTitle()

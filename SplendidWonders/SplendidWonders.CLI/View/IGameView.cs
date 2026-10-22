@@ -13,7 +13,6 @@ namespace SplendidWonders.CLI.View
         void DisplayValidActions(List<GameAction> validActions);
         void DisplayTurnStart(Player currentPlayer);
         void DisplayInvalidCommandMessage();
-        void DisplayCommandCategoryRequest(List<string> validActionCategories);
         void DisplayThreeTokensArgumentRequest();
         void DisplayDoubleTokensArgumentRequest();
         void DisplayPurchaseArgumentRequest();

@@ -1,8 +1,8 @@
 using SplendidWonders.Core.Model;
-using SplendidWonders.CLI.Properties;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using SplendidWonders.Common;
 
 namespace SplendidWonders.CLI.View
 {
@@ -164,13 +164,13 @@ namespace SplendidWonders.CLI.View
                 var player = gameState.Players[playerIndex];
                 if (player is null)
                 {
-                    AddPlayerBlock(lines, string.Empty, WrapText(Resources.EmptyTableau, PlayerPanelWidth - 4));
-                    AddPlayerBlock(lines, Resources.PlayerStorageTitle, new List<string>
+                    AddPlayerBlock(lines, string.Empty, WrapText(Strings.EmptyTableau, PlayerPanelWidth - 4));
+                    AddPlayerBlock(lines, Strings.PlayerStorageTitle, new List<string>
                     {
                         string.Empty,
-                        string.Format(Resources.ReservedCardsCountFormat, 0)
+                        string.Format(Strings.ReservedCardsCountFormat, 0)
                     });
-                    AddTableauBlock(lines, new List<string> { string.Empty, Resources.EmptyTableau }, DeckBlockHeight * 3);
+                    AddTableauBlock(lines, new List<string> { string.Empty, Strings.EmptyTableau }, DeckBlockHeight * 3);
                     panels.Add(new PlayerPanel(lines, -1, new List<ColorRange>()));
                     continue;
                 }
@@ -189,7 +189,7 @@ namespace SplendidWonders.CLI.View
                 AppendColoredNumber(storageText, storageColorRanges, storage.Brown, GetRgbColor(DevelopmentBonus.Brown));
                 AppendColoredNumber(storageText, storageColorRanges, storage.Red, GetRgbColor(DevelopmentBonus.Red));
                 AppendColoredNumber(storageText, storageColorRanges, storage.Polymath, new RgbColor(255, 255, 255), "  ");
-                storageText.Append("   ").Append(string.Format(Resources.ReservedCardsCountFormat, player.ReservedCards?.Count ?? 0));
+                storageText.Append("   ").Append(string.Format(Strings.ReservedCardsCountFormat, player.ReservedCards?.Count ?? 0));
                 var playerStorageLines = new List<string>
                 {
                     string.Empty,
@@ -203,7 +203,7 @@ namespace SplendidWonders.CLI.View
                     storageColorRanges[rangeIndex] = range with { Start = range.Start + 5 };
                 }
 
-                AddPlayerBlock(lines, Resources.PlayerStorageTitle, playerStorageLines);
+                AddPlayerBlock(lines, Strings.PlayerStorageTitle, playerStorageLines);
 
                 var tableauLines = new List<string>();
                 if (player.Tableau is not null)
@@ -216,7 +216,7 @@ namespace SplendidWonders.CLI.View
                 }
 
                 if (tableauLines.Count == 0)
-                    tableauLines.Add(Resources.EmptyTableau);
+                    tableauLines.Add(Strings.EmptyTableau);
 
                 tableauLines.Insert(0, string.Empty);
                 AddTableauBlock(lines, tableauLines, DeckBlockHeight * 3);
@@ -234,7 +234,7 @@ namespace SplendidWonders.CLI.View
                 lines.Add(FormatPlayerPanelLine(title));
             for (int i = 0; i < contentLines.Count; i++)
             {
-                bool isReservedCardCount = title == Resources.PlayerStorageTitle && i == contentLines.Count - 1;
+                bool isReservedCardCount = title == Strings.PlayerStorageTitle && i == contentLines.Count - 1;
                 lines.Add(FormatPlayerPanelLine(contentLines[i], isReservedCardCount));
             }
             lines.Add(border);
@@ -246,7 +246,7 @@ namespace SplendidWonders.CLI.View
             while (contentLines.Count < minimumContentHeight)
                 contentLines.Add(string.Empty);
 
-            AddPlayerBlock(lines, Resources.PlayerTableauTitle, contentLines);
+            AddPlayerBlock(lines, Strings.PlayerTableauTitle, contentLines);
         }
 
         private static string FormatPlayerPanelLine(string content, bool extraSpaceBeforeRightBorder = false)
@@ -329,9 +329,9 @@ namespace SplendidWonders.CLI.View
         {
             return level switch
             {
-                3 => Resources.Level3Title,
-                2 => Resources.Level2Title,
-                1 => Resources.Level1Title,
+                3 => Strings.Level3Title,
+                2 => Strings.Level2Title,
+                1 => Strings.Level1Title,
                 _ => string.Empty
             };
         }

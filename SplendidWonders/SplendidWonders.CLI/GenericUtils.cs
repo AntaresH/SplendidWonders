@@ -7,7 +7,6 @@ namespace SplendidWonders.CLI
 {
     internal class GenericUtils
     {
-
         public static Dictionary<string, string> CommandShortHandMap = new Dictionary<string, string>
         {
             { nameof(DrawThreeTokensAction), "H3" },

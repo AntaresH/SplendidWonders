@@ -25,8 +25,6 @@ namespace SplendidWonders.CLI.Input
                 {
                     var validActionCategories = validActions.Select(x => GenericUtils.CommandShortHandMap[x.GetType().Name]).Distinct().ToList();
 
-                    _gameView.DisplayCommandCategoryRequest(validActionCategories);
-
                     string userInput = ReadAndApplyDefaultHandling();
 
                     if (!GenericUtils.CommandShortHandMap.ContainsValue(userInput))
