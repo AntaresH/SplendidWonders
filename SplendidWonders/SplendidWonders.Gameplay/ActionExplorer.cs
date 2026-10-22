@@ -11,10 +11,16 @@ namespace SplendidWonders.Gameplay
             var validActions = new List<GameAction>();
 
             var returnTokensActions = GetReturnTokensActions(gameState);
+            var selectLeaderActions = GetSelectLeaderActions(gameState);
 
             if (returnTokensActions.Any())
             {
                 validActions.AddRange(returnTokensActions);
+                return validActions;
+            }
+            else if (selectLeaderActions.Any())
+            {
+                validActions.AddRange(selectLeaderActions);
                 return validActions;
             }
             else
@@ -142,6 +148,44 @@ namespace SplendidWonders.Gameplay
             }
 
             return reserveFromDeckActions;
+        }
+
+        private static IEnumerable<GameAction> GetSelectLeaderActions(GameState gameState)
+        {
+            List<SelectLeaderAction> selectLeaderActions = new List<SelectLeaderAction>();
+
+            foreach (var leader in gameState.Leaders)
+            {
+                Dictionary<DevelopmentBonus, int> requirements = new Dictionary<DevelopmentBonus, int>()
+                {
+                    { DevelopmentBonus.Yellow, leader.Requirements.Yellow },
+                    { DevelopmentBonus.Blue, leader.Requirements.Blue },
+                    { DevelopmentBonus.Green, leader.Requirements.Green },
+                    { DevelopmentBonus.Brown, leader.Requirements.Brown },
+                    { DevelopmentBonus.Red, leader.Requirements.Red },
+                };
+
+                bool hasFailedRequirement = false;
+
+                foreach (var requirement in requirements)
+                {
+                    if (requirement.Value == 0)
+                        continue;
+
+                    if (gameState.CurrentPlayer.Tableau.Count(card => card.Bonus == requirement.Key) < requirement.Value)
+                    {
+                        hasFailedRequirement = true;
+                        break;
+                    }
+                }
+
+                if (!hasFailedRequirement)
+                {
+                    selectLeaderActions.Add(new SelectLeaderAction() { Leader = leader });
+                }
+            }
+
+            return selectLeaderActions;
         }
 
         private static IEnumerable<DrawThreeTokensAction> CalculateThreeTokensActionPermutations(bool[] emptyColors)

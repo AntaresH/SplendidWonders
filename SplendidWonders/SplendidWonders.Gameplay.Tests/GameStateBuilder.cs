@@ -15,14 +15,16 @@ namespace SplendidWonders.Gameplay.Tests
 
         private List<Player> _players;
         private CardGroup _decks;
+        private List<Leader> _leaders;
 
         public GameStateBuilder()
         {
 
         }
 
-        public GameStateBuilder WithLeaders()
+        public GameStateBuilder WithLeaders(List<Leader> leaders)
         {
+            _leaders = leaders;
             return this;
         }
 
@@ -65,6 +67,7 @@ namespace SplendidWonders.Gameplay.Tests
                 Players = _players,
                 Market =_market,
                 TokenSupply = _tokenSupply,
+                Leaders = _leaders
             };
         }
     }

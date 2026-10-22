@@ -124,6 +124,7 @@ namespace SplendidWonders.Gameplay.Tests
             var gameState = defaultBuilder
                 .WithPlayers(playerSetup)
                 .WithMarket(marketSetup)
+                .WithCurrentPlayer(playerSetup[0])
                 .Build();
 
             // Act
@@ -146,6 +147,7 @@ namespace SplendidWonders.Gameplay.Tests
             var gameState = defaultBuilder
                 .WithPlayers(playerSetup)
                 .WithDecks(decksSetup)
+                .WithCurrentPlayer(playerSetup[0])
                 .Build();
 
             // Act
@@ -168,6 +170,7 @@ namespace SplendidWonders.Gameplay.Tests
             var gameState = defaultBuilder
                 .WithPlayers(playerSetup)
                 .WithCurrentPlayer(playerSetup[0])
+                .WithLeaders(leaderSetup)
                 .Build();
 
             // Act
