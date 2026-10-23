@@ -92,7 +92,7 @@ namespace SplendidWonders.CLI.Input
                 {
                     int level = int.Parse(match.Groups[1].Value);
                     int column = int.Parse(match.Groups[2].Value);
-                    action.Card = gameState.Market[level][column];
+                    action.Card = gameState[level][column];
 
                     return action;
                 }
@@ -133,7 +133,7 @@ namespace SplendidWonders.CLI.Input
                 {
                     int level = int.Parse(match.Groups[1].Value);
                     int column = int.Parse(match.Groups[2].Value);
-                    action.Card = gameState.Market[level][column];
+                    action.Card = gameState[level][column];
 
                     return action;
                 }

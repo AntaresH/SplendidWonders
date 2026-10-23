@@ -67,7 +67,7 @@ namespace SplendidWonders.CLI.View
                     {
                         0 => border,
                         3 => DeckLineCentered(GetDeckTitle(level), DeckColumnWidth),
-                        5 => DeckLineCentered(gameState.Decks[level].Count.ToString(), DeckColumnWidth),
+                        5 => DeckLineCentered(gameState[level].Remaining.ToString(), DeckColumnWidth),
                         DeckBlockHeight - 1 => border,
                         _ => spacer
                     };
@@ -84,7 +84,7 @@ namespace SplendidWonders.CLI.View
                 for (int level = DeckLevelCount; level >= 1; level--)
                 {
                     int startRow = (DeckLevelCount - level) * DeckBlockHeight;
-                    var block = FormatCard(gameState.Market[level, column], MarketColumnWidth);
+                    var block = FormatCard(gameState[level][column], MarketColumnWidth);
                     for (int row = 0; row < DeckBlockHeight; row++)
                         AppendCanvas(canvas, colorRanges, startRow + row, block.Lines[row], relativeRanges: block.ColorRanges[row]);
                 }

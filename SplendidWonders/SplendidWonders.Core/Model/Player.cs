@@ -1,4 +1,6 @@
-﻿namespace SplendidWonders.Core.Model
+﻿using System.Collections.Immutable;
+
+namespace SplendidWonders.Core.Model
 {
     public class Player
     {
@@ -6,10 +8,10 @@
 
         public TokenGroup Store { get; set; } = new();
 
-        public IReadOnlyList<DevelopmentCard> Tableau { get; set; } = Array.Empty<DevelopmentCard>();
+        public ImmutableList<DevelopmentCard> Tableau { get; set; } = ImmutableList<DevelopmentCard>.Empty;
 
-        public IReadOnlyList<DevelopmentCard> ReservedCards { get; set; } = Array.Empty<DevelopmentCard>();
+        public ImmutableList<DevelopmentCard> ReservedCards { get; set; } = ImmutableList<DevelopmentCard>.Empty;
 
-        public IReadOnlyList<Leader> AcquiredLeaders { get; set; } = Array.Empty<Leader>();
+        public ImmutableList<Leader> AcquiredLeaders { get; set; } = ImmutableList<Leader>.Empty;
     }
 }

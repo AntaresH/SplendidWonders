@@ -4,12 +4,14 @@ using SplendidWonders.Core.Setup;
 using SplendidWonders.Gameplay.Actions;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Text;
 
 namespace SplendidWonders.Gameplay.Tests
 {
     public partial class ActionExplorerTests
     {
+
         private static IEnumerable<TestCaseData> SelectLeaderActionCases()
         {
 
@@ -70,7 +72,7 @@ namespace SplendidWonders.Gameplay.Tests
                     new Player()
                     {
                         Name = "Test player 1",
-                        Tableau = playerTableau333
+                        Tableau = playerTableau333.ToImmutableList()
                     }
                 },
                 twoWaySelectionLeaders333,
@@ -88,7 +90,7 @@ namespace SplendidWonders.Gameplay.Tests
                     new Player()
                     {
                         Name = "Test player 1",
-                        Tableau = playerTableau333
+                        Tableau = playerTableau333.ToImmutableList()
                     }
                 },
                 threeWaySelectionLeaders333,
@@ -107,7 +109,7 @@ namespace SplendidWonders.Gameplay.Tests
                     new Player()
                     {
                         Name = "Test player 1",
-                        Tableau = playerTableau44
+                        Tableau = playerTableau44.ToImmutableList()
                     }
                 },
                 twoWaySelectionLeaders44,
@@ -125,7 +127,7 @@ namespace SplendidWonders.Gameplay.Tests
                     new Player()
                     {
                         Name = "Test player 1",
-                        Tableau = playerTableau44
+                        Tableau = playerTableau44.ToImmutableList()
                     }
                 },
                 threeWaySelectionLeaders44,

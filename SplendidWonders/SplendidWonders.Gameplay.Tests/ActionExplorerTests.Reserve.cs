@@ -3,6 +3,7 @@ using SplendidWonders.Core.Setup;
 using SplendidWonders.Gameplay.Actions;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Text;
 
 namespace SplendidWonders.Gameplay.Tests
@@ -12,33 +13,47 @@ namespace SplendidWonders.Gameplay.Tests
 
         private static IEnumerable<TestCaseData> ReserveFromBoardActionCases()
         {
-            var decks = new CardGroup
+            var level1 = new CardGroup()
             {
-                Level1 = new Deck<DevelopmentCard>(Cards.Level1.ToList()),
-                Level2 = new Deck<DevelopmentCard>(Cards.Level2.ToList()),
-                Level3 = new Deck<DevelopmentCard>(Cards.Level3.ToList())
+                Deck = Cards.Level1.Skip(4).ToImmutableList(),
+                Market = Cards.Level1.Take(4).ToImmutableList()
             };
 
-            var fullMarket = new CardGroup
+            var level2 = new CardGroup()
             {
-                Level1 = new Deck<DevelopmentCard>(decks.Level1.Draw(4)),
-                Level2 = new Deck<DevelopmentCard>(decks.Level2.Draw(4)),
-                Level3 = new Deck<DevelopmentCard>(decks.Level3.Draw(4))
+                Deck = Cards.Level2.Skip(4).ToImmutableList(),
+                Market = Cards.Level2.Take(4).ToImmutableList()
             };
 
-            var shortMarket1 = new CardGroup
+            var level3 = new CardGroup()
             {
-                Level1 = new Deck<DevelopmentCard>(fullMarket.Level1.Take(3)),
-                Level2 = new Deck<DevelopmentCard>(fullMarket.Level2),
-                Level3 = new Deck<DevelopmentCard>(fullMarket.Level3)
+                Deck = Cards.Level3.Skip(4).ToImmutableList(),
+                Market = Cards.Level3.Take(4).ToImmutableList()
             };
 
-            var shortMarket2 = new CardGroup
+            var shortLevel1 = new CardGroup()
             {
-                Level1 = new Deck<DevelopmentCard>(fullMarket.Level1),
-                Level2 = new Deck<DevelopmentCard>(fullMarket.Level2.Take(3)),
-                Level3 = new Deck<DevelopmentCard>(fullMarket.Level3.Take(3))
+                Deck = Cards.Level1.Skip(4).ToImmutableList(),
+                Market = Cards.Level1.Take(3).ToImmutableList()
             };
+
+            var shortLevel2 = new CardGroup()
+            {
+                Deck = Cards.Level2.Skip(4).ToImmutableList(),
+                Market = Cards.Level2.Take(3).ToImmutableList()
+            };
+
+            var shortLevel3 = new CardGroup()
+            {
+                Deck = Cards.Level3.Skip(4).ToImmutableList(),
+                Market = Cards.Level3.Take(3).ToImmutableList()
+            };
+
+            var fullCardsSetup = new CardGroup[] { level1, level2, level3 };
+
+            var shortCardsSetup1 = new CardGroup[] { shortLevel1, level2, level3 };
+
+            var shortCardsSetup2 = new CardGroup[] { level1, shortLevel2, shortLevel3 };
 
             yield return new TestCaseData(
                 new List<Player>()
@@ -46,25 +61,25 @@ namespace SplendidWonders.Gameplay.Tests
                     new Player()
                     {
                         Name = "Test player 1",
-                        ReservedCards = new List<DevelopmentCard>(),
+                        ReservedCards = ImmutableList<DevelopmentCard>.Empty,
                         Store = TokenGroup.FromArray([0, 0, 0, 0, 0])
                     }
                 },
-                fullMarket,
+                fullCardsSetup,
                 new[]
                 {
-                    new ReserveFromBoardAction() { Card = fullMarket[1, 1] },
-                    new ReserveFromBoardAction() { Card = fullMarket[1, 2] },
-                    new ReserveFromBoardAction() { Card = fullMarket[1, 3] },
-                    new ReserveFromBoardAction() { Card = fullMarket[1, 4] },
-                    new ReserveFromBoardAction() { Card = fullMarket[2, 1] },
-                    new ReserveFromBoardAction() { Card = fullMarket[2, 2] },
-                    new ReserveFromBoardAction() { Card = fullMarket[2, 3] },
-                    new ReserveFromBoardAction() { Card = fullMarket[2, 4] },
-                    new ReserveFromBoardAction() { Card = fullMarket[3, 1] },
-                    new ReserveFromBoardAction() { Card = fullMarket[3, 2] },
-                    new ReserveFromBoardAction() { Card = fullMarket[3, 3] },
-                    new ReserveFromBoardAction() { Card = fullMarket[3, 4] },
+                    new ReserveFromBoardAction() { Card = level1[1] },
+                    new ReserveFromBoardAction() { Card = level1[2] },
+                    new ReserveFromBoardAction() { Card = level1[3] },
+                    new ReserveFromBoardAction() { Card = level1[4] },
+                    new ReserveFromBoardAction() { Card = level2[1] },
+                    new ReserveFromBoardAction() { Card = level2[2] },
+                    new ReserveFromBoardAction() { Card = level2[3] },
+                    new ReserveFromBoardAction() { Card = level2[4] },
+                    new ReserveFromBoardAction() { Card = level3[1] },
+                    new ReserveFromBoardAction() { Card = level3[2] },
+                    new ReserveFromBoardAction() { Card = level3[3] },
+                    new ReserveFromBoardAction() { Card = level3[4] },
                 })
                 .SetName("Reserve From Board - Zero reserved cards + full market");
 
@@ -74,11 +89,11 @@ namespace SplendidWonders.Gameplay.Tests
                     new Player()
                     {
                         Name = "Test player 1",
-                        ReservedCards = decks.Level1.Draw(3),
+                        ReservedCards = level1.Deck.Take(3).ToImmutableList(),
                         Store = TokenGroup.FromArray([4, 4, 2, 0, 0])
                     }
                 },
-                fullMarket,
+                fullCardsSetup,
                 new ReserveFromBoardAction[] {})
                 .SetName("Reserve From Board - Three  reserved cards + full market");
 
@@ -89,24 +104,25 @@ namespace SplendidWonders.Gameplay.Tests
                     new Player()
                     {
                         Name = "Test player 1",
-                        ReservedCards = new List<DevelopmentCard>(),
+                        ReservedCards = ImmutableList<DevelopmentCard>.Empty,
                         Store = TokenGroup.FromArray([0, 0, 0, 0, 0])
                     }
                 },
-                shortMarket1,
+                shortCardsSetup1,
                 new[]
                 {
-                    new ReserveFromBoardAction() { Card = fullMarket[1, 1] },
-                    new ReserveFromBoardAction() { Card = fullMarket[1, 2] },
-                    new ReserveFromBoardAction() { Card = fullMarket[1, 3] },
-                    new ReserveFromBoardAction() { Card = fullMarket[2, 1] },
-                    new ReserveFromBoardAction() { Card = fullMarket[2, 2] },
-                    new ReserveFromBoardAction() { Card = fullMarket[2, 3] },
-                    new ReserveFromBoardAction() { Card = fullMarket[2, 4] },
-                    new ReserveFromBoardAction() { Card = fullMarket[3, 1] },
-                    new ReserveFromBoardAction() { Card = fullMarket[3, 2] },
-                    new ReserveFromBoardAction() { Card = fullMarket[3, 3] },
-                    new ReserveFromBoardAction() { Card = fullMarket[3, 4] },
+                    new ReserveFromBoardAction() { Card = level1[1] },
+                    new ReserveFromBoardAction() { Card = level1[2] },
+                    new ReserveFromBoardAction() { Card = level1[3] },
+             //     new ReserveFromBoardAction() { Card = level1[4] },
+                    new ReserveFromBoardAction() { Card = level2[1] },
+                    new ReserveFromBoardAction() { Card = level2[2] },
+                    new ReserveFromBoardAction() { Card = level2[3] },
+                    new ReserveFromBoardAction() { Card = level2[4] },
+                    new ReserveFromBoardAction() { Card = level3[1] },
+                    new ReserveFromBoardAction() { Card = level3[2] },
+                    new ReserveFromBoardAction() { Card = level3[3] },
+                    new ReserveFromBoardAction() { Card = level3[4] },
                 })
                 .SetName("Reserve From Board - Zero reserved cards + short market");
 
@@ -116,23 +132,25 @@ namespace SplendidWonders.Gameplay.Tests
                     new Player()
                     {
                         Name = "Test player 1",
-                        ReservedCards = new List<DevelopmentCard>(),
+                        ReservedCards = ImmutableList<DevelopmentCard>.Empty,
                         Store = TokenGroup.FromArray([0, 0, 0, 0, 0])
                     }
                 },
-                shortMarket2,
+                shortCardsSetup2,
                 new[]
                 {
-                    new ReserveFromBoardAction() { Card = fullMarket[1, 1] },
-                    new ReserveFromBoardAction() { Card = fullMarket[1, 2] },
-                    new ReserveFromBoardAction() { Card = fullMarket[1, 3] },
-                    new ReserveFromBoardAction() { Card = fullMarket[1, 4] },
-                    new ReserveFromBoardAction() { Card = fullMarket[2, 1] },
-                    new ReserveFromBoardAction() { Card = fullMarket[2, 2] },
-                    new ReserveFromBoardAction() { Card = fullMarket[2, 3] },
-                    new ReserveFromBoardAction() { Card = fullMarket[3, 1] },
-                    new ReserveFromBoardAction() { Card = fullMarket[3, 2] },
-                    new ReserveFromBoardAction() { Card = fullMarket[3, 3] },
+                    new ReserveFromBoardAction() { Card = level1[1] },
+                    new ReserveFromBoardAction() { Card = level1[2] },
+                    new ReserveFromBoardAction() { Card = level1[3] },
+                    new ReserveFromBoardAction() { Card = level1[4] },
+                    new ReserveFromBoardAction() { Card = level2[1] },
+                    new ReserveFromBoardAction() { Card = level2[2] },
+                    new ReserveFromBoardAction() { Card = level2[3] },
+                //  new ReserveFromBoardAction() { Card = level2[4] },
+                    new ReserveFromBoardAction() { Card = level3[1] },
+                    new ReserveFromBoardAction() { Card = level3[2] },
+                    new ReserveFromBoardAction() { Card = level3[3] },
+                //  new ReserveFromBoardAction() { Card = level3[4] },
                 })
                 .SetName("Reserve From Board - Zero reserved cards + very short market");
 
@@ -142,37 +160,58 @@ namespace SplendidWonders.Gameplay.Tests
                     new Player()
                     {
                         Name = "Test player 1",
-                        ReservedCards = decks.Level1.Draw(3),
+                        ReservedCards = level1.Deck.Take(3).ToImmutableList(),
                         Store = TokenGroup.FromArray([4, 4, 2, 0, 0])
                     }
                 },
-                shortMarket1,
+                shortCardsSetup1,
                 new ReserveFromBoardAction[] { })
                 .SetName("Reserve From Board - Three  reserved cards + short market");
         }
 
         private static IEnumerable<TestCaseData> ReserveFromDeckActionCases()
         {
-            var decks = new CardGroup
+            var level1 = new CardGroup()
             {
-                Level1 = new Deck<DevelopmentCard>(Cards.Level1.Skip(10).ToList()),
-                Level2 = new Deck<DevelopmentCard>(Cards.Level2.Skip(10).ToList()),
-                Level3 = new Deck<DevelopmentCard>(Cards.Level3.Skip(10).ToList())
+                Deck = Cards.Level1.Skip(4).ToImmutableList(),
+                Market = Cards.Level1.Take(4).ToImmutableList()
             };
 
-            var decksOneEmpty = new CardGroup
+            var level2 = new CardGroup()
             {
-                Level1 = new Deck<DevelopmentCard>(),
-                Level2 = decks.Level2,
-                Level3 = decks.Level3,
+                Deck = Cards.Level2.Skip(4).ToImmutableList(),
+                Market = Cards.Level2.Take(4).ToImmutableList()
             };
 
-            var decksMultipleEmpty = new CardGroup
+            var level3 = new CardGroup()
             {
-                Level1 = new Deck<DevelopmentCard>(),
-                Level2 = new Deck<DevelopmentCard>(),
-                Level3 = decks.Level3,
+                Deck = Cards.Level3.Skip(4).ToImmutableList(),
+                Market = Cards.Level3.Take(4).ToImmutableList()
             };
+
+            var shortLevel1 = new CardGroup()
+            {
+                Deck = ImmutableList<DevelopmentCard>.Empty,
+                Market = Cards.Level1.Take(4).ToImmutableList()
+            };
+
+            var shortLevel2 = new CardGroup()
+            {
+                Deck = ImmutableList<DevelopmentCard>.Empty,
+                Market = Cards.Level2.Take(4).ToImmutableList()
+            };
+
+            var shortLevel3 = new CardGroup()
+            {
+                Deck = ImmutableList<DevelopmentCard>.Empty,
+                Market = Cards.Level3.Take(4).ToImmutableList()
+            };
+
+            var fullCardsSetup = new CardGroup[] { level1, level2, level3 };
+
+            var level1DeckEmpty = new CardGroup[] { shortLevel1, level2, level3 };
+
+            var multipleDecksEmpty = new CardGroup[] { level1, shortLevel2, shortLevel3 };
 
             yield return new TestCaseData(
                 new List<Player>()
@@ -180,11 +219,11 @@ namespace SplendidWonders.Gameplay.Tests
                     new Player()
                     {
                         Name = "Test player 1",
-                        ReservedCards = new List<DevelopmentCard>(),
+                        ReservedCards = ImmutableList<DevelopmentCard>.Empty,
                         Store = TokenGroup.FromArray([0, 0, 0, 0, 0])
                     }
                 },
-                decks,
+                fullCardsSetup,
                 new[]
                 {
                     new ReserveFromDeckAction() { Level = 1 },
@@ -199,11 +238,11 @@ namespace SplendidWonders.Gameplay.Tests
                     new Player()
                     {
                         Name = "Test player 1",
-                        ReservedCards = decks.Level1.Draw(3),
+                        ReservedCards = level1.Deck.Take(3).ToImmutableList(),
                         Store = TokenGroup.FromArray([4, 4, 2, 0, 0])
                     }
                 },
-                decks,
+                fullCardsSetup,
                 new ReserveFromDeckAction[] { })
                 .SetName("Reserve From Deck - Three  reserved cards + non-zero decks");
 
@@ -214,11 +253,11 @@ namespace SplendidWonders.Gameplay.Tests
                     new Player()
                     {
                         Name = "Test player 1",
-                        ReservedCards = new List<DevelopmentCard>(),
+                        ReservedCards = ImmutableList<DevelopmentCard>.Empty,
                         Store = TokenGroup.FromArray([0, 0, 0, 0, 0])
                     }
                 },
-                decksOneEmpty,
+                level1DeckEmpty,
                 new[]
                 {
                     new ReserveFromDeckAction() { Level = 2 },
@@ -232,14 +271,14 @@ namespace SplendidWonders.Gameplay.Tests
                     new Player()
                     {
                         Name = "Test player 1",
-                        ReservedCards = new List<DevelopmentCard>(),
+                        ReservedCards = ImmutableList<DevelopmentCard>.Empty,
                         Store = TokenGroup.FromArray([0, 0, 0, 0, 0])
                     }
                 },
-                decksMultipleEmpty,
+                multipleDecksEmpty,
                 new[]
                 {
-                    new ReserveFromDeckAction() { Level = 3 },
+                    new ReserveFromDeckAction() { Level = 1 },
                 })
                 .SetName("Reserve From Deck - Zero reserved cards + multiple empty deck");
 
@@ -249,11 +288,11 @@ namespace SplendidWonders.Gameplay.Tests
                     new Player()
                     {
                         Name = "Test player 1",
-                        ReservedCards = decks.Level1.Draw(3),
+                        ReservedCards = level1.Deck.Take(3).ToImmutableList(),
                         Store = TokenGroup.FromArray([4, 4, 2, 0, 0])
                     }
                 },
-                decksOneEmpty,
+                level1DeckEmpty,
                 new ReserveFromDeckAction[] { })
                 .SetName("Reserve From Deck - Three  reserved cards + one empty deck");
         }

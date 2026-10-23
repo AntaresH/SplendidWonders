@@ -1,6 +1,8 @@
 ﻿using SplendidWonders.Core.Model;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Net.Security;
 using System.Text;
 
 namespace SplendidWonders.Core.Setup
@@ -25,34 +27,44 @@ namespace SplendidWonders.Core.Setup
             };
 
             var availableLeaders = configuration.UseExtendedLeaders
-                ? Leaders.StandardLeaders.Concat(Leaders.ExtendedLeaders).ToList()
-                : Leaders.StandardLeaders.ToList();
+                ? Leaders.StandardLeaders.Concat(Leaders.ExtendedLeaders).ToImmutableList()
+                : Leaders.StandardLeaders.ToImmutableList();
 
             var leaderDeck = configuration.UseExtendedLeaders
                 ? Leaders.StandardLeaders.Concat(Leaders.ExtendedLeaders).ToList()
                 : Leaders.StandardLeaders.ToList();
 
-            var decks = new CardGroup
+            var level1Cards = Cards.Level1.Shuffle();
+
+            var level1 = new CardGroup()
             {
-                Level1 = new Deck<DevelopmentCard>(Cards.Level1.Shuffle().ToList()),
-                Level2 = new Deck<DevelopmentCard>(Cards.Level2.Shuffle().ToList()),
-                Level3 = new Deck<DevelopmentCard>(Cards.Level3.Shuffle().ToList())
+                Deck = level1Cards.Skip(4).ToImmutableList(),
+                Market = level1Cards.Take(4).ToImmutableList()
             };
 
-            var market = new CardGroup
+            var level2Cards = Cards.Level1.Shuffle();
+
+            var level2 = new CardGroup()
             {
-                Level1 = new Deck<DevelopmentCard>(decks.Level1.Draw(4)),
-                Level2 = new Deck<DevelopmentCard>(decks.Level2.Draw(4)),
-                Level3 = new Deck<DevelopmentCard>(decks.Level3.Draw(4))
-            };  
+                Deck = level2Cards.Skip(4).ToImmutableList(),
+                Market = level2Cards.Take(4).ToImmutableList()
+            };
+            var level3Cards = Cards.Level1.Shuffle();
+
+            var level3 = new CardGroup()
+            {
+                Deck = level3Cards.Skip(4).ToImmutableList(),
+                Market = level3Cards.Take(4).ToImmutableList()
+            };
 
             return new GameState
             {
                 Players = players,
                 TokenSupply = tokenSupply,
                 Leaders = availableLeaders,
-                Decks = decks,
-                Market = market,
+                Level1 = level1,
+                Level2 = level2,
+                Level3 = level3,
                 CurrentPlayer = players[0]
             };
         }

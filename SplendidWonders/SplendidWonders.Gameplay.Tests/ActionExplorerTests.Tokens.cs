@@ -3,6 +3,7 @@ using SplendidWonders.Core.Setup;
 using SplendidWonders.Gameplay.Actions;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Text;
 
 namespace SplendidWonders.Gameplay.Tests
@@ -136,7 +137,7 @@ namespace SplendidWonders.Gameplay.Tests
                     new Player()
                     {
                         Name = "Test player 1",
-                        ReservedCards = new List<DevelopmentCard>(),
+                        ReservedCards = ImmutableList<DevelopmentCard>.Empty,
                         Store = TokenGroup.FromArray([2, 2, 2, 2, 3])
                     }
                 },
@@ -156,7 +157,7 @@ namespace SplendidWonders.Gameplay.Tests
                     new Player()
                     {
                         Name = "Test player 1",
-                        ReservedCards = new List<DevelopmentCard>(),
+                        ReservedCards = ImmutableList<DevelopmentCard>.Empty,
                         Store = TokenGroup.FromArray([4, 2, 5, 0, 0]),
                     }
                 },
@@ -174,7 +175,7 @@ namespace SplendidWonders.Gameplay.Tests
                     new Player()
                     {
                         Name = "Test player 1",
-                        ReservedCards = new List<DevelopmentCard>(),
+                        ReservedCards = ImmutableList<DevelopmentCard>.Empty,
                         Store = TokenGroup.FromArray([3, 3, 2, 2, 2])
                     }
                 },
@@ -204,7 +205,7 @@ namespace SplendidWonders.Gameplay.Tests
                     new Player()
                     {
                         Name = "Test player 1",
-                        ReservedCards = new List<DevelopmentCard>(),
+                        ReservedCards = ImmutableList<DevelopmentCard>.Empty,
                         Store = TokenGroup.FromArray([4, 0, 3, 2, 3])
                     }
                 },
@@ -229,7 +230,7 @@ namespace SplendidWonders.Gameplay.Tests
                     new Player()
                     {
                         Name = "Test player 1",
-                        ReservedCards = new List<DevelopmentCard>(),
+                        ReservedCards = ImmutableList<DevelopmentCard>.Empty,
                         Store = TokenGroup.FromArray([3, 2, 3, 3, 2])
                     }
                 },

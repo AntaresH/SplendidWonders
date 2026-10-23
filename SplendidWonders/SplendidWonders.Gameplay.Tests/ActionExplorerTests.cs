@@ -1,6 +1,7 @@
 ﻿using SplendidWonders.Core.Model;
 using SplendidWonders.Core.Setup;
 using SplendidWonders.Gameplay.Actions;
+using System.Collections.Immutable;
 using System.Numerics;
 
 namespace SplendidWonders.Gameplay.Tests
@@ -18,39 +19,47 @@ namespace SplendidWonders.Gameplay.Tests
                     new Player()
                     {
                         Name = "Test player 1",
-                        ReservedCards = new List<DevelopmentCard>(),
+                        ReservedCards = ImmutableList<DevelopmentCard>.Empty,
                         Store = TokenGroup.FromArray([0, 0, 0, 0, 0])
                     },
                     new Player()
                     {
                         Name = "Test player 2",
-                        ReservedCards = new List<DevelopmentCard>(),
+                        ReservedCards = ImmutableList<DevelopmentCard>.Empty,
                         Store = TokenGroup.FromArray([0, 0, 0, 0, 0])
                     },
                 };
 
-            var defaultDecks = new CardGroup()
+            var defaultLeaders = Leaders.StandardLeaders.Concat(Leaders.ExtendedLeaders).ToImmutableList();
+
+            var defaultLevel1 = new CardGroup()
             {
-                Level1 = new Deck<DevelopmentCard>(Cards.Level1.ToList()),
-                Level2 = new Deck<DevelopmentCard>(Cards.Level2.ToList()),
-                Level3 = new Deck<DevelopmentCard>(Cards.Level3.ToList())
+                Deck = Cards.Level1.Skip(4).ToImmutableList(),
+                Market = Cards.Level1.Take(4).ToImmutableList()
             };
 
-            var defaultMarket = new CardGroup()
+            var defaultLevel2 = new CardGroup()
             {
-                Level1 = new Deck<DevelopmentCard>(defaultDecks.Level1.Draw(4)),
-                Level2 = new Deck<DevelopmentCard>(defaultDecks.Level2.Draw(4)),
-                Level3 = new Deck<DevelopmentCard>(defaultDecks.Level3.Draw(4))
+                Deck = Cards.Level2.Skip(4).ToImmutableList(),
+                Market = Cards.Level2.Take(4).ToImmutableList()
+            };
+
+            var defaultLevel3 = new CardGroup()
+            {
+                Deck = Cards.Level3.Skip(4).ToImmutableList(),
+                Market = Cards.Level3.Take(4).ToImmutableList()
             };
 
             var defaultTokenSupply = TokenGroup.FromArray([0, 0, 0, 0, 0]);
 
             defaultBuilder = defaultBuilder
-                .WithDecks(defaultDecks)
-                .WithMarket(defaultMarket)
+                .WithCurrentPlayer(defaultPlayers[0])
+                .WithLeaders(defaultLeaders)
+                .WithLevel1(defaultLevel1)
+                .WithLevel2(defaultLevel2)
+                .WithLevel3(defaultLevel3)
                 .WithPlayers(defaultPlayers)
-                .WithTokenSupply(defaultTokenSupply)
-                .WithCurrentPlayer(defaultPlayers[0]);
+                .WithTokenSupply(defaultTokenSupply);
         }
 
         [TestCaseSource(nameof(DrawThreeTokensActionCases))]
@@ -118,13 +127,15 @@ namespace SplendidWonders.Gameplay.Tests
         }
 
         [TestCaseSource(nameof(ReserveFromBoardActionCases))]
-        public void GetValidActions_WithDifferentPlayerAndMarketSetup_ShouldReturnExpectedReserveFromBoardActions(List<Player> playerSetup, CardGroup marketSetup, ReserveFromBoardAction[] expectedActions)
+        public void GetValidActions_WithDifferentPlayerAndMarketSetup_ShouldReturnExpectedReserveFromBoardActions(List<Player> playerSetup, CardGroup[] cardSetup, ReserveFromBoardAction[] expectedActions)
         {
             // Arrange
             var gameState = defaultBuilder
-                .WithPlayers(playerSetup)
-                .WithMarket(marketSetup)
                 .WithCurrentPlayer(playerSetup[0])
+                .WithLevel1(cardSetup[0])
+                .WithLevel2(cardSetup[1])
+                .WithLevel3(cardSetup[2])
+                .WithPlayers(playerSetup)
                 .Build();
 
             // Act
@@ -141,13 +152,15 @@ namespace SplendidWonders.Gameplay.Tests
         }
 
         [TestCaseSource(nameof(ReserveFromDeckActionCases))]
-        public void GetValidActions_WithDifferentPlayerAndDeckSetup_ShouldReturnExpectedReserveFromDeckActions(List<Player> playerSetup, CardGroup decksSetup, ReserveFromDeckAction[] expectedActions)
+        public void GetValidActions_WithDifferentPlayerAndDeckSetup_ShouldReturnExpectedReserveFromDeckActions(List<Player> playerSetup, CardGroup[] cardSetup, ReserveFromDeckAction[] expectedActions)
         {
             // Arrange
             var gameState = defaultBuilder
-                .WithPlayers(playerSetup)
-                .WithDecks(decksSetup)
                 .WithCurrentPlayer(playerSetup[0])
+                .WithLevel1(cardSetup[0])
+                .WithLevel2(cardSetup[1])
+                .WithLevel3(cardSetup[2])
+                .WithPlayers(playerSetup)
                 .Build();
 
             // Act
@@ -164,13 +177,13 @@ namespace SplendidWonders.Gameplay.Tests
         }
 
         [TestCaseSource(nameof(SelectLeaderActionCases))]
-        public void GetValidActions_WithDifferentLeaders_ShouldReturnExpectedSelectLeaderActions(List<Player> playerSetup, List<Leader> leaderSetup, SelectLeaderAction[] expectedActions)
+        public void GetValidActions_WithDifferentLeaders_ShouldReturnExpectedSelectLeaderActions(List<Player> playerSetup, ImmutableList<Leader> leaderSetup, SelectLeaderAction[] expectedActions)
         {
             // Arrange
             var gameState = defaultBuilder
+                .WithLeaders(leaderSetup)
                 .WithPlayers(playerSetup)
                 .WithCurrentPlayer(playerSetup[0])
-                .WithLeaders(leaderSetup)
                 .Build();
 
             // Act

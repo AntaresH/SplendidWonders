@@ -120,9 +120,9 @@ namespace SplendidWonders.Gameplay
 
             for (int i = 1; i < 4; i++)
             {
-                var cardList = gameState.Market[i];
+                var cardList = gameState[i];
 
-                for (int j = 0; j < cardList.Count; j++)
+                for (int j = 1; j < 5; j++)
                 {
                     var card = cardList[j];
 
@@ -139,9 +139,9 @@ namespace SplendidWonders.Gameplay
 
             for (int i = 1; i < 4; i++)
             {
-                var deck = gameState.Decks[i];
+                var deck = gameState[i];
 
-                if (deck.Count > 0)
+                if (deck.Remaining > 0)
                 {
                     reserveFromDeckActions.Add(new ReserveFromDeckAction() { Level = i });
                 }
