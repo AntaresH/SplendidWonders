@@ -20,14 +20,14 @@ namespace SplendidWonders.Core.Model
             Market.Insert(marketIndex, card);
         }
 
-        public DevelopmentCard this[int index]
+        public DevelopmentCard? this[int index]
         {
             get
             {
                 if (index < 1 || index > 4)
                     throw new ArgumentException("Column must be between 1 and 4");
 
-                return Market[index-1];
+                return Market[index - 1];
             }
         }
 

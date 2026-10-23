@@ -1,5 +1,6 @@
 ﻿using SplendidWonders.CLI.View;
 using SplendidWonders.Core.Model;
+using SplendidWonders.Core.Setup;
 using SplendidWonders.Gameplay.Actions;
 using System;
 using System.Collections.Generic;
@@ -94,6 +95,9 @@ namespace SplendidWonders.CLI.Input
                     int column = int.Parse(match.Groups[2].Value);
                     action.Card = gameState[level][column];
 
+                    if (action.Card == Cards.Empty)
+                        continue;
+
                     return action;
                 }
             }
@@ -134,6 +138,9 @@ namespace SplendidWonders.CLI.Input
                     int level = int.Parse(match.Groups[1].Value);
                     int column = int.Parse(match.Groups[2].Value);
                     action.Card = gameState[level][column];
+
+                    if (action.Card == Cards.Empty)
+                        continue;
 
                     return action;
                 }

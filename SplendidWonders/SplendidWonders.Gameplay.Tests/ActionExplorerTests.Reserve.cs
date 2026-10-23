@@ -34,19 +34,19 @@ namespace SplendidWonders.Gameplay.Tests
             var shortLevel1 = new CardGroup()
             {
                 Deck = Cards.Level1.Skip(4).ToImmutableList(),
-                Market = Cards.Level1.Take(3).ToImmutableList()
+                Market = Cards.Level1.Take(3).ToImmutableList().Add(Cards.Empty)
             };
 
             var shortLevel2 = new CardGroup()
             {
                 Deck = Cards.Level2.Skip(4).ToImmutableList(),
-                Market = Cards.Level2.Take(3).ToImmutableList()
+                Market = Cards.Level2.Take(3).ToImmutableList().Add(Cards.Empty)
             };
 
             var shortLevel3 = new CardGroup()
             {
                 Deck = Cards.Level3.Skip(4).ToImmutableList(),
-                Market = Cards.Level3.Take(3).ToImmutableList()
+                Market = Cards.Level3.Take(3).ToImmutableList().Add(Cards.Empty)
             };
 
             var fullCardsSetup = new CardGroup[] { level1, level2, level3 };

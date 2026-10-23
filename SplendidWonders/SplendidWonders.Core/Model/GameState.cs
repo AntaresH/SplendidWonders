@@ -8,19 +8,19 @@ namespace SplendidWonders.Core.Model
 {
     public class GameState
     {
-        public List<Player> Players { get; set; }
+        public required List<Player> Players { get; set; }
 
         public TokenGroup TokenSupply { get; set; }
 
-        public ImmutableList<Leader> Leaders { get; set; }
+        public required ImmutableList<Leader> Leaders { get; set; }
 
-        public CardGroup Level1 { get; set; }
+        public required CardGroup Level1 { get; set; }
 
-        public CardGroup Level2 { get; set; }
+        public required CardGroup Level2 { get; set; }
 
-        public CardGroup Level3 { get; set; }
+        public required CardGroup Level3 { get; set; }
 
-        public Player CurrentPlayer { get; set; }
+        public required Player CurrentPlayer { get; set; }
 
         public CardGroup this[int level]
         {

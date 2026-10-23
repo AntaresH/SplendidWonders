@@ -2,13 +2,29 @@
 using SplendidWonders.Core.Model;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Text;
 
 namespace SplendidWonders.Core.Setup
 {
     public static class Cards
     {
-        public static readonly IReadOnlyList<DevelopmentCard> Level1 = new List<DevelopmentCard>
+        private static DevelopmentCard _empty;
+
+        public static DevelopmentCard Empty
+        {
+            get
+            {
+                if (_empty == null)
+                {
+                    _empty = new DevelopmentCard { Id = 0, Name = string.Empty };
+                }
+
+                return _empty;
+            }
+        }
+
+        public static readonly ImmutableList<DevelopmentCard> Level1 = new List<DevelopmentCard>
         {
             new DevelopmentCard { Id = 1, Name = Strings.Card_Birosag, Bonus = DevelopmentBonus.Yellow, Cost = new TokenGroup { Blue = 2, Green = 2, Red = 1 }, VictoryPoints = 0 },
             new DevelopmentCard { Id = 2, Name = Strings.Card_Boraszat, Bonus = DevelopmentBonus.Yellow, Cost = new TokenGroup { Blue = 3 }, VictoryPoints = 0 },
@@ -54,9 +70,9 @@ namespace SplendidWonders.Core.Setup
             new DevelopmentCard { Id = 38, Name = Strings.Card_Laktanya, Bonus = DevelopmentBonus.Red, Cost = new TokenGroup { Green = 2, Brown = 1 }, VictoryPoints = 0 },
             new DevelopmentCard { Id = 39, Name = Strings.Card_Ortorony, Bonus = DevelopmentBonus.Red, Cost = new TokenGroup { Yellow = 1, Blue = 1, Green = 1, Brown = 1 }, VictoryPoints = 0 },
             new DevelopmentCard { Id = 40, Name = Strings.Card_Varosfal, Bonus = DevelopmentBonus.Red, Cost = new TokenGroup { Yellow = 1, Blue = 2, Green = 1, Brown = 1 }, VictoryPoints = 0 },
-        };
+        }.ToImmutableList();
 
-        public static readonly IReadOnlyList<DevelopmentCard> Level2 = new List<DevelopmentCard>
+        public static readonly ImmutableList<DevelopmentCard> Level2 = new List<DevelopmentCard>
         {
             new DevelopmentCard { Id = 41, Name = Strings.Card_Allamigazgatas, Bonus = DevelopmentBonus.Yellow, Cost = new TokenGroup { Brown = 5, Red = 3 }, VictoryPoints = 2 },
             new DevelopmentCard { Id = 42, Name = Strings.Card_Koztarsasag, Bonus = DevelopmentBonus.Yellow, Cost = new TokenGroup { Yellow = 6 }, VictoryPoints = 3 },
@@ -92,9 +108,9 @@ namespace SplendidWonders.Core.Setup
             new DevelopmentCard { Id = 68, Name = Strings.Card_Ostromszakertelem, Bonus = DevelopmentBonus.Red, Cost = new TokenGroup { Green = 5, Brown = 3 }, VictoryPoints = 2 },
             new DevelopmentCard { Id = 69, Name = Strings.Card_Hadvezetes, Bonus = DevelopmentBonus.Red, Cost = new TokenGroup { Red = 6 }, VictoryPoints = 3 },
             new DevelopmentCard { Id = 70, Name = Strings.Card_Vasmuvesseg, Bonus = DevelopmentBonus.Red, Cost = new TokenGroup { Blue = 1, Green = 4, Brown = 2 }, VictoryPoints = 2 },
-        };
+        }.ToImmutableList();
 
-        public static IReadOnlyList<DevelopmentCard> Level3 = new List<DevelopmentCard>
+        public static ImmutableList<DevelopmentCard> Level3 = new List<DevelopmentCard>
         {
             new DevelopmentCard { Id = 71, Name = Strings.Card_AlexandriaiVilagitotorony, Bonus = DevelopmentBonus.Yellow, Cost = new TokenGroup { Yellow = 3, Brown = 3, Red = 6 }, VictoryPoints = 4 },
             new DevelopmentCard { Id = 72, Name = Strings.Card_Perszepolisz, Bonus = DevelopmentBonus.Yellow, Cost = new TokenGroup { Yellow = 3, Red = 7 }, VictoryPoints = 5 },
@@ -120,6 +136,6 @@ namespace SplendidWonders.Core.Setup
             new DevelopmentCard { Id = 88, Name = Strings.Card_KinaiNagyFal, Bonus = DevelopmentBonus.Red, Cost = new TokenGroup { Brown = 7, Red = 3 }, VictoryPoints = 5 },
             new DevelopmentCard { Id = 89, Name = Strings.Card_Kolosszeum, Bonus = DevelopmentBonus.Red, Cost = new TokenGroup { Green = 3, Brown = 6, Red = 3 }, VictoryPoints = 4 },
             new DevelopmentCard { Id = 90, Name = Strings.Card_OlumpiaiZeuszSzobor, Bonus = DevelopmentBonus.Red, Cost = new TokenGroup { Brown = 7 }, VictoryPoints = 4 },
-        };
+        }.ToImmutableList();
     }
 }
