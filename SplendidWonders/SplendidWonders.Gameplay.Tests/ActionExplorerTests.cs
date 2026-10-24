@@ -214,11 +214,7 @@ namespace SplendidWonders.Gameplay.Tests
             // Assert
             Assert.IsNotNull(validActions);
             Assert.IsInstanceOf<List<GameAction>>(validActions);
-
-            foreach (var expectedAction in expectedActions)
-            {
-                Assert.That(validActions.Contains(expectedAction));
-            }
+            Assert.That(validActions.OfType<PurchaseAction>(), Is.EquivalentTo(expectedActions));
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace SplendidWonders.Core.Model
 {
-    public class DevelopmentCard
+    public record DevelopmentCard
     {
         public int Id { get; set; }
 

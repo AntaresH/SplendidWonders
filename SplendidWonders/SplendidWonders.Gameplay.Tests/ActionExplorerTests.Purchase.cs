@@ -153,7 +153,7 @@ namespace SplendidWonders.Gameplay.Tests
                     }
                 },
                 new PurchaseAction[] { })
-                .SetName("Purchase Action - no tokens + empty tableau + default card setup");
+                .SetName("Purchase Action - Empty Tableau - no tokens");
 
             yield return new TestCaseData(
 
@@ -258,6 +258,7 @@ namespace SplendidWonders.Gameplay.Tests
                 },
                 new[]
                 {
+                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 1) },
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 2) },
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 3) }
                 })

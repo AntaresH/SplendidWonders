@@ -29,6 +29,7 @@ namespace SplendidWonders.Gameplay
                 validActions.AddRange(GetDrawDoubleTokensActions(gameState));
                 validActions.AddRange(GetReserveCardFromBoardActions(gameState));
                 validActions.AddRange(GetReserveCardFromDeckActions(gameState));
+                validActions.AddRange(GetPurchaseActions(gameState));
             }
 
             return validActions;
@@ -188,6 +189,37 @@ namespace SplendidWonders.Gameplay
             return selectLeaderActions;
         }
 
+        private static IEnumerable<GameAction> GetPurchaseActions(GameState gameState)
+        {
+            List<PurchaseAction> purchaseActions = new List<PurchaseAction>();
+
+            for (int i = 1; i < 4; i++)
+            {
+                for (int j = 1; j < 5; j++)
+                {
+                    var card = gameState[i][j];
+
+                    if (card == null || card == Cards.Empty)
+                        continue;
+
+                    if (CalculatePurchasability(card.Cost, gameState.CurrentPlayer.Store))
+                    {
+                        purchaseActions.Add(new PurchaseAction() { Card = card });
+                    }
+                }
+            }
+
+            foreach (var card in gameState.CurrentPlayer.ReservedCards)
+            {
+                if (CalculatePurchasability(card.Cost, gameState.CurrentPlayer.Store))
+                {
+                    purchaseActions.Add(new PurchaseAction() { Card = card });
+                }
+            }
+
+            return purchaseActions;
+        }
+
         private static IEnumerable<DrawThreeTokensAction> CalculateThreeTokensActionPermutations(bool[] emptyColors)
         {
             List<DrawThreeTokensAction> permutationActions = new List<DrawThreeTokensAction>();
@@ -255,6 +287,20 @@ namespace SplendidWonders.Gameplay
 
                 current[colorIndex] = 0;
             }
+        }
+
+        private static bool CalculatePurchasability(TokenGroup cardCosts, TokenGroup playerStore)
+        {
+            int deficit =
+                Math.Min(0, playerStore.Yellow - cardCosts.Yellow) +
+                Math.Min(0, playerStore.Blue - cardCosts.Blue) +
+                Math.Min(0, playerStore.Green - cardCosts.Green) +
+                Math.Min(0, playerStore.Brown - cardCosts.Brown) +
+                Math.Min(0, playerStore.Red - cardCosts.Red);
+                        
+            int availablePolymaths = playerStore.Polymath - cardCosts.Polymath;
+
+            return availablePolymaths >= 0 && deficit + availablePolymaths >= 0;
         }
     }
 }

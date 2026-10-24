@@ -24,5 +24,11 @@
                 Polymath = values[5]
             };
         }
+
+
+        public int[] ToArray()
+        {
+            return [ Yellow, Blue, Green, Brown, Red, Polymath ];
+        }
     }
 }
