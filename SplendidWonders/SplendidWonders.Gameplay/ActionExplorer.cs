@@ -53,7 +53,7 @@ namespace SplendidWonders.Gameplay
                 var permutationActions = CalculateThreeTokensActionPermutations(emptyColors);
                 validDrawThreeActions.AddRange(permutationActions);
             }
-            else
+            else if (emptyColors.Count(true) < 5)
             {
                 var values = new int[6];
 
@@ -119,15 +119,21 @@ namespace SplendidWonders.Gameplay
         {
             List<ReserveFromBoardAction> reserveFromBoardActions = new List<ReserveFromBoardAction>();
 
-            for (int i = 1; i < 4; i++)
+            if (gameState.CurrentPlayer.ReservedCards.Count < 3)
             {
-                var cardList = gameState[i];
-
-                for (int j = 1; j < 5; j++)
+                for (int i = 1; i < 4; i++)
                 {
-                    var card = cardList[j];
+                    var cardList = gameState[i];
 
-                    reserveFromBoardActions.Add(new ReserveFromBoardAction() { Card = card });
+                    for (int j = 1; j < 5; j++)
+                    {
+                        var card = cardList[j];
+
+                        if (card != Cards.Empty)
+                        {
+                            reserveFromBoardActions.Add(new ReserveFromBoardAction() { Card = card });
+                        }
+                    }
                 }
             }
 
@@ -138,13 +144,16 @@ namespace SplendidWonders.Gameplay
         {
             List<ReserveFromDeckAction> reserveFromDeckActions = new List<ReserveFromDeckAction>();
 
-            for (int i = 1; i < 4; i++)
+            if (gameState.CurrentPlayer.ReservedCards.Count < 3)
             {
-                var deck = gameState[i];
-
-                if (deck.Remaining > 0)
+                for (int i = 1; i < 4; i++)
                 {
-                    reserveFromDeckActions.Add(new ReserveFromDeckAction() { Level = i });
+                    var deck = gameState[i];
+
+                    if (deck.Remaining > 0)
+                    {
+                        reserveFromDeckActions.Add(new ReserveFromDeckAction() { Level = i });
+                    }
                 }
             }
 

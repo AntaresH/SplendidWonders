@@ -24,31 +24,11 @@ namespace SplendidWonders.Gameplay.Tests
             var bgLeader = Leaders.StandardLeaders.First(leader => leader.Id == 2);
             var ygLeader = Leaders.ExtendedLeaders.First(leader => leader.Id == 11);
 
-            var twoWaySelectionLeaders333 = new List<Leader>
-            {
-                ybgLeader, gorLeader, ybrLeader
-            }.ToImmutableList();
+            var twoWaySelectionLeaders333 = new List<Leader> { ybgLeader, gorLeader, ybrLeader }.ToImmutableList();
+            var threeWaySelectionLeaders333 = new List<Leader> { ybgLeader, ybrLeader, ygrLeader }.ToImmutableList();
 
-            var threeWaySelectionLeaders333 = new List<Leader>
-            {
-                ybgLeader,
-                ybrLeader,
-                ygrLeader
-            }.ToImmutableList();
-
-            var twoWaySelectionLeaders44 = new List<Leader>
-            {
-                ybLeader, ygLeader, ybgLeader
-            }.ToImmutableList();
-
-            var threeWaySelectionLeaders44 = new List<Leader>
-            {
-                ybLeader,
-                ygLeader,
-                bgLeader,
-                gorLeader,
-                ygrLeader
-            }.ToImmutableList();
+            var twoWaySelectionLeaders44 = new List<Leader> { ybLeader, ygLeader, gorLeader }.ToImmutableList();
+            var threeWaySelectionLeaders44 = new List<Leader> { ybLeader, ygLeader, bgLeader, gorLeader, ygrLeader }.ToImmutableList();
 
             var playerTableau333 = new List<DevelopmentCard>();
 

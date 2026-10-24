@@ -76,11 +76,7 @@ namespace SplendidWonders.Gameplay.Tests
             // Assert
             Assert.IsNotNull(validActions);
             Assert.IsInstanceOf<List<GameAction>>(validActions);
-            
-            foreach(var expectedAction in expectedActions)
-            {
-                Assert.That(validActions.Contains(expectedAction));
-            }
+            Assert.That(validActions.OfType<DrawThreeTokensAction>(), Is.EquivalentTo(expectedActions));
         }
 
         [TestCaseSource(nameof(DrawDoubleTokensActionCases))]
@@ -97,11 +93,7 @@ namespace SplendidWonders.Gameplay.Tests
             // Assert
             Assert.IsNotNull(validActions);
             Assert.IsInstanceOf<List<GameAction>>(validActions);
-
-            foreach (var expectedAction in expectedActions)
-            {
-                Assert.That(validActions.Contains(expectedAction));
-            }
+            Assert.That(validActions.OfType<DrawDoubleTokensAction>(), Is.EquivalentTo(expectedActions));
         }
 
         [TestCaseSource(nameof(ReturnTokensActionCases))]
@@ -119,11 +111,7 @@ namespace SplendidWonders.Gameplay.Tests
             // Assert
             Assert.IsNotNull(validActions);
             Assert.IsInstanceOf<List<GameAction>>(validActions);
-
-            foreach (var expectedAction in expectedActions)
-            {
-                Assert.That(validActions.Contains(expectedAction));
-            }
+            Assert.That(validActions.OfType<ReturnTokensAction>(), Is.EquivalentTo(expectedActions));
         }
 
         [TestCaseSource(nameof(ReserveFromBoardActionCases))]
@@ -144,11 +132,7 @@ namespace SplendidWonders.Gameplay.Tests
             // Assert
             Assert.IsNotNull(validActions);
             Assert.IsInstanceOf<List<GameAction>>(validActions);
-
-            foreach (var expectedAction in expectedActions)
-            {
-                Assert.That(validActions.Contains(expectedAction));
-            }
+            Assert.That(validActions.OfType<ReserveFromBoardAction>(), Is.EquivalentTo(expectedActions));
         }
 
         [TestCaseSource(nameof(ReserveFromDeckActionCases))]
@@ -169,11 +153,7 @@ namespace SplendidWonders.Gameplay.Tests
             // Assert
             Assert.IsNotNull(validActions);
             Assert.IsInstanceOf<List<GameAction>>(validActions);
-
-            foreach (var expectedAction in expectedActions)
-            {
-                Assert.That(validActions.Contains(expectedAction));
-            }
+            Assert.That(validActions.OfType<ReserveFromDeckAction>(), Is.EquivalentTo(expectedActions));
         }
 
         [TestCaseSource(nameof(SelectLeaderActionCases))]
@@ -192,11 +172,7 @@ namespace SplendidWonders.Gameplay.Tests
             // Assert
             Assert.IsNotNull(validActions);
             Assert.IsInstanceOf<List<GameAction>>(validActions);
-
-            foreach (var expectedAction in expectedActions)
-            {
-                Assert.That(validActions.Contains(expectedAction));
-            }
+            Assert.That(validActions.OfType<SelectLeaderAction>(), Is.EquivalentTo(expectedActions));
         }
 
         [TestCaseSource(nameof(PurchaseActionEmptyTableauCases))]

@@ -95,7 +95,7 @@ namespace SplendidWonders.Gameplay.Tests
                 },
                 fullCardsSetup,
                 new ReserveFromBoardAction[] {})
-                .SetName("Reserve From Board - Three  reserved cards + full market");
+                .SetName("Reserve From Board - Three reserved cards + full market");
 
 
             yield return new TestCaseData(
@@ -166,7 +166,7 @@ namespace SplendidWonders.Gameplay.Tests
                 },
                 shortCardsSetup1,
                 new ReserveFromBoardAction[] { })
-                .SetName("Reserve From Board - Three  reserved cards + short market");
+                .SetName("Reserve From Board - Three reserved cards + short market");
         }
 
         private static IEnumerable<TestCaseData> ReserveFromDeckActionCases()
