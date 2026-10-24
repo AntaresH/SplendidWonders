@@ -54,7 +54,7 @@ namespace SplendidWonders.Gameplay
             }
             else
             {
-                var values = new int[5];
+                var values = new int[6];
 
                 for (int i = 0; i < emptyColors.Length; i++)
                 {
@@ -72,15 +72,15 @@ namespace SplendidWonders.Gameplay
             List<DrawDoubleTokensAction> gameActions = new List<DrawDoubleTokensAction>();
 
             if (gameState.TokenSupply.Yellow >= 4)
-                gameActions.Add(new DrawDoubleTokensAction() { Tokens = TokenGroup.FromArray(new int[] { 2, 0, 0, 0, 0 }) });
+                gameActions.Add(new DrawDoubleTokensAction() { Tokens = TokenGroup.FromArray(new int[] { 2, 0, 0, 0, 0, 0 }) });
             if (gameState.TokenSupply.Blue >= 4)
-                gameActions.Add(new DrawDoubleTokensAction() { Tokens = TokenGroup.FromArray(new int[] { 0, 2, 0, 0, 0 }) });
+                gameActions.Add(new DrawDoubleTokensAction() { Tokens = TokenGroup.FromArray(new int[] { 0, 2, 0, 0, 0, 0 }) });
             if (gameState.TokenSupply.Green >= 4)
-                gameActions.Add(new DrawDoubleTokensAction() { Tokens = TokenGroup.FromArray(new int[] { 0, 0, 2, 0, 0 }) });
+                gameActions.Add(new DrawDoubleTokensAction() { Tokens = TokenGroup.FromArray(new int[] { 0, 0, 2, 0, 0, 0 }) });
             if (gameState.TokenSupply.Brown >= 4)
-                gameActions.Add(new DrawDoubleTokensAction() { Tokens = TokenGroup.FromArray(new int[] { 0, 0, 0, 2, 0 }) });
+                gameActions.Add(new DrawDoubleTokensAction() { Tokens = TokenGroup.FromArray(new int[] { 0, 0, 0, 2, 0, 0 }) });
             if (gameState.TokenSupply.Red >= 4)
-                gameActions.Add(new DrawDoubleTokensAction() { Tokens = TokenGroup.FromArray(new int[] { 0, 0, 0, 0, 2 }) });
+                gameActions.Add(new DrawDoubleTokensAction() { Tokens = TokenGroup.FromArray(new int[] { 0, 0, 0, 0, 2, 0 }) });
 
             return gameActions;
         }
@@ -207,7 +207,7 @@ namespace SplendidWonders.Gameplay
                         if (emptyColors[k])
                             continue;
 
-                        var values = new int[5];
+                        var values = new int[6];
                         values[i] = 1;
                         values[j] = 1;
                         values[k] = 1;
@@ -237,7 +237,7 @@ namespace SplendidWonders.Gameplay
                         result.Add(
                             new ReturnTokensAction()
                             {
-                                Tokens = TokenGroup.FromArray([current[0], current[1], current[2], current[3], current[4]])
+                                Tokens = TokenGroup.FromArray([current[0], current[1], current[2], current[3], current[4], 0])
                             });
                     }
 

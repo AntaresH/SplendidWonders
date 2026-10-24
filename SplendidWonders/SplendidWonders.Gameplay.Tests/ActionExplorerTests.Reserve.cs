@@ -62,7 +62,7 @@ namespace SplendidWonders.Gameplay.Tests
                     {
                         Name = "Test player 1",
                         ReservedCards = ImmutableList<DevelopmentCard>.Empty,
-                        Store = TokenGroup.FromArray([0, 0, 0, 0, 0])
+                        Store = TokenGroup.FromArray([0, 0, 0, 0, 0, 0])
                     }
                 },
                 fullCardsSetup,
@@ -90,7 +90,7 @@ namespace SplendidWonders.Gameplay.Tests
                     {
                         Name = "Test player 1",
                         ReservedCards = level1.Deck.Take(3).ToImmutableList(),
-                        Store = TokenGroup.FromArray([4, 4, 2, 0, 0])
+                        Store = TokenGroup.FromArray([4, 4, 2, 0, 0, 0])
                     }
                 },
                 fullCardsSetup,
@@ -105,7 +105,7 @@ namespace SplendidWonders.Gameplay.Tests
                     {
                         Name = "Test player 1",
                         ReservedCards = ImmutableList<DevelopmentCard>.Empty,
-                        Store = TokenGroup.FromArray([0, 0, 0, 0, 0])
+                        Store = TokenGroup.FromArray([0, 0, 0, 0, 0, 0])
                     }
                 },
                 shortCardsSetup1,
@@ -133,7 +133,7 @@ namespace SplendidWonders.Gameplay.Tests
                     {
                         Name = "Test player 1",
                         ReservedCards = ImmutableList<DevelopmentCard>.Empty,
-                        Store = TokenGroup.FromArray([0, 0, 0, 0, 0])
+                        Store = TokenGroup.FromArray([0, 0, 0, 0, 0, 0])
                     }
                 },
                 shortCardsSetup2,
@@ -161,7 +161,7 @@ namespace SplendidWonders.Gameplay.Tests
                     {
                         Name = "Test player 1",
                         ReservedCards = level1.Deck.Take(3).ToImmutableList(),
-                        Store = TokenGroup.FromArray([4, 4, 2, 0, 0])
+                        Store = TokenGroup.FromArray([4, 4, 2, 0, 0, 0])
                     }
                 },
                 shortCardsSetup1,
@@ -220,7 +220,7 @@ namespace SplendidWonders.Gameplay.Tests
                     {
                         Name = "Test player 1",
                         ReservedCards = ImmutableList<DevelopmentCard>.Empty,
-                        Store = TokenGroup.FromArray([0, 0, 0, 0, 0])
+                        Store = TokenGroup.FromArray([0, 0, 0, 0, 0, 0])
                     }
                 },
                 fullCardsSetup,
@@ -239,7 +239,7 @@ namespace SplendidWonders.Gameplay.Tests
                     {
                         Name = "Test player 1",
                         ReservedCards = level1.Deck.Take(3).ToImmutableList(),
-                        Store = TokenGroup.FromArray([4, 4, 2, 0, 0])
+                        Store = TokenGroup.FromArray([4, 4, 2, 0, 0, 0])
                     }
                 },
                 fullCardsSetup,
@@ -254,7 +254,7 @@ namespace SplendidWonders.Gameplay.Tests
                     {
                         Name = "Test player 1",
                         ReservedCards = ImmutableList<DevelopmentCard>.Empty,
-                        Store = TokenGroup.FromArray([0, 0, 0, 0, 0])
+                        Store = TokenGroup.FromArray([0, 0, 0, 0, 0, 0])
                     }
                 },
                 level1DeckEmpty,
@@ -272,7 +272,7 @@ namespace SplendidWonders.Gameplay.Tests
                     {
                         Name = "Test player 1",
                         ReservedCards = ImmutableList<DevelopmentCard>.Empty,
-                        Store = TokenGroup.FromArray([0, 0, 0, 0, 0])
+                        Store = TokenGroup.FromArray([0, 0, 0, 0, 0, 0])
                     }
                 },
                 multipleDecksEmpty,
@@ -289,7 +289,7 @@ namespace SplendidWonders.Gameplay.Tests
                     {
                         Name = "Test player 1",
                         ReservedCards = level1.Deck.Take(3).ToImmutableList(),
-                        Store = TokenGroup.FromArray([4, 4, 2, 0, 0])
+                        Store = TokenGroup.FromArray([4, 4, 2, 0, 0, 0])
                     }
                 },
                 level1DeckEmpty,

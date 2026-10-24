@@ -20,13 +20,13 @@ namespace SplendidWonders.Gameplay.Tests
                     {
                         Name = "Test player 1",
                         ReservedCards = ImmutableList<DevelopmentCard>.Empty,
-                        Store = TokenGroup.FromArray([0, 0, 0, 0, 0])
+                        Store = TokenGroup.FromArray([0, 0, 0, 0, 0, 0])
                     },
                     new Player()
                     {
                         Name = "Test player 2",
                         ReservedCards = ImmutableList<DevelopmentCard>.Empty,
-                        Store = TokenGroup.FromArray([0, 0, 0, 0, 0])
+                        Store = TokenGroup.FromArray([0, 0, 0, 0, 0, 0])
                     },
                 };
 
@@ -50,7 +50,7 @@ namespace SplendidWonders.Gameplay.Tests
                 Market = Cards.Level3.Take(4).ToImmutableList()
             };
 
-            var defaultTokenSupply = TokenGroup.FromArray([0, 0, 0, 0, 0]);
+            var defaultTokenSupply = TokenGroup.FromArray([0, 0, 0, 0, 0, 0]);
 
             defaultBuilder = defaultBuilder
                 .WithCurrentPlayer(defaultPlayers[0])
