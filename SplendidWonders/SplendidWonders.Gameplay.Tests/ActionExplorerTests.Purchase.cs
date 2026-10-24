@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities.Resources;
+using NUnit.Framework.Interfaces;
 using SplendidWonders.Core.Model;
 using SplendidWonders.Core.Setup;
 using SplendidWonders.Gameplay.Actions;
@@ -137,6 +138,148 @@ namespace SplendidWonders.Gameplay.Tests
                     new SelectLeaderAction() { Leader = bgLeader }
                 })
                 .SetName("Select Leader - Three 4-4 leaders are eligible");
+        }
+
+        private static IEnumerable<TestCaseData> PurchaseActionEmptyTableauCases()
+        {
+            yield return new TestCaseData(
+
+                new List<Player>()
+                {
+                    new Player()
+                    {
+                        Name = "Test player 1",
+                        Store = TokenGroup.FromArray([0, 0, 0, 0, 0, 0])
+                    }
+                },
+                new PurchaseAction[] { })
+                .SetName("Purchase Action - no tokens + empty tableau + default card setup");
+
+            yield return new TestCaseData(
+
+                new List<Player>()
+                {
+                    new Player()
+                    {
+                        Name = "Test player 1",
+                        Store = TokenGroup.FromArray([3, 0, 0, 1, 0, 0])
+                    }
+                },
+                new PurchaseAction[] { })
+                .SetName("Purchase Action - Empty Tableau - not suitable tokens");
+
+            yield return new TestCaseData(
+
+                new List<Player>()
+                {
+                    new Player()
+                    {
+                        Name = "Test player 1",
+                        Store = TokenGroup.FromArray([0, 2, 2, 0, 1, 0])
+                    }
+                },
+                new[]
+                {
+                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 1) }
+                })
+                .SetName("Purchase Action - Empty Tableau - 2 blue, 2 green, 1 red");
+
+            yield return new TestCaseData(
+
+                new List<Player>()
+                {
+                    new Player()
+                    {
+                        Name = "Test player 1",
+                        Store = TokenGroup.FromArray([0, 0, 0, 2, 1, 0])
+                    }
+                },
+                new[]
+                {
+                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 4) }
+                })
+                .SetName("Purchase Action - Empty Tableau - 2 brown, 1 red");
+
+            yield return new TestCaseData(
+
+                new List<Player>()
+                {
+                    new Player()
+                    {
+                        Name = "Test player 1",
+                        Store = TokenGroup.FromArray([0, 0, 0, 2, 0, 1])
+                    }
+                },
+                new[]
+                {
+                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 4) }
+                })
+                .SetName("Purchase Action -Empty Tableau -  2 brown, 1 polymath");
+
+            yield return new TestCaseData(
+
+                new List<Player>()
+                {
+                    new Player()
+                    {
+                        Name = "Test player 1",
+                        Store = TokenGroup.FromArray([0, 0, 0, 0, 0, 2])
+                    }
+                },
+                new PurchaseAction[] { })
+                .SetName("Purchase Action - Empty Tableau - 2 polymath");
+
+            yield return new TestCaseData(
+
+                new List<Player>()
+                {
+                    new Player()
+                    {
+                        Name = "Test player 1",
+                        Store = TokenGroup.FromArray([0, 0, 0, 0, 0, 3])
+                    }
+                },
+                new[]
+                {
+                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 2) },
+                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 4) }
+                })
+                .SetName("Purchase Action - Empty Tableau - 3 polymath");
+
+            yield return new TestCaseData(
+
+                new List<Player>()
+                {
+                    new Player()
+                    {
+                        Name = "Test player 1",
+                        Store = TokenGroup.FromArray([3, 4, 1, 0, 1, 1])
+                    }
+                },
+                new[]
+                {
+                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 2) },
+                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 3) }
+                })
+                .SetName("Purchase Action - Empty Tableau - lots of tokens #1");
+
+            yield return new TestCaseData(
+
+                new List<Player>()
+                {
+                    new Player()
+                    {
+                        Name = "Test player 1",
+                        Store = TokenGroup.FromArray([0, 0, 1, 5, 2, 0])
+                    }
+                },
+                new[]
+                {
+                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 4) },
+                    new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 43) },
+                    new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 44) }
+                })
+                .SetName("Purchase Action - Empty Tableau - lots of tokens #2");
         }
     }
 }

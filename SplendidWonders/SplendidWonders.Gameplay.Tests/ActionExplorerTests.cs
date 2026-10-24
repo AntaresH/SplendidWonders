@@ -198,5 +198,27 @@ namespace SplendidWonders.Gameplay.Tests
                 Assert.That(validActions.Contains(expectedAction));
             }
         }
+
+        [TestCaseSource(nameof(PurchaseActionEmptyTableauCases))]
+        public void GetValidActions_WithDifferentStoreAndEmptyTableau_ShouldReturnExpectedPurchaseActions(List<Player> playerSetup, PurchaseAction[] expectedActions)
+        {
+            // Arrange
+            var gameState = defaultBuilder
+                .WithPlayers(playerSetup)
+                .WithCurrentPlayer(playerSetup[0])
+                .Build();
+
+            // Act
+            var validActions = ActionExplorer.GetValidActions(gameState);
+
+            // Assert
+            Assert.IsNotNull(validActions);
+            Assert.IsInstanceOf<List<GameAction>>(validActions);
+
+            foreach (var expectedAction in expectedActions)
+            {
+                Assert.That(validActions.Contains(expectedAction));
+            }
+        }
     }
 }
