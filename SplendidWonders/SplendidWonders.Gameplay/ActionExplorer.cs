@@ -1,6 +1,7 @@
 ﻿using SplendidWonders.Core.Model;
 using SplendidWonders.Core.Setup;
 using SplendidWonders.Gameplay.Actions;
+using System.Collections.Immutable;
 
 namespace SplendidWonders.Gameplay
 {
@@ -211,7 +212,7 @@ namespace SplendidWonders.Gameplay
                     if (card == null || card == Cards.Empty)
                         continue;
 
-                    if (CalculatePurchasability(card.Cost, gameState.CurrentPlayer.Store))
+                    if (CalculatePurchasability(card.Cost, gameState.CurrentPlayer.Store, gameState.CurrentPlayer.Tableau))
                     {
                         purchaseActions.Add(new PurchaseAction() { Card = card });
                     }
@@ -220,7 +221,7 @@ namespace SplendidWonders.Gameplay
 
             foreach (var card in gameState.CurrentPlayer.ReservedCards)
             {
-                if (CalculatePurchasability(card.Cost, gameState.CurrentPlayer.Store))
+                if (CalculatePurchasability(card.Cost, gameState.CurrentPlayer.Store, gameState.CurrentPlayer.Tableau))
                 {
                     purchaseActions.Add(new PurchaseAction() { Card = card });
                 }
@@ -298,14 +299,21 @@ namespace SplendidWonders.Gameplay
             }
         }
 
-        private static bool CalculatePurchasability(TokenGroup cardCosts, TokenGroup playerStore)
+        private static bool CalculatePurchasability(TokenGroup cardCosts, TokenGroup playerStore, ImmutableList<DevelopmentCard> playerTableau)
         {
+            int playerYellowBonuses = playerTableau.Count(c => c.Bonus == DevelopmentBonus.Yellow);
+            int playerBlueBonuses = playerTableau.Count(c => c.Bonus == DevelopmentBonus.Blue);
+            int playerGreenBonuses = playerTableau.Count(c => c.Bonus == DevelopmentBonus.Green);
+            int playerBrownBonuses = playerTableau.Count(c => c.Bonus == DevelopmentBonus.Brown);
+            int playerRedBonuses = playerTableau.Count(c => c.Bonus == DevelopmentBonus.Red);
+
+
             int deficit =
-                Math.Min(0, playerStore.Yellow - cardCosts.Yellow) +
-                Math.Min(0, playerStore.Blue - cardCosts.Blue) +
-                Math.Min(0, playerStore.Green - cardCosts.Green) +
-                Math.Min(0, playerStore.Brown - cardCosts.Brown) +
-                Math.Min(0, playerStore.Red - cardCosts.Red);
+                Math.Min(0, playerYellowBonuses + playerStore.Yellow - cardCosts.Yellow) +
+                Math.Min(0, playerBlueBonuses + playerStore.Blue - cardCosts.Blue) +
+                Math.Min(0, playerGreenBonuses + playerStore.Green - cardCosts.Green) +
+                Math.Min(0, playerBrownBonuses + playerStore.Brown - cardCosts.Brown) +
+                Math.Min(0, playerRedBonuses + playerStore.Red - cardCosts.Red);
                         
             int availablePolymaths = playerStore.Polymath - cardCosts.Polymath;
 

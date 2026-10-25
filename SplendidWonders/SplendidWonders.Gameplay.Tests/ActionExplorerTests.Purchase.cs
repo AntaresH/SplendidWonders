@@ -340,6 +340,7 @@ namespace SplendidWonders.Gameplay.Tests
                 new[]
                 {
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 1) },
+                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 2) },
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 3) },
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 4) },
                     new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 42) },
@@ -465,12 +466,15 @@ namespace SplendidWonders.Gameplay.Tests
                 },
                 new[]
                 {
+                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 1) },
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 2) },
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 3) },
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 4) },
                     new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 41) },
                     new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 43) },
                     new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 44) },
+                    new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 44) },
+                    new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 89) },
                 })
                 .SetName("Purchase Action - Existing Tableau 42011 - default market + 8-long store brown-heavy");
 
@@ -562,9 +566,6 @@ namespace SplendidWonders.Gameplay.Tests
                     new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 42) },
                     new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 43) },
                     new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 44) },
-                    new PurchaseAction() { Card = Cards.Level3.First(c => c.Id == 71) },
-                    new PurchaseAction() { Card = Cards.Level3.First(c => c.Id == 72) },
-                    new PurchaseAction() { Card = Cards.Level3.First(c => c.Id == 74) },
                 })
                 .SetName("Purchase Action - Existing Tableau 42011 - default market + 10-long store with polymath");
 
