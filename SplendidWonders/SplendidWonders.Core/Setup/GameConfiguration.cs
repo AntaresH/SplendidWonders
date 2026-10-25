@@ -2,9 +2,11 @@
 {
     public class GameConfiguration
     {
-        public static GameConfiguration Standard => new GameConfiguration() { UseExtendedLeaders = false };
-        public static GameConfiguration ExtendedLeaders => new GameConfiguration() { UseExtendedLeaders = true };
+        public List<string> PlayerNames { get; set; }
+        public bool UseExtendedLeaders { get; set; }
 
-        public bool UseExtendedLeaders { get; internal set; }
+        public bool UseRandomSeed { get; set; }
+
+        public int Seed { get; set; }
     }
 }

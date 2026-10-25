@@ -14,9 +14,9 @@ internal class GameOrchestrator
     private IGameView _gameView;
     private IGameInput _commandHandler;
 
-    internal GameOrchestrator(bool useExtendedLeaders, List<string> players, IGameView gameView, IGameInput gameInput)
+    internal GameOrchestrator(GameConfiguration gameConfiguration, IGameView gameView, IGameInput gameInput)
     {
-        _game = new GameInstance(useExtendedLeaders ? GameConfiguration.ExtendedLeaders : GameConfiguration.Standard, players);
+        _game = new GameInstance(gameConfiguration);
         _gameView = gameView;
         _commandHandler = gameInput;
     }

@@ -1,10 +1,12 @@
-﻿using SplendidWonders.Core.Setup;
-using SplendidWonders.Core.Model;
+﻿using SplendidWonders.Core.Model;
+using SplendidWonders.Core.Setup;
 using SplendidWonders.Gameplay.Actions;
+using SplendidWonders.Gameplay.Reducers;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
+using static System.Collections.Specialized.BitVector32;
 
 namespace SplendidWonders.Gameplay
 {
@@ -32,16 +34,13 @@ namespace SplendidWonders.Gameplay
 
         private GameConfiguration _gameConfiguration;
 
-        private List<string> _playerNames;
-
-        public GameInstance(GameConfiguration gameConfiguration, List<string> playerNames)
+        public GameInstance(GameConfiguration gameConfiguration)
         {
             Id = Guid.NewGuid();
             StartedAt = DateTime.UtcNow;
             IsGameOver = false;
 
             _gameConfiguration = gameConfiguration;
-            _playerNames = playerNames;
         }
 
         public void Start()
@@ -49,7 +48,7 @@ namespace SplendidWonders.Gameplay
             // Initialize game state, players, and other necessary components
             Console.WriteLine("Starting the game...");
 
-            GameState = GameFactory.GetNewGameState(_gameConfiguration, _playerNames);
+            GameState = GameFactory.GetNewGameState(_gameConfiguration);
         }
 
         public Dictionary<string, int> GetFinalScores()
@@ -64,7 +63,32 @@ namespace SplendidWonders.Gameplay
 
         public void ExecuteCommand(GameAction command)
         {
-            GameState = ActionResolver.ReduceState(GameState, command);
+            switch (command)
+            {
+                case DrawThreeTokensAction a:
+                    DrawThreeTokensReducer.Reduce(GameState, a);
+                    break;
+                case DrawDoubleTokensAction a:
+                    DrawDoubleTokensReducer.Reduce(GameState, a);
+                    break;
+                case ReturnTokensAction a:
+                    ReturnTokensReducer.Reduce(GameState, a);
+                    break;
+                case PurchaseAction a:
+                    PurchaseReducer.Reduce(GameState, a);
+                    break;
+                case ReserveFromBoardAction a:
+                    ReserveFromBoardReducer.Reduce(GameState, a);
+                    break;
+                case ReserveFromDeckAction a:
+                    ReserveFromDeckReducer.Reduce(GameState, a);
+                    break;
+                case SelectLeaderAction a:
+                    SelectLeaderReducer.Reduce(GameState, a);
+                    break;
+                default:
+                    throw new InvalidOperationException("This action is not supported... yet");
+            }
         }
     }
 }

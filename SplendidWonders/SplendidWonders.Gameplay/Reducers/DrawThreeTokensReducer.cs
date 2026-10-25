@@ -4,11 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SplendidWonders.Gameplay
+namespace SplendidWonders.Gameplay.Reducers
 {
-    public class ActionResolver
+    public class DrawThreeTokensReducer
     {
-        public static GameState ReduceState(GameState gameState, GameAction action)
+        public static GameState Reduce(GameState state, DrawThreeTokensAction action)
         {
             throw new NotImplementedException();
         }

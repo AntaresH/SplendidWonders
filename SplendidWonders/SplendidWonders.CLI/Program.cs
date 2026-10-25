@@ -2,6 +2,7 @@
 using SplendidWonders.CLI.Input;
 using SplendidWonders.CLI.View;
 using SplendidWonders.Common;
+using SplendidWonders.Core.Setup;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 internal class Program
@@ -39,7 +40,14 @@ internal class Program
             //bool useExtendedLeaders = LeaderPrompter();
             
             IGameInput gameInput = new ConsoleGameInput(gameView);
-            GameOrchestrator orchestrator = new GameOrchestrator(true, new List<string>() { "Ambrus", "Brünhilda" }, gameView, gameInput);
+            GameConfiguration configuration = new GameConfiguration()
+            {
+                PlayerNames = new List<string>() { "Ambrus", "Brünhilda" },
+                UseExtendedLeaders = true,
+                UseRandomSeed = true
+            };
+
+            GameOrchestrator orchestrator = new GameOrchestrator(configuration, gameView, gameInput);
             orchestrator.Start();
 
             stayInGame = StayPrompter();

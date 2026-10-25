@@ -9,16 +9,16 @@ namespace SplendidWonders.Core.Setup
 {
     public class GameFactory
     {
-        public static GameState GetNewGameState(GameConfiguration configuration, List<string> playerNames, int seed = 0)
+        public static GameState GetNewGameState(GameConfiguration configuration)
         {
             var players = new List<Player>();
 
-            for (int i = 0; i < playerNames.Count; i++)
+            for (int i = 0; i < configuration.PlayerNames.Count; i++)
             {
-                players.Add(new Player() { Name = playerNames[i] });
+                players.Add(new Player() { Name = configuration.PlayerNames[i] });
             }
 
-            var tokenSupply = playerNames.Count switch
+            var tokenSupply = configuration.PlayerNames.Count switch
             {
                 2 => new TokenGroup() { Yellow = 4, Blue = 4, Green = 4, Brown = 4, Red = 4, Polymath = 5 },
                 3 => new TokenGroup() { Yellow = 5, Blue = 5, Green = 5, Brown = 5, Red = 5, Polymath = 5 },
@@ -26,8 +26,10 @@ namespace SplendidWonders.Core.Setup
                 _ => throw new ArgumentException("Invalid number of players. Must be 2, 3, or 4.")
             };
 
+            int seed = configuration.UseRandomSeed ? new Random().Next(1,1000000) : configuration.Seed;
+
             var randomizedDecks = GetRandomizedCardSetup(seed);
-            var randomizedLeaders = GetRandomizedLeaders(configuration.UseExtendedLeaders, playerNames.Count, seed);
+            var randomizedLeaders = GetRandomizedLeaders(configuration.UseExtendedLeaders, configuration.PlayerNames.Count, seed);
 
             return new GameState
             {
