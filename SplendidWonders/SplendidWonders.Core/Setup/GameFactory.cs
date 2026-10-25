@@ -9,7 +9,7 @@ namespace SplendidWonders.Core.Setup
 {
     public class GameFactory
     {
-        public static GameState GetNewGameState(GameConfiguration configuration, List<string> playerNames)
+        public static GameState GetNewGameState(GameConfiguration configuration, List<string> playerNames, int seed = 0)
         {
             var players = new List<Player>();
 
@@ -26,47 +26,71 @@ namespace SplendidWonders.Core.Setup
                 _ => throw new ArgumentException("Invalid number of players. Must be 2, 3, or 4.")
             };
 
-            var availableLeaders = configuration.UseExtendedLeaders
-                ? Leaders.StandardLeaders.Concat(Leaders.ExtendedLeaders).ToImmutableList()
-                : Leaders.StandardLeaders.ToImmutableList();
-
-            var leaderDeck = configuration.UseExtendedLeaders
-                ? Leaders.StandardLeaders.Concat(Leaders.ExtendedLeaders).ToList()
-                : Leaders.StandardLeaders.ToList();
-
-            var level1Cards = Cards.Level1.Shuffle();
-
-            var level1 = new CardGroup()
-            {
-                Deck = level1Cards.Skip(4).ToImmutableList(),
-                Market = level1Cards.Take(4).ToImmutableList()
-            };
-
-            var level2Cards = Cards.Level1.Shuffle();
-
-            var level2 = new CardGroup()
-            {
-                Deck = level2Cards.Skip(4).ToImmutableList(),
-                Market = level2Cards.Take(4).ToImmutableList()
-            };
-            var level3Cards = Cards.Level1.Shuffle();
-
-            var level3 = new CardGroup()
-            {
-                Deck = level3Cards.Skip(4).ToImmutableList(),
-                Market = level3Cards.Take(4).ToImmutableList()
-            };
+            var randomizedDecks = GetRandomizedCardSetup(seed);
+            var randomizedLeaders = GetRandomizedLeaders(configuration.UseExtendedLeaders, playerNames.Count, seed);
 
             return new GameState
             {
                 Players = players,
                 TokenSupply = tokenSupply,
-                Leaders = availableLeaders,
-                Level1 = level1,
-                Level2 = level2,
-                Level3 = level3,
+                Leaders = randomizedLeaders,
+                Level1 = randomizedDecks[0],
+                Level2 = randomizedDecks[1],
+                Level3 = randomizedDecks[2],
                 CurrentPlayer = players[0]
             };
+        }
+
+        public static ImmutableList<Leader> GetRandomizedLeaders(bool useExtendedLeaders, int playerCount, int seed = 0)
+        {
+            IEnumerable<Leader> randomizedLeaders = useExtendedLeaders
+                ? Leaders.StandardLeaders.Concat(Leaders.ExtendedLeaders)
+                : Leaders.StandardLeaders;
+
+            if (seed != 0)
+                randomizedLeaders = randomizedLeaders.Shuffle(seed);
+
+            return randomizedLeaders.Take(playerCount + 1).ToImmutableList();
+        }
+
+        public static CardGroup[] GetRandomizedCardSetup(int seed = 0)
+        {
+            CardGroup[] randomSetup = new CardGroup[3];
+
+            IEnumerable<DevelopmentCard> level1Cards = Cards.Level1;
+            
+            if (seed != 0)
+             level1Cards = level1Cards.Shuffle(seed + 1);
+
+            randomSetup[0] = new CardGroup()
+            {
+                Deck = level1Cards.Skip(4).ToImmutableList(),
+                Market = level1Cards.Take(4).ToImmutableList()
+            };
+
+            IEnumerable<DevelopmentCard> level2Cards = Cards.Level2;
+
+            if (seed != 0)
+                level2Cards = level2Cards.Shuffle(seed + 2);
+
+            randomSetup[1] = new CardGroup()
+            {
+                Deck = level2Cards.Skip(4).ToImmutableList(),
+                Market = level2Cards.Take(4).ToImmutableList()
+            };
+
+            IEnumerable<DevelopmentCard> level3Cards = Cards.Level3;
+
+            if (seed != 0)
+                level3Cards = level3Cards.Shuffle(seed + 3);
+
+            randomSetup[2] = new CardGroup()
+            {
+                Deck = level3Cards.Skip(4).ToImmutableList(),
+                Market = level3Cards.Take(4).ToImmutableList()
+            };
+
+            return randomSetup;
         }
     }
 }

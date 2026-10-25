@@ -30,34 +30,16 @@ namespace SplendidWonders.Gameplay.Tests
                     },
                 };
 
-            var defaultLeaders = Leaders.StandardLeaders.Concat(Leaders.ExtendedLeaders).ToImmutableList();
-
-            var defaultLevel1 = new CardGroup()
-            {
-                Deck = Cards.Level1.Skip(4).ToImmutableList(),
-                Market = Cards.Level1.Take(4).ToImmutableList()
-            };
-
-            var defaultLevel2 = new CardGroup()
-            {
-                Deck = Cards.Level2.Skip(4).ToImmutableList(),
-                Market = Cards.Level2.Take(4).ToImmutableList()
-            };
-
-            var defaultLevel3 = new CardGroup()
-            {
-                Deck = Cards.Level3.Skip(4).ToImmutableList(),
-                Market = Cards.Level3.Take(4).ToImmutableList()
-            };
-
+            var defaultLeaders = GameFactory.GetRandomizedLeaders(true, defaultPlayers.Count);
+            var defaultCards = GameFactory.GetRandomizedCardSetup();
             var defaultTokenSupply = TokenGroup.FromArray([0, 0, 0, 0, 0, 0]);
 
             defaultBuilder = defaultBuilder
                 .WithCurrentPlayer(defaultPlayers[0])
                 .WithLeaders(defaultLeaders)
-                .WithLevel1(defaultLevel1)
-                .WithLevel2(defaultLevel2)
-                .WithLevel3(defaultLevel3)
+                .WithLevel1(defaultCards[0])
+                .WithLevel2(defaultCards[1])
+                .WithLevel3(defaultCards[2])
                 .WithPlayers(defaultPlayers)
                 .WithTokenSupply(defaultTokenSupply);
         }
@@ -192,11 +174,31 @@ namespace SplendidWonders.Gameplay.Tests
             Assert.IsInstanceOf<List<GameAction>>(validActions);
             Assert.That(validActions.OfType<PurchaseAction>(), Is.EquivalentTo(expectedActions));
         }
+
         [TestCaseSource(nameof(PurchaseActionTableau42011Cases))]
         public void GetValidActions_WithDifferentStoreAndTableau42011_ShouldReturnExpectedPurchaseActions(List<Player> playerSetup, PurchaseAction[] expectedActions)
         {
             // Arrange
             var gameState = defaultBuilder
+                .WithPlayers(playerSetup)
+                .WithCurrentPlayer(playerSetup[0])
+                .Build();
+
+            // Act
+            var validActions = ActionExplorer.GetValidActions(gameState);
+
+            // Assert
+            Assert.IsNotNull(validActions);
+            Assert.IsInstanceOf<List<GameAction>>(validActions);
+            Assert.That(validActions.OfType<PurchaseAction>(), Is.EquivalentTo(expectedActions));
+        }
+
+        [TestCaseSource(nameof(PurchaseActionTableau20233Cases))]
+        public void GetValidActions_WithDifferentStoreAndTableau20233_ShouldReturnExpectedPurchaseActions(List<Player> playerSetup, PurchaseAction[] expectedActions)
+        {
+            // Arrange
+            var gameState = defaultBuilder
+
                 .WithPlayers(playerSetup)
                 .WithCurrentPlayer(playerSetup[0])
                 .Build();
