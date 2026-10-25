@@ -192,5 +192,22 @@ namespace SplendidWonders.Gameplay.Tests
             Assert.IsInstanceOf<List<GameAction>>(validActions);
             Assert.That(validActions.OfType<PurchaseAction>(), Is.EquivalentTo(expectedActions));
         }
+        [TestCaseSource(nameof(PurchaseActionTableau42011Cases))]
+        public void GetValidActions_WithDifferentStoreAndTableau42011_ShouldReturnExpectedPurchaseActions(List<Player> playerSetup, PurchaseAction[] expectedActions)
+        {
+            // Arrange
+            var gameState = defaultBuilder
+                .WithPlayers(playerSetup)
+                .WithCurrentPlayer(playerSetup[0])
+                .Build();
+
+            // Act
+            var validActions = ActionExplorer.GetValidActions(gameState);
+
+            // Assert
+            Assert.IsNotNull(validActions);
+            Assert.IsInstanceOf<List<GameAction>>(validActions);
+            Assert.That(validActions.OfType<PurchaseAction>(), Is.EquivalentTo(expectedActions));
+        }
     }
 }

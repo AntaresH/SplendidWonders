@@ -262,7 +262,7 @@ namespace SplendidWonders.Gameplay.Tests
                 .SetName("Purchase Action - Empty Tableau - lots of tokens #2");
         }
 
-        private static IEnumerable<TestCaseData> PurchaseActionExistingTableauCases()
+        private static IEnumerable<TestCaseData> PurchaseActionTableau42011Cases()
         {
             var playerTableau42011 = new List<DevelopmentCard>();
 
@@ -287,7 +287,7 @@ namespace SplendidWonders.Gameplay.Tests
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 3) },
 
                 })
-                .SetName("Purchase Action - Existing Tableau 42011 - default cards + empty store");
+                .SetName("Purchase Action - Existing Tableau 42011 - default market + empty store");
 
             yield return new TestCaseData(
 
@@ -306,7 +306,7 @@ namespace SplendidWonders.Gameplay.Tests
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 3) },
 
                 })
-                .SetName("Purchase Action - Existing Tableau 42011 - default cards + 3-long store balanced");
+                .SetName("Purchase Action - Existing Tableau 42011 - default market + 3-long store balanced");
 
             yield return new TestCaseData(
 
@@ -322,10 +322,9 @@ namespace SplendidWonders.Gameplay.Tests
                 new[]
                 {
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 3) },
-                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 42) },
-
+                    new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 42) },
                 })
-                .SetName("Purchase Action - Existing Tableau 42011 - default cards + 3-long store yellow-heavy");
+                .SetName("Purchase Action - Existing Tableau 42011 - default market + 3-long store yellow-heavy");
 
             yield return new TestCaseData(
 
@@ -343,10 +342,10 @@ namespace SplendidWonders.Gameplay.Tests
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 1) },
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 3) },
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 4) },
-                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 42) },
+                    new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 42) },
 
                 })
-                .SetName("Purchase Action - Existing Tableau 42011 - default cards + 3-long store with polymath");
+                .SetName("Purchase Action - Existing Tableau 42011 - default market + 3-long store with polymath");
 
             yield return new TestCaseData(
 
@@ -366,7 +365,7 @@ namespace SplendidWonders.Gameplay.Tests
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 4) },
 
                 })
-                .SetName("Purchase Action - Existing Tableau 42011 - default cards + 5-long store balanced");
+                .SetName("Purchase Action - Existing Tableau 42011 - default market + 5-long store balanced");
 
             yield return new TestCaseData(
 
@@ -383,10 +382,10 @@ namespace SplendidWonders.Gameplay.Tests
                 {
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 3) },
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 4) },
-                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 44) },
+                    new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 44) },
 
                 })
-                .SetName("Purchase Action - Existing Tableau 42011 - default cards + 5-long store brown-heavy");
+                .SetName("Purchase Action - Existing Tableau 42011 - default market + 5-long store brown-heavy");
 
             yield return new TestCaseData(
 
@@ -405,9 +404,9 @@ namespace SplendidWonders.Gameplay.Tests
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 2) },
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 3) },
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 4) },
-                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 42) },
+                    new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 42) },
                 })
-                .SetName("Purchase Action - Existing Tableau 42011 - default cards + 5-long store with polymath");
+                .SetName("Purchase Action - Existing Tableau 42011 - default market + 5-long store with polymath");
 
             yield return new TestCaseData(
 
@@ -426,11 +425,11 @@ namespace SplendidWonders.Gameplay.Tests
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 2) },
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 3) },
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 4) },
-                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 42) },
-                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 43) },
-                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 44) }
+                    new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 42) },
+                    new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 43) },
+                    new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 44) }
                 })
-                .SetName("Purchase Action - Existing Tableau 42011 - default cards + 5-long store only polymath");
+                .SetName("Purchase Action - Existing Tableau 42011 - default market + 5-long store only polymath");
 
             yield return new TestCaseData(
 
@@ -449,9 +448,9 @@ namespace SplendidWonders.Gameplay.Tests
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 2) },
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 3) },
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 4) },
-                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 42) },
+                    new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 42) },
                 })
-                .SetName("Purchase Action - Existing Tableau 42011 - default cards + 8-long store balanced");
+                .SetName("Purchase Action - Existing Tableau 42011 - default market + 8-long store balanced");
 
             yield return new TestCaseData(
 
@@ -469,11 +468,11 @@ namespace SplendidWonders.Gameplay.Tests
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 2) },
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 3) },
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 4) },
-                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 41) },
-                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 43) },
-                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 44) },
+                    new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 41) },
+                    new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 43) },
+                    new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 44) },
                 })
-                .SetName("Purchase Action - Existing Tableau 42011 - default cards + 8-long store brown-heavy");
+                .SetName("Purchase Action - Existing Tableau 42011 - default market + 8-long store brown-heavy");
 
             yield return new TestCaseData(
 
@@ -492,11 +491,11 @@ namespace SplendidWonders.Gameplay.Tests
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 2) },
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 3) },
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 4) },
-                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 42) },
-                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 43) },
-                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 44) },
+                    new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 42) },
+                    new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 43) },
+                    new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 44) },
                 })
-                .SetName("Purchase Action - Existing Tableau 42011 - default cards + 8-long store with polymath");
+                .SetName("Purchase Action - Existing Tableau 42011 - default market + 8-long store with polymath");
 
             yield return new TestCaseData(
 
@@ -515,10 +514,10 @@ namespace SplendidWonders.Gameplay.Tests
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 2) },
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 3) },
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 4) },
-                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 42) },
-                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 43) },
+                    new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 42) },
+                    new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 43) },
                 })
-                .SetName("Purchase Action - Existing Tableau 42011 - default cards + 10-long store balanced");
+                .SetName("Purchase Action - Existing Tableau 42011 - default market + 10-long store balanced");
 
             yield return new TestCaseData(
 
@@ -536,11 +535,11 @@ namespace SplendidWonders.Gameplay.Tests
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 2) },
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 3) },
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 4) },
-                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 71) },
-                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 72) },
-                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 74) },
+                    new PurchaseAction() { Card = Cards.Level3.First(c => c.Id == 71) },
+                    new PurchaseAction() { Card = Cards.Level3.First(c => c.Id == 72) },
+                    new PurchaseAction() { Card = Cards.Level3.First(c => c.Id == 74) },
                 })
-                .SetName("Purchase Action - Existing Tableau 42011 - default cards + 10-long store red-heavy");
+                .SetName("Purchase Action - Existing Tableau 42011 - default market + 10-long store red-heavy");
 
             yield return new TestCaseData(
 
@@ -559,15 +558,15 @@ namespace SplendidWonders.Gameplay.Tests
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 2) },
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 3) },
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 4) },
-                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 41) },
-                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 42) },
-                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 43) },
-                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 44) },
-                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 71) },
-                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 72) },
-                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 74) },
+                    new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 41) },
+                    new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 42) },
+                    new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 43) },
+                    new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 44) },
+                    new PurchaseAction() { Card = Cards.Level3.First(c => c.Id == 71) },
+                    new PurchaseAction() { Card = Cards.Level3.First(c => c.Id == 72) },
+                    new PurchaseAction() { Card = Cards.Level3.First(c => c.Id == 74) },
                 })
-                .SetName("Purchase Action - Existing Tableau 42011 - default cards + 10-long store with polymath");
+                .SetName("Purchase Action - Existing Tableau 42011 - default market + 10-long store with polymath");
 
             yield return new TestCaseData(
 
@@ -579,7 +578,7 @@ namespace SplendidWonders.Gameplay.Tests
                         Store = TokenGroup.FromArray([0, 5, 0, 0, 0, 0]),
                         ReservedCards = new List<DevelopmentCard>()
                         {
-                            Cards.Level1.First(c => c.Id == 81),
+                            Cards.Level3.First(c => c.Id == 81),
 
                         }.ToImmutableList(),
                         Tableau = playerTableau42011.ToImmutableList()
@@ -589,9 +588,9 @@ namespace SplendidWonders.Gameplay.Tests
                 {
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 2) },
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 3) },
-                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 81) },
+                    new PurchaseAction() { Card = Cards.Level3.First(c => c.Id == 81) },
                 })
-                .SetName("Purchase Action - Existing Tableau 42011 - one reserved card + 5-long store");
+                .SetName("Purchase Action - Existing Tableau 42011 - default market + one reserved card + 5-long store");
 
             yield return new TestCaseData(
 
@@ -604,7 +603,7 @@ namespace SplendidWonders.Gameplay.Tests
                         ReservedCards = new List<DevelopmentCard>()
                         {
                             Cards.Level1.First(c => c.Id == 32),
-                            Cards.Level1.First(c => c.Id == 82),
+                            Cards.Level3.First(c => c.Id == 82),
 
                         }.ToImmutableList(),
                         Tableau = playerTableau42011.ToImmutableList()
@@ -616,14 +615,14 @@ namespace SplendidWonders.Gameplay.Tests
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 2) },
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 3) },
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 4) },
-                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 41) },
-                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 42) },
-                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 43) },
-                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 44) },
+                    new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 41) },
+                    new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 42) },
+                    new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 43) },
+                    new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 44) },
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 32) },
-                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 82) },
+                    new PurchaseAction() { Card = Cards.Level3.First(c => c.Id == 82) },
                 })
-                .SetName("Purchase Action - Existing Tableau 42011 - multiple reserved cards + 8-long store with polymath");
+                .SetName("Purchase Action - Existing Tableau 42011 - default market + multiple reserved cards + 8-long store with polymath");
         }
     }
 }
