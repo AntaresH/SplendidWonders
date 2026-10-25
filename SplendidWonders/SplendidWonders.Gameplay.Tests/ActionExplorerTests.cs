@@ -193,12 +193,14 @@ namespace SplendidWonders.Gameplay.Tests
             Assert.That(validActions.OfType<PurchaseAction>(), Is.EquivalentTo(expectedActions));
         }
 
-        [TestCaseSource(nameof(PurchaseActionTableau20233Cases))]
-        public void GetValidActions_WithDifferentStoreAndTableau20233_ShouldReturnExpectedPurchaseActions(List<Player> playerSetup, PurchaseAction[] expectedActions)
+        [TestCaseSource(nameof(PurchaseActionTableau20233CardSeed12345Cases))]
+        public void GetValidActions_WithDifferentStoreAndTableau20233_ShouldReturnExpectedPurchaseActions(List<Player> playerSetup, CardGroup[] cardSetup, PurchaseAction[] expectedActions)
         {
             // Arrange
             var gameState = defaultBuilder
-
+                .WithLevel1(cardSetup[0])
+                .WithLevel2(cardSetup[1])
+                .WithLevel3(cardSetup[2])
                 .WithPlayers(playerSetup)
                 .WithCurrentPlayer(playerSetup[0])
                 .Build();
