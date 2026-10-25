@@ -10,7 +10,6 @@ namespace SplendidWonders.Gameplay.Tests
 {
     public partial class ActionExplorerTests
     {
-
         private static IEnumerable<TestCaseData> ReserveFromBoardActionCases()
         {
             var defaultCards = GameFactory.GetRandomizedCardSetup();
