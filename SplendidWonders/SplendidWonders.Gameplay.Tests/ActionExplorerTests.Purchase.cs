@@ -767,6 +767,8 @@ namespace SplendidWonders.Gameplay.Tests
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 3) },
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 6) },
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 18) },
+                    new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 62) },
+                    new PurchaseAction() { Card = Cards.Level3.First(c => c.Id == 71) },
                 })
                 .SetName("Purchase Action - Tableau 20233 - Card Setup #12345 + 8-long store with polymath");
 
@@ -777,19 +779,19 @@ namespace SplendidWonders.Gameplay.Tests
                     new Player()
                     {
                         Name = "Test player 1",
-                        Store = TokenGroup.FromArray([2, 1, 2, 3, 2, 0]),
+                        Store = TokenGroup.FromArray([3, 3, 2, 1, 1, 0]),
                         Tableau = playerTableau20233.ToImmutableList()
                     }
                 },
                 seededCardSetup,
                 new[]
                 {
-                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 1) },
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 2) },
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 3) },
-                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 4) },
-                    new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 42) },
-                    new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 43) },
+                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 6) },
+                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 18) },
+                    new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 50) },
+                    new PurchaseAction() { Card = Cards.Level3.First(c => c.Id == 82) },
                 })
                 .SetName("Purchase Action - Tableau 20233 - Card Setup #12345 + 10-long store balanced");
 
@@ -800,20 +802,22 @@ namespace SplendidWonders.Gameplay.Tests
                     new Player()
                     {
                         Name = "Test player 1",
-                        Store = TokenGroup.FromArray([1, 1, 0, 2, 6, 0]),
+                        Store = TokenGroup.FromArray([5, 3, 1, 0, 1, 0]),
                         Tableau = playerTableau20233.ToImmutableList()
                     }
                 },
+                seededCardSetup,
                 new[]
                 {
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 2) },
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 3) },
-                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 4) },
-                    new PurchaseAction() { Card = Cards.Level3.First(c => c.Id == 71) },
-                    new PurchaseAction() { Card = Cards.Level3.First(c => c.Id == 72) },
-                    new PurchaseAction() { Card = Cards.Level3.First(c => c.Id == 74) },
+                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 6) },
+                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 18) },
+                    new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 50) },
+                    new PurchaseAction() { Card = Cards.Level3.First(c => c.Id == 76) },
+                    new PurchaseAction() { Card = Cards.Level3.First(c => c.Id == 82) },
                 })
-                .SetName("Purchase Action - Tableau 20233 - Card Setup #12345 + 10-long store red-heavy");
+                .SetName("Purchase Action - Tableau 20233 - Card Setup #12345 + 10-long store yellow-heavy");
 
             yield return new TestCaseData(
 
@@ -822,21 +826,19 @@ namespace SplendidWonders.Gameplay.Tests
                     new Player()
                     {
                         Name = "Test player 1",
-                        Store = TokenGroup.FromArray([1, 1, 2, 2, 2, 2]),
+                        Store = TokenGroup.FromArray([1, 0, 3, 2, 2, 2]),
                         Tableau = playerTableau20233.ToImmutableList()
                     }
                 },
                 seededCardSetup,
                 new[]
                 {
-                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 1) },
-                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 2) },
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 3) },
-                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 4) },
-                    new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 41) },
-                    new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 42) },
-                    new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 43) },
-                    new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 44) },
+                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 6) },
+                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 18) },
+                    new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 56) },
+                    new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 62) },
+                    new PurchaseAction() { Card = Cards.Level3.First(c => c.Id == 71) }
                 })
                 .SetName("Purchase Action - Tableau 20233 - Card Setup #12345 + 10-long store with polymath");
 
@@ -850,7 +852,7 @@ namespace SplendidWonders.Gameplay.Tests
                         Store = TokenGroup.FromArray([0, 5, 0, 0, 0, 0]),
                         ReservedCards = new List<DevelopmentCard>()
                         {
-                            Cards.Level3.First(c => c.Id == 81),
+                            Cards.Level2.First(c => c.Id == 49),
 
                         }.ToImmutableList(),
                         Tableau = playerTableau20233.ToImmutableList()
@@ -860,8 +862,8 @@ namespace SplendidWonders.Gameplay.Tests
                 new[]
                 {
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 2) },
-                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 3) },
-                    new PurchaseAction() { Card = Cards.Level3.First(c => c.Id == 81) },
+                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 6) },
+                    new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 49) },
                 })
                 .SetName("Purchase Action - Tableau 20233 - Card Setup #12345 + one reserved card + 5-long store");
 
@@ -875,9 +877,9 @@ namespace SplendidWonders.Gameplay.Tests
                         Store = TokenGroup.FromArray([1, 1, 0, 2, 2, 2]),
                         ReservedCards = new List<DevelopmentCard>()
                         {
-                            Cards.Level1.First(c => c.Id == 32),
-                            Cards.Level3.First(c => c.Id == 82),
-
+                            Cards.Level1.First(c => c.Id == 36),
+                            Cards.Level2.First(c => c.Id == 51),
+                            Cards.Level3.First(c => c.Id == 88),
                         }.ToImmutableList(),
                         Tableau = playerTableau20233.ToImmutableList()
                     }
@@ -885,16 +887,15 @@ namespace SplendidWonders.Gameplay.Tests
                 seededCardSetup,
                 new[]
                 {
-                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 1) },
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 2) },
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 3) },
-                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 4) },
-                    new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 41) },
-                    new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 42) },
-                    new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 43) },
-                    new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 44) },
-                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 32) },
-                    new PurchaseAction() { Card = Cards.Level3.First(c => c.Id == 82) },
+                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 6) },
+                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 18) },
+                    new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 62) },
+                    new PurchaseAction() { Card = Cards.Level3.First(c => c.Id == 71) },
+                    new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 36) },
+                    new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 51) },
+                    new PurchaseAction() { Card = Cards.Level3.First(c => c.Id == 88) },
                 })
                 .SetName("Purchase Action - Tableau 20233 - Card Setup #12345 + multiple reserved cards + 8-long store with polymath");
         }
