@@ -10,7 +10,7 @@ using static System.Collections.Specialized.BitVector32;
 
 namespace SplendidWonders.Gameplay
 {
-    public class GameInstance
+    public class GameExecution
     {
         public Guid Id { get; internal set; }
         public DateTime StartedAt { get; internal set; }
@@ -18,23 +18,22 @@ namespace SplendidWonders.Gameplay
 
         public GameState GameState { get; internal set; }
 
-        private List<GameAction> _validActions;
         public List<GameAction> ValidActions
         {
             get
             {
-                if (_validActions == null)
+                if (field == null || !field.Any())
                 {
-                    _validActions = ActionExplorer.GetValidActions(GameState);
+                    field = ActionExplorer.GetValidActions(GameState);
                 }
 
-                return _validActions;
+                return field;
             }
         }
 
         private GameConfiguration _gameConfiguration;
 
-        public GameInstance(GameConfiguration gameConfiguration)
+        public GameExecution(GameConfiguration gameConfiguration)
         {
             Id = Guid.NewGuid();
             StartedAt = DateTime.UtcNow;
@@ -63,32 +62,8 @@ namespace SplendidWonders.Gameplay
 
         public void ExecuteCommand(GameAction command)
         {
-            switch (command)
-            {
-                case DrawThreeTokensAction a:
-                    DrawThreeTokensReducer.Reduce(GameState, a);
-                    break;
-                case DrawDoubleTokensAction a:
-                    DrawDoubleTokensReducer.Reduce(GameState, a);
-                    break;
-                case ReturnTokensAction a:
-                    ReturnTokensReducer.Reduce(GameState, a);
-                    break;
-                case PurchaseAction a:
-                    PurchaseReducer.Reduce(GameState, a);
-                    break;
-                case ReserveFromBoardAction a:
-                    ReserveFromBoardReducer.Reduce(GameState, a);
-                    break;
-                case ReserveFromDeckAction a:
-                    ReserveFromDeckReducer.Reduce(GameState, a);
-                    break;
-                case SelectLeaderAction a:
-                    SelectLeaderReducer.Reduce(GameState, a);
-                    break;
-                default:
-                    throw new InvalidOperationException("This action is not supported... yet");
-            }
+            GameState = ActionReducer.Reduce(GameState, command);
+            ValidActions.Clear();
         }
     }
 }

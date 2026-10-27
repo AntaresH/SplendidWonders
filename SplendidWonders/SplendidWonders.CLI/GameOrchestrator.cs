@@ -10,13 +10,13 @@ namespace SplendidWonders.CLI;
 
 internal class GameOrchestrator
 {
-    private GameInstance _game;
+    private GameExecution _game;
     private IGameView _gameView;
     private IGameInput _commandHandler;
 
     internal GameOrchestrator(GameConfiguration gameConfiguration, IGameView gameView, IGameInput gameInput)
     {
-        _game = new GameInstance(gameConfiguration);
+        _game = new GameExecution(gameConfiguration);
         _gameView = gameView;
         _commandHandler = gameInput;
     }
