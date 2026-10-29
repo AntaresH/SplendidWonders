@@ -8,9 +8,9 @@ using System.Text;
 
 namespace SplendidWonders.Gameplay.Explorers
 {
-    public class PurchaseExplorer
+    public class PurchaseExplorer : IActionExplorer<PurchaseAction>
     {
-        public static IEnumerable<GameAction> GetActions(GameState gameState)
+        public IEnumerable<PurchaseAction> Explore(GameState gameState)
         {
             List<PurchaseAction> purchaseActions = new List<PurchaseAction>();
 

@@ -3,9 +3,9 @@ using SplendidWonders.Gameplay.Actions;
 
 namespace SplendidWonders.Gameplay.Reducers
 {
-    public class PurchaseReducer
+    public class PurchaseReducer : IStateReducer<PurchaseAction>
     {
-        public static GameState Reduce(GameState state, PurchaseAction action)
+        public GameState Reduce(GameState state, PurchaseAction action)
         {
             throw new NotImplementedException();
         }

@@ -1,18 +1,81 @@
-﻿using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities.Resources;
-using NUnit.Framework.Interfaces;
-using SplendidWonders.Core.Model;
+﻿using SplendidWonders.Core.Model;
 using SplendidWonders.Core.Setup;
 using SplendidWonders.Gameplay.Actions;
+using SplendidWonders.Gameplay.Explorers;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Text;
-using System.Xml.Linq;
 
-namespace SplendidWonders.Gameplay.Tests
+namespace SplendidWonders.Gameplay.Tests.ExplorerTests
 {
-    public partial class ActionExplorerTests
+    public class PurchaseExplorerTests
     {
+        private GameStateBuilder _defaultBuilder;
+        private IActionExplorer<PurchaseAction> _sut;
+
+        [SetUp]
+        public void Setup()
+        {
+            _defaultBuilder = GameStateBuilder.Default;
+
+            _sut = new PurchaseExplorer();
+        }
+
+        [TestCaseSource(nameof(PurchaseActionEmptyTableauCases))]
+        public void Explore_WithDifferentStoreAndEmptyTableau_ShouldReturnExpectedPurchaseActions(List<Player> playerSetup, PurchaseAction[] expectedActions)
+        {
+            // Arrange
+            var gameState = _defaultBuilder
+                .WithPlayers(playerSetup)
+                .WithCurrentPlayer(playerSetup[0])
+                .Build();
+
+            // Act
+            var validActions = _sut.Explore(gameState);
+
+            // Assert
+            Assert.IsNotNull(validActions);
+            Assert.That(validActions, Is.EquivalentTo(expectedActions));
+        }
+
+        [TestCaseSource(nameof(PurchaseActionTableau42011Cases))]
+        public void Explore_WithDifferentStoreAndTableau42011_ShouldReturnExpectedPurchaseActions(List<Player> playerSetup, PurchaseAction[] expectedActions)
+        {
+            // Arrange
+            var gameState = _defaultBuilder
+                .WithPlayers(playerSetup)
+                .WithCurrentPlayer(playerSetup[0])
+                .Build();
+
+            // Act
+            var validActions = _sut.Explore(gameState);
+
+            // Assert
+            Assert.IsNotNull(validActions);
+            Assert.That(validActions, Is.EquivalentTo(expectedActions));
+        }
+
+        [TestCaseSource(nameof(PurchaseActionTableau20233CardSeed12345Cases))]
+        public void Explore_WithDifferentStoreAndTableau20233_ShouldReturnExpectedPurchaseActions(List<Player> playerSetup, CardGroup[] cardSetup, PurchaseAction[] expectedActions)
+        {
+            // Arrange
+            var gameState = _defaultBuilder
+                .WithLevel1(cardSetup[0])
+                .WithLevel2(cardSetup[1])
+                .WithLevel3(cardSetup[2])
+                .WithPlayers(playerSetup)
+                .WithCurrentPlayer(playerSetup[0])
+                .Build();
+
+            // Act
+            var validActions = _sut.Explore(gameState);
+
+            // Assert
+            Assert.IsNotNull(validActions);
+            Assert.That(validActions, Is.EquivalentTo(expectedActions));
+        }
+
         private static IEnumerable<TestCaseData> PurchaseActionEmptyTableauCases()
         {
             yield return new TestCaseData(
@@ -883,7 +946,7 @@ namespace SplendidWonders.Gameplay.Tests
                         }.ToImmutableList(),
                         Tableau = playerTableau20233.ToImmutableList()
                     }
-                }, 
+                },
                 seededCardSetup,
                 new[]
                 {

@@ -6,9 +6,9 @@ using System.Text;
 
 namespace SplendidWonders.Gameplay.Reducers
 {
-    public class DrawThreeTokensReducer
+    public class DrawThreeTokensReducer : IStateReducer<DrawThreeTokensAction>
     {
-        public static GameState Reduce(GameState state, DrawThreeTokensAction action)
+        public GameState Reduce(GameState state, DrawThreeTokensAction action)
         {
             throw new NotImplementedException();
         }

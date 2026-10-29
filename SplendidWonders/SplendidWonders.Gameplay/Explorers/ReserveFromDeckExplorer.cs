@@ -6,9 +6,9 @@ using System.Text;
 
 namespace SplendidWonders.Gameplay.Explorers
 {
-    public class ReserveFromDeckExplorer
+    public class ReserveFromDeckExplorer : IActionExplorer<ReserveFromDeckAction>
     {
-        public static IEnumerable<GameAction> GetActions(GameState gameState)
+        public IEnumerable<ReserveFromDeckAction> Explore(GameState gameState)
         {
             List<ReserveFromDeckAction> reserveFromDeckActions = new List<ReserveFromDeckAction>();
 

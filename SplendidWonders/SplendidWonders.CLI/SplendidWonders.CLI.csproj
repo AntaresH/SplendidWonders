@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.14" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\SplendidWonders.Common\SplendidWonders.Common.csproj" />
     <ProjectReference Include="..\SplendidWonders.Gameplay\SplendidWonders.Gameplay.csproj" />
   </ItemGroup>

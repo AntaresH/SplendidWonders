@@ -4,6 +4,8 @@ using SplendidWonders.Common;
 using SplendidWonders.Core.Model;
 using SplendidWonders.Core.Setup;
 using SplendidWonders.Gameplay;
+using SplendidWonders.Gameplay.Explorers;
+using SplendidWonders.Gameplay.Reducers;
 using System.Text.RegularExpressions;
 
 namespace SplendidWonders.CLI;
@@ -14,14 +16,14 @@ internal class GameOrchestrator
     private IGameView _gameView;
     private IGameInput _commandHandler;
 
-    internal GameOrchestrator(GameConfiguration gameConfiguration, IGameView gameView, IGameInput gameInput)
+    public GameOrchestrator(GameConfiguration gameConfiguration, IGameView gameView, IGameInput gameInput, IActionExplorer actionExplorer, IStateReducer actionReducer)
     {
-        _game = new GameExecution(gameConfiguration);
+        _game = new GameExecution(gameConfiguration, actionExplorer, actionReducer);
         _gameView = gameView;
         _commandHandler = gameInput;
     }
 
-    internal void Start()
+    public void Start()
     {
         try
         {

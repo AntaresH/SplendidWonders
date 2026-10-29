@@ -1,6 +1,7 @@
 ﻿using SplendidWonders.Core.Model;
 using SplendidWonders.Core.Setup;
 using SplendidWonders.Gameplay.Actions;
+using SplendidWonders.Gameplay.Explorers;
 using SplendidWonders.Gameplay.Reducers;
 using System;
 using System.Collections.Generic;
@@ -18,28 +19,32 @@ namespace SplendidWonders.Gameplay
 
         public GameState GameState { get; internal set; }
 
-        public List<GameAction> ValidActions
+        public IList<GameAction> ValidActions
         {
             get
             {
                 if (field == null || !field.Any())
                 {
-                    field = ActionExplorer.GetValidActions(GameState);
+                    field = _actionExplorer.Explore(GameState);
                 }
 
                 return field;
             }
         }
 
-        private GameConfiguration _gameConfiguration;
+        private readonly GameConfiguration _gameConfiguration;
+        private readonly IActionExplorer _actionExplorer;
+        private readonly IStateReducer _stateReducer;
 
-        public GameExecution(GameConfiguration gameConfiguration)
+        public GameExecution(GameConfiguration gameConfiguration, IActionExplorer actionExplorer, IStateReducer stateReducer)
         {
             Id = Guid.NewGuid();
             StartedAt = DateTime.UtcNow;
             IsGameOver = false;
 
             _gameConfiguration = gameConfiguration;
+            _actionExplorer = actionExplorer;
+            _stateReducer = stateReducer;
         }
 
         public void Start()
@@ -62,7 +67,8 @@ namespace SplendidWonders.Gameplay
 
         public void ExecuteCommand(GameAction command)
         {
-            GameState = ActionReducer.Reduce(GameState, command);
+
+            GameState = _stateReducer.Reduce(GameState, command);
             ValidActions.Clear();
         }
     }

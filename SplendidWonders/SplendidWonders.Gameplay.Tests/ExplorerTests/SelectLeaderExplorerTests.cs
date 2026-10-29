@@ -1,17 +1,45 @@
-﻿using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities.Resources;
-using NUnit.Framework.Interfaces;
-using SplendidWonders.Core.Model;
+﻿using SplendidWonders.Core.Model;
 using SplendidWonders.Core.Setup;
 using SplendidWonders.Gameplay.Actions;
+using SplendidWonders.Gameplay.Explorers;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Text;
 
-namespace SplendidWonders.Gameplay.Tests
+namespace SplendidWonders.Gameplay.Tests.ExplorerTests
 {
-    public partial class ActionExplorerTests
+    public class SelectLeaderExplorerTests
     {
+        private GameStateBuilder _defaultBuilder;
+        private IActionExplorer<SelectLeaderAction> _sut;
+
+        [SetUp]
+        public void Setup()
+        {
+            _defaultBuilder = GameStateBuilder.Default;
+
+            _sut = new SelectLeaderExplorer();
+        }
+
+        [TestCaseSource(nameof(SelectLeaderActionCases))]
+        public void GetValidActions_WithDifferentLeaders_ShouldReturnExpectedSelectLeaderActions(List<Player> playerSetup, ImmutableList<Leader> leaderSetup, SelectLeaderAction[] expectedActions)
+        {
+            // Arrange
+            var gameState = _defaultBuilder
+                .WithLeaders(leaderSetup)
+                .WithPlayers(playerSetup)
+                .WithCurrentPlayer(playerSetup[0])
+                .Build();
+
+            // Act
+            var validActions = _sut.Explore(gameState);
+
+            // Assert
+            Assert.IsNotNull(validActions);
+            Assert.That(validActions, Is.EquivalentTo(expectedActions));
+        }
+
         private static IEnumerable<TestCaseData> SelectLeaderActionCases()
         {
             var ybgLeader = Leaders.StandardLeaders.First(leader => leader.Id == 6);

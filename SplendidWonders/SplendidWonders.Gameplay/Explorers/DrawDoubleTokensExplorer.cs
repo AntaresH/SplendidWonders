@@ -6,9 +6,9 @@ using System.Text;
 
 namespace SplendidWonders.Gameplay.Explorers
 {
-    public class DrawDoubleTokensExplorer
+    public class DrawDoubleTokensExplorer : IActionExplorer<DrawDoubleTokensAction>
     {
-        public static IEnumerable<GameAction> GetActions(GameState gameState)
+        public IEnumerable<DrawDoubleTokensAction> Explore(GameState gameState)
         {
             List<DrawDoubleTokensAction> gameActions = new List<DrawDoubleTokensAction>();
 

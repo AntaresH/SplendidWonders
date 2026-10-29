@@ -6,9 +6,9 @@ using System.Text;
 
 namespace SplendidWonders.Gameplay.Explorers
 {
-    public class ReturnTokensExplorer
+    public class ReturnTokensExplorer : IActionExplorer<ReturnTokensAction>
     {
-        public static IEnumerable<GameAction> GetActions(GameState gameState)
+        public IEnumerable<ReturnTokensAction> Explore(GameState gameState)
         {
             List<ReturnTokensAction> validReturnTokensActions = new List<ReturnTokensAction>();
 

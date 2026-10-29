@@ -1,4 +1,5 @@
 ﻿using SplendidWonders.Core.Model;
+using SplendidWonders.Core.Setup;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -76,6 +77,42 @@ namespace SplendidWonders.Gameplay.Tests
                 Players = _players,
                 TokenSupply = _tokenSupply,
             };
+        }
+
+        public static GameStateBuilder Default
+        {
+            get
+            {
+                var defaultPlayers =
+                new List<Player>()
+                {
+                    new Player()
+                    {
+                        Name = "Test player 1",
+                        ReservedCards = ImmutableList<DevelopmentCard>.Empty,
+                        Store = TokenGroup.FromArray([0, 0, 0, 0, 0, 0])
+                    },
+                    new Player()
+                    {
+                        Name = "Test player 2",
+                        ReservedCards = ImmutableList<DevelopmentCard>.Empty,
+                        Store = TokenGroup.FromArray([0, 0, 0, 0, 0, 0])
+                    },
+                };
+
+                var defaultLeaders = GameFactory.GetRandomizedLeaders(true, defaultPlayers.Count);
+                var defaultCards = GameFactory.GetRandomizedCardSetup();
+                var defaultTokenSupply = TokenGroup.FromArray([0, 0, 0, 0, 0, 0]);
+
+                return new GameStateBuilder()
+                    .WithCurrentPlayer(defaultPlayers[0])
+                    .WithLeaders(defaultLeaders)
+                    .WithLevel1(defaultCards[0])
+                    .WithLevel2(defaultCards[1])
+                    .WithLevel3(defaultCards[2])
+                    .WithPlayers(defaultPlayers)
+                    .WithTokenSupply(defaultTokenSupply);
+            }
         }
     }
 }

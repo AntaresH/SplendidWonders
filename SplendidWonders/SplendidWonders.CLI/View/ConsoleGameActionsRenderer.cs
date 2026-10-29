@@ -6,7 +6,7 @@ namespace SplendidWonders.CLI.View
 {
     internal class ConsoleGameActionsRenderer
     {
-        internal void Render(List<GameAction> validActions)
+        internal void Render(IEnumerable<GameAction> validActions)
         {
             Console.WriteLine(Strings.ValidCommands);
 

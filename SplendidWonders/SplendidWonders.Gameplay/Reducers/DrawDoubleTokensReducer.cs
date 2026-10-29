@@ -3,9 +3,9 @@ using SplendidWonders.Gameplay.Actions;
 
 namespace SplendidWonders.Gameplay.Reducers
 {
-    public class DrawDoubleTokensReducer
+    public class DrawDoubleTokensReducer : IStateReducer<DrawDoubleTokensAction>
     {
-        public static GameState Reduce(GameState state, DrawDoubleTokensAction action)
+        public GameState Reduce(GameState state, DrawDoubleTokensAction action)
         {
             throw new NotImplementedException();
         }

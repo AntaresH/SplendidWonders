@@ -1,132 +1,42 @@
 ﻿using SplendidWonders.Core.Model;
 using SplendidWonders.Core.Setup;
 using SplendidWonders.Gameplay.Actions;
+using SplendidWonders.Gameplay.Explorers;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Text;
 
-namespace SplendidWonders.Gameplay.Tests
+namespace SplendidWonders.Gameplay.Tests.ExplorerTests
 {
-    public partial class ActionExplorerTests
+    public class ReturnTokensExplorerTests
     {
-        private static IEnumerable<TestCaseData> DrawThreeTokensActionCases()
+        private GameStateBuilder _defaultBuilder;
+        private IActionExplorer<ReturnTokensAction> _sut;
+
+        [SetUp]
+        public void Setup()
         {
-            yield return new TestCaseData(
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 0]),
-                new[]
-                {
-                    new DrawThreeTokensAction() { Tokens = TokenGroup.FromArray([1, 1, 1, 0, 0, 0]) },
-                    new DrawThreeTokensAction() { Tokens = TokenGroup.FromArray([1, 1, 0, 1, 0, 0]) },
-                    new DrawThreeTokensAction() { Tokens = TokenGroup.FromArray([1, 1, 0, 0, 1, 0]) },
-                    new DrawThreeTokensAction() { Tokens = TokenGroup.FromArray([1, 0, 1, 1, 0, 0]) },
-                    new DrawThreeTokensAction() { Tokens = TokenGroup.FromArray([1, 0, 1, 0, 1, 0]) },
-                    new DrawThreeTokensAction() { Tokens = TokenGroup.FromArray([1, 0, 0, 1, 1, 0]) },
-                    new DrawThreeTokensAction() { Tokens = TokenGroup.FromArray([0, 1, 1, 1, 0, 0]) },
-                    new DrawThreeTokensAction() { Tokens = TokenGroup.FromArray([0, 1, 1, 0, 1, 0]) },
-                    new DrawThreeTokensAction() { Tokens = TokenGroup.FromArray([0, 1, 0, 1, 1, 0]) },
-                    new DrawThreeTokensAction() { Tokens = TokenGroup.FromArray([0, 0, 1, 1, 1, 0]) },
-                })
-                .SetName("Draw Three Tokens - All are available");
+            _defaultBuilder = GameStateBuilder.Default;
 
-            yield return new TestCaseData(TokenGroup.FromArray([0, 4, 4, 4, 4, 0]),
-                new[]
-                {
-                    new DrawThreeTokensAction() { Tokens = TokenGroup.FromArray([0, 1, 1, 1, 0, 0]) },
-                    new DrawThreeTokensAction() { Tokens = TokenGroup.FromArray([0, 1, 1, 0, 1, 0]) },
-                    new DrawThreeTokensAction() { Tokens = TokenGroup.FromArray([0, 1, 0, 1, 1, 0]) },
-                    new DrawThreeTokensAction() { Tokens = TokenGroup.FromArray([0, 0, 1, 1, 1, 0]) },
-                })
-                .SetName("Draw Three Tokens - Yellow unavailable");
-
-            yield return new TestCaseData(TokenGroup.FromArray([4, 4, 0, 4, 4, 0]),
-                new[]
-                {
-                    new DrawThreeTokensAction() { Tokens = TokenGroup.FromArray([1, 1, 0, 1, 0, 0]) },
-                    new DrawThreeTokensAction() { Tokens = TokenGroup.FromArray([1, 1, 0, 0, 1, 0]) },
-                    new DrawThreeTokensAction() { Tokens = TokenGroup.FromArray([1, 0, 0, 1, 1, 0]) },
-                    new DrawThreeTokensAction() { Tokens = TokenGroup.FromArray([0, 1, 0, 1, 1, 0]) },
-                })
-                .SetName("Draw Three Tokens - Green unavailable");
-
-            yield return new TestCaseData(TokenGroup.FromArray([4, 4, 0, 0, 4, 0]),
-                new[]
-                {
-                    new DrawThreeTokensAction() { Tokens = TokenGroup.FromArray([1, 1, 0, 0, 1, 0]) },
-                })
-                .SetName("Draw Three Tokens - Green and brown unavailable");
-
-            yield return new TestCaseData(TokenGroup.FromArray([0, 4, 4, 4, 0, 0]),
-                new[]
-                {
-                    new DrawThreeTokensAction() { Tokens = TokenGroup.FromArray([0, 1, 1, 1, 0, 0]) },
-                })
-                .SetName("Draw Three Tokens - Yellow and red unavailable");
-
-            yield return new TestCaseData(TokenGroup.FromArray([4, 0, 0, 0, 4, 0]),
-                new[]
-                {
-                    new DrawThreeTokensAction() { Tokens = TokenGroup.FromArray([1, 0, 0, 0, 1, 0]) },
-                })
-                .SetName("Draw Three Tokens - Blue and green and brown unavailable");
-
-            yield return new TestCaseData(TokenGroup.FromArray([0, 4, 4, 0, 0, 0]),
-                new[]
-                {
-                    new DrawThreeTokensAction() { Tokens = TokenGroup.FromArray([0, 1, 1, 0, 0, 0]) },
-                })
-                .SetName("Draw Three Tokens - Yellow and brown and red unavailable");
-
-            yield return new TestCaseData(TokenGroup.FromArray([0, 0, 0, 4, 0, 0]),
-                new[]
-                {
-                    new DrawThreeTokensAction() { Tokens = TokenGroup.FromArray([0, 0, 0, 1, 0, 0]) },
-                })
-                .SetName("Draw Three Tokens - Only brown is available");
-
-            yield return new TestCaseData(TokenGroup.FromArray([0, 0, 0, 0, 0, 0]),
-                new DrawThreeTokensAction[] { })
-                .SetName("Draw Three Tokens - Nothing is available");
+            _sut = new ReturnTokensExplorer();
         }
 
-        private static IEnumerable<TestCaseData> DrawDoubleTokensActionCases()
+        [TestCaseSource(nameof(ReturnTokensActionCases))]
+        public void Explore_WithDifferentPlayerSetup_ShouldReturnExpectedReturnTokensActions(List<Player> playerSetup, ReturnTokensAction[] expectedActions)
         {
-            yield return new TestCaseData(
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 0]),
-                new[]
-                {
-                    new DrawDoubleTokensAction() { Tokens = TokenGroup.FromArray([2, 0, 0, 0, 0, 0]) },
-                    new DrawDoubleTokensAction() { Tokens = TokenGroup.FromArray([0, 2, 0, 0, 0, 0]) },
-                    new DrawDoubleTokensAction() { Tokens = TokenGroup.FromArray([0, 0, 2, 0, 0, 0]) },
-                    new DrawDoubleTokensAction() { Tokens = TokenGroup.FromArray([0, 0, 0, 2, 0, 0]) },
-                    new DrawDoubleTokensAction() { Tokens = TokenGroup.FromArray([0, 0, 0, 0, 2, 0]) }
-                })
-                .SetName("Draw Double Tokens - All token types are available (>4)");
+            // Arrange
+            var gameState = _defaultBuilder
+                .WithPlayers(playerSetup)
+                .WithCurrentPlayer(playerSetup[0])
+                .Build();
 
-            yield return new TestCaseData(
-                TokenGroup.FromArray([4, 3, 4, 4, 4, 0]),
-                new[]
-                {
-                    new DrawDoubleTokensAction() { Tokens = TokenGroup.FromArray([2, 0, 0, 0, 0, 0]) },
-                    new DrawDoubleTokensAction() { Tokens = TokenGroup.FromArray([0, 0, 2, 0, 0, 0]) },
-                    new DrawDoubleTokensAction() { Tokens = TokenGroup.FromArray([0, 0, 0, 2, 0, 0]) },
-                    new DrawDoubleTokensAction() { Tokens = TokenGroup.FromArray([0, 0, 0, 0, 2, 0]) }
-                })
-                .SetName("Draw Double Tokens - Blue are unavailable (<4)");
+            // Act
+            var validActions = _sut.Explore(gameState);
 
-            yield return new TestCaseData(
-                TokenGroup.FromArray([4, 3, 4, 2, 1, 0]),
-                new[]
-                {
-                    new DrawDoubleTokensAction() { Tokens = TokenGroup.FromArray([2, 0, 0, 0, 0, 0]) },
-                    new DrawDoubleTokensAction() { Tokens = TokenGroup.FromArray([0, 0, 2, 0, 0, 0]) }
-                })
-                .SetName("Draw Double Tokens - Blue, Brown and Red are unavailable (<4)");
-
-            yield return new TestCaseData(
-                TokenGroup.FromArray([0, 3, 0, 2, 1, 0]),
-                new DrawDoubleTokensAction[] { })
-                .SetName("Draw Double Tokens - No double draw is available (<4)");
+            // Assert
+            Assert.IsNotNull(validActions);
+            Assert.That(validActions, Is.EquivalentTo(expectedActions));
         }
 
         private static IEnumerable<TestCaseData> ReturnTokensActionCases()

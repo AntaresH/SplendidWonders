@@ -18,7 +18,7 @@ namespace SplendidWonders.CLI.Input
             _gameView = gameView;
         }
 
-        public GameAction ReadCommand(GameState gameState, List<GameAction> validActions)
+        public GameAction ReadCommand(GameState gameState, IEnumerable<GameAction> validActions)
         {
             while (true)
             {

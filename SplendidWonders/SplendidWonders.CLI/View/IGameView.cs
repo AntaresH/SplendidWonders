@@ -9,8 +9,8 @@ namespace SplendidWonders.CLI.View
     public interface IGameView
     {
         void DisplayGameOver(Dictionary<string, int> value);
-        void DisplayGame(GameState gameState, List<GameAction> validActions);
-        void DisplayValidActions(List<GameAction> validActions);
+        void DisplayGame(GameState gameState, IEnumerable<GameAction> validActions);
+        void DisplayValidActions(IEnumerable<GameAction> validActions);
         void DisplayTurnStart(Player currentPlayer);
         void DisplayInvalidCommandMessage();
         void DisplayThreeTokensArgumentRequest();

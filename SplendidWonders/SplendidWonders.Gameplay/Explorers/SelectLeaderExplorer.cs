@@ -6,9 +6,9 @@ using System.Text;
 
 namespace SplendidWonders.Gameplay.Explorers
 {
-    public class SelectLeaderExplorer
+    public class SelectLeaderExplorer : IActionExplorer<SelectLeaderAction>
     {
-        public static IEnumerable<GameAction> GetActions(GameState gameState)
+        public IEnumerable<SelectLeaderAction> Explore(GameState gameState)
         {
             List<SelectLeaderAction> selectLeaderActions = new List<SelectLeaderAction>();
 

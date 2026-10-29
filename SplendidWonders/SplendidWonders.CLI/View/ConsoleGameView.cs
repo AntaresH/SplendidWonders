@@ -24,14 +24,15 @@ namespace SplendidWonders.CLI.View
             }
         }
 
-        public void DisplayGame(GameState gameState, List<GameAction> validActions)
+        public void DisplayGame(GameState gameState, IEnumerable<GameAction> validActions)
         {
             Console.Clear();
+            DisplayGameTitle();
             _gameStateRenderer.Render(gameState);
             _gameActionsRenderer.Render(validActions);
         }
 
-        public void DisplayValidActions(List<GameAction> validActions)
+        public void DisplayValidActions(IEnumerable<GameAction> validActions)
         {
             Console.WriteLine(Strings.ValidCommands);
 

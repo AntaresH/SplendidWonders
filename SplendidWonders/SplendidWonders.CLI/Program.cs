@@ -1,10 +1,15 @@
-﻿using SplendidWonders.CLI;
+﻿using Microsoft.Extensions.DependencyInjection;
+using SplendidWonders.CLI;
 using SplendidWonders.CLI.Input;
 using SplendidWonders.CLI.View;
 using SplendidWonders.Common;
 using SplendidWonders.Core.Setup;
-using System.Diagnostics;
+using SplendidWonders.Gameplay;
+using SplendidWonders.Gameplay.Actions;
+using SplendidWonders.Gameplay.Explorers;
+using SplendidWonders.Gameplay.Reducers;
 using System.Runtime.InteropServices;
+
 internal class Program
 {
     [DllImport("kernel32.dll")]
@@ -27,10 +32,31 @@ internal class Program
 
         Console.OutputEncoding = System.Text.Encoding.UTF8;
         Console.InputEncoding = System.Text.Encoding.UTF8;
-        
-        IGameView gameView = new ConsoleGameView();
 
-        gameView.DisplayGameTitle();
+        var services = new ServiceCollection();
+
+        services.AddSingleton<IActionExplorer<DrawThreeTokensAction>, DrawThreeTokensExplorer>();
+        services.AddSingleton<IActionExplorer<DrawDoubleTokensAction>, DrawDoubleTokensExplorer>();
+        services.AddSingleton<IActionExplorer<ReturnTokensAction>, ReturnTokensExplorer>();
+        services.AddSingleton<IActionExplorer<ReserveFromBoardAction>, ReserveFromBoardExplorer>();
+        services.AddSingleton<IActionExplorer<ReserveFromDeckAction>, ReserveFromDeckExplorer>();
+        services.AddSingleton<IActionExplorer<PurchaseAction>, PurchaseExplorer>();
+        services.AddSingleton<IActionExplorer<SelectLeaderAction>, SelectLeaderExplorer>();
+        services.AddSingleton<IActionExplorer, ActionExplorer>();
+
+        services.AddSingleton<IStateReducer<DrawThreeTokensAction>, DrawThreeTokensReducer>();
+        services.AddSingleton<IStateReducer<DrawDoubleTokensAction>, DrawDoubleTokensReducer>();
+        services.AddSingleton<IStateReducer<ReturnTokensAction>, ReturnTokensReducer>();
+        services.AddSingleton<IStateReducer<ReserveFromBoardAction>, ReserveFromBoardReducer>();
+        services.AddSingleton<IStateReducer<ReserveFromDeckAction>, ReserveFromDeckReducer>();
+        services.AddSingleton<IStateReducer<PurchaseAction>, PurchaseReducer>();
+        services.AddSingleton<IStateReducer<SelectLeaderAction>, SelectLeaderReducer>();
+        services.AddSingleton<IStateReducer, StateReducer>();
+
+        services.AddSingleton<IGameView, ConsoleGameView>();
+        services.AddSingleton<IGameInput, ConsoleGameInput>();
+
+        var serviceProvider = services.BuildServiceProvider();
 
         bool stayInGame = true;
 
@@ -39,15 +65,14 @@ internal class Program
             //List<string> playerNames = PlayerPrompter();
             //bool useExtendedLeaders = LeaderPrompter();
             
-            IGameInput gameInput = new ConsoleGameInput(gameView);
-            GameConfiguration configuration = new GameConfiguration()
+            GameConfiguration gameConfiguration = new GameConfiguration()
             {
                 PlayerNames = new List<string>() { "Ambrus", "Brünhilda" },
                 UseExtendedLeaders = true,
                 UseRandomSeed = true
             };
 
-            GameOrchestrator orchestrator = new GameOrchestrator(configuration, gameView, gameInput);
+            GameOrchestrator orchestrator = ActivatorUtilities.CreateInstance<GameOrchestrator>(serviceProvider, gameConfiguration);
             orchestrator.Start();
 
             stayInGame = StayPrompter();
