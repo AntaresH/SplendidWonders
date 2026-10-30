@@ -48,6 +48,17 @@ namespace SplendidWonders.Gameplay
             return this;
         }
 
+        public GameStateBuilder WithLevel(int level, CardGroup cardGroup)
+        {
+            return level switch
+            {
+                1 => WithLevel1(cardGroup),
+                2 => WithLevel2(cardGroup),
+                3 => WithLevel3(cardGroup),
+                _ => throw new ArgumentException("Level must between 1 and 3!")
+            };
+        }
+
         public GameStateBuilder WithLevel1(CardGroup level1)
         {
             _level1 = level1;
