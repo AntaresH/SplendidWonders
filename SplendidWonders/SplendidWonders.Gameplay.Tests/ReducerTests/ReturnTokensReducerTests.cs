@@ -87,7 +87,7 @@ namespace SplendidWonders.Gameplay.Tests.ReducerTests
                 TokenGroup.FromArray([4, 1, 2, 3, 2, 0]),
                 new ReturnTokensAction() { Tokens = TokenGroup.FromArray([3, 0, 0, 0, 0, 0]) },
                 TokenGroup.FromArray([6, 0, 4, 2, 1, 5]),
-                TokenGroup.FromArray([2, 1, 2, 3, 2, 0]),
+                TokenGroup.FromArray([1, 1, 2, 3, 2, 0]),
                 2)
                 .SetName("Return Tokens - return same tokens from 13");
 
@@ -98,13 +98,13 @@ namespace SplendidWonders.Gameplay.Tests.ReducerTests
                 TokenGroup.FromArray([4, 0, 4, 4, 1, 5]),
                 TokenGroup.FromArray([1, 1, 3, 1, 4, 0]),
                 2)
-                .SetName("Return Tokens - return two token types tokens from 13");
+                .SetName("Return Tokens - return two token types from 13");
 
             yield return new TestCaseData(
                 TokenGroup.FromArray([3, 0, 4, 2, 1, 5]),
                 TokenGroup.FromArray([3, 3, 2, 3, 2, 0]),
                 new ReturnTokensAction() { Tokens = TokenGroup.FromArray([1, 0, 0, 1, 1, 0]) },
-                TokenGroup.FromArray([4, 0, 5, 3, 0, 5]),
+                TokenGroup.FromArray([4, 0, 4, 3, 2, 5]),
                 TokenGroup.FromArray([2, 3, 2, 2, 1, 0]),
                 2)
                 .SetName("Return Tokens - return different tokens from 13");

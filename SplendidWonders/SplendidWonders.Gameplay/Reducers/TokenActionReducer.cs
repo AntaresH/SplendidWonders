@@ -42,7 +42,9 @@ namespace SplendidWonders.Gameplay.Reducers
 
         public GameState Reduce(GameState state, ReturnTokensAction action)
         {
-            return ReduceGeneralTokenAction(state, action.Tokens.ToArray());
+            var invertedValues = action.Tokens.ToArray().Select(t => t * -1);
+
+            return ReduceGeneralTokenAction(state, invertedValues.ToArray());
         }
     }
 }
