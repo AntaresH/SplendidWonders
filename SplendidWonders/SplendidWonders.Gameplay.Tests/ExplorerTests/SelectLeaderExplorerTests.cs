@@ -23,13 +23,13 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
         }
 
         [TestCaseSource(nameof(SelectLeaderActionCases))]
-        public void GetValidActions_WithDifferentLeaders_ShouldReturnExpectedSelectLeaderActions(List<Player> playerSetup, ImmutableList<Leader> leaderSetup, SelectLeaderAction[] expectedActions)
+        public void GetValidActions_WithDifferentLeaders_ShouldReturnExpectedSelectLeaderActions(ImmutableList<DevelopmentCard> player1Tableau, ImmutableList<Leader> leaderSetup, SelectLeaderAction[] expectedActions)
         {
             // Arrange
             var gameState = _defaultBuilder
                 .WithLeaders(leaderSetup)
-                .WithPlayers(playerSetup)
-                .WithCurrentPlayer(playerSetup[0])
+                .WithPlayerTableau(1, player1Tableau)
+                .WithCurrentPlayer(1)
                 .Build();
 
             // Act
@@ -72,15 +72,7 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
             playerTableau44.AddRange(Cards.Level1.Where(card => card.Bonus == DevelopmentBonus.Brown).Take(4).ToList());
 
             yield return new TestCaseData(
-
-                new List<Player>()
-                {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        Tableau = playerTableau333.ToImmutableList()
-                    }
-                },
+                playerTableau333.ToImmutableList(),
                 twoWaySelectionLeaders333,
                 new[]
                 {
@@ -90,15 +82,7 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
                 .SetName("Select Leader - Two 3-3-3 leaders are eligible");
 
             yield return new TestCaseData(
-
-                new List<Player>()
-                {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        Tableau = playerTableau333.ToImmutableList()
-                    }
-                },
+                playerTableau333.ToImmutableList(),
                 threeWaySelectionLeaders333,
                 new[]
                 {
@@ -109,15 +93,7 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
                 .SetName("Select Leader - Three 3-3-3 leaders are eligible");
 
             yield return new TestCaseData(
-
-                new List<Player>()
-                {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        Tableau = playerTableau44.ToImmutableList()
-                    }
-                },
+                playerTableau44.ToImmutableList(),
                 twoWaySelectionLeaders44,
                 new[]
                 {
@@ -127,15 +103,7 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
                 .SetName("Select Leader - Two 4-4 leaders are eligible");
 
             yield return new TestCaseData(
-
-                new List<Player>()
-                {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        Tableau = playerTableau44.ToImmutableList()
-                    }
-                },
+                playerTableau44.ToImmutableList(),
                 threeWaySelectionLeaders44,
                 new[]
                 {

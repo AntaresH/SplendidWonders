@@ -23,12 +23,12 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
         }
 
         [TestCaseSource(nameof(PurchaseActionEmptyTableauCases))]
-        public void Explore_WithDifferentStoreAndEmptyTableau_ShouldReturnExpectedPurchaseActions(List<Player> playerSetup, PurchaseAction[] expectedActions)
+        public void Explore_WithDifferentStoreAndEmptyTableau_ShouldReturnExpectedPurchaseActions(TokenGroup player1Store, PurchaseAction[] expectedActions)
         {
             // Arrange
             var gameState = _defaultBuilder
-                .WithPlayers(playerSetup)
-                .WithCurrentPlayer(playerSetup[0])
+                .WithPlayerStore(1, player1Store)
+                .WithCurrentPlayer(1)
                 .Build();
 
             // Act
@@ -40,12 +40,46 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
         }
 
         [TestCaseSource(nameof(PurchaseActionTableau42011Cases))]
-        public void Explore_WithDifferentStoreAndTableau42011_ShouldReturnExpectedPurchaseActions(List<Player> playerSetup, PurchaseAction[] expectedActions)
+        public void Explore_WithDifferentStoreAndTableau42011_ShouldReturnExpectedPurchaseActions(TokenGroup player1Store, PurchaseAction[] expectedActions)
         {
             // Arrange
+            var playerTableau42011 = new List<DevelopmentCard>();
+
+            playerTableau42011.AddRange(Cards.Level1.Where(card => card.Bonus == DevelopmentBonus.Yellow).Take(4).ToList());
+            playerTableau42011.AddRange(Cards.Level1.Where(card => card.Bonus == DevelopmentBonus.Blue).Take(2).ToList());
+            playerTableau42011.AddRange(Cards.Level1.Where(card => card.Bonus == DevelopmentBonus.Brown).Take(1).ToList());
+            playerTableau42011.AddRange(Cards.Level1.Where(card => card.Bonus == DevelopmentBonus.Red).Take(1).ToList());
+
             var gameState = _defaultBuilder
-                .WithPlayers(playerSetup)
-                .WithCurrentPlayer(playerSetup[0])
+                .WithPlayerStore(1, player1Store)
+                .WithPlayerTableau(1, playerTableau42011.ToImmutableList())
+                .WithCurrentPlayer(1)
+                .Build();
+
+            // Act
+            var validActions = _sut.Explore(gameState);
+
+            // Assert
+            Assert.IsNotNull(validActions);
+            Assert.That(validActions, Is.EquivalentTo(expectedActions));
+        }
+
+        [TestCaseSource(nameof(PurchaseActionTableau42011ReservedCardCases))]
+        public void Explore_WithDifferentStoreAndTableau42011AndReservedCards_ShouldReturnExpectedPurchaseActions(TokenGroup player1Store, ImmutableList<DevelopmentCard> player1Reserved, PurchaseAction[] expectedActions)
+        {
+            // Arrange
+            var playerTableau42011 = new List<DevelopmentCard>();
+
+            playerTableau42011.AddRange(Cards.Level1.Where(card => card.Bonus == DevelopmentBonus.Yellow).Take(4).ToList());
+            playerTableau42011.AddRange(Cards.Level1.Where(card => card.Bonus == DevelopmentBonus.Blue).Take(2).ToList());
+            playerTableau42011.AddRange(Cards.Level1.Where(card => card.Bonus == DevelopmentBonus.Brown).Take(1).ToList());
+            playerTableau42011.AddRange(Cards.Level1.Where(card => card.Bonus == DevelopmentBonus.Red).Take(1).ToList());
+
+            var gameState = _defaultBuilder
+                .WithPlayerStore(1, player1Store)
+                .WithPlayerTableau(1, playerTableau42011.ToImmutableList())
+                .WithPlayerReservedCards(1, player1Reserved)
+                .WithCurrentPlayer(1)
                 .Build();
 
             // Act
@@ -57,15 +91,60 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
         }
 
         [TestCaseSource(nameof(PurchaseActionTableau20233CardSeed12345Cases))]
-        public void Explore_WithDifferentStoreAndTableau20233_ShouldReturnExpectedPurchaseActions(List<Player> playerSetup, CardGroup[] cardSetup, PurchaseAction[] expectedActions)
+        public void Explore_WithDifferentStoreAndTableau20233_ShouldReturnExpectedPurchaseActions(TokenGroup player1Store, PurchaseAction[] expectedActions)
         {
             // Arrange
+            var playerTableau20233 = new List<DevelopmentCard>();
+
+            playerTableau20233.AddRange(Cards.Level1.Where(card => card.Bonus == DevelopmentBonus.Yellow).Take(2).ToList());
+            playerTableau20233.AddRange(Cards.Level1.Where(card => card.Bonus == DevelopmentBonus.Green).Take(2).ToList());
+            playerTableau20233.AddRange(Cards.Level1.Where(card => card.Bonus == DevelopmentBonus.Brown).Take(3).ToList());
+            playerTableau20233.AddRange(Cards.Level1.Where(card => card.Bonus == DevelopmentBonus.Red).Take(3).ToList());
+
+            int testSeed = 12345;
+
+            var seededCardSetup = GameFactory.GetRandomizedCardSetup(testSeed);
+
             var gameState = _defaultBuilder
-                .WithLevel1(cardSetup[0])
-                .WithLevel2(cardSetup[1])
-                .WithLevel3(cardSetup[2])
-                .WithPlayers(playerSetup)
-                .WithCurrentPlayer(playerSetup[0])
+                .WithLevel1(seededCardSetup[0])
+                .WithLevel2(seededCardSetup[1])
+                .WithLevel3(seededCardSetup[2])
+                .WithPlayerStore(1, player1Store)
+                .WithPlayerTableau(1, playerTableau20233.ToImmutableList())
+                .WithCurrentPlayer(1)
+                .Build();
+
+            // Act
+            var validActions = _sut.Explore(gameState);
+
+            // Assert
+            Assert.IsNotNull(validActions);
+            Assert.That(validActions, Is.EquivalentTo(expectedActions));
+        }
+
+        [TestCaseSource(nameof(PurchaseActionTableau20233CardSeed12345ReservedCardCases))]
+        public void Explore_WithDifferentStoreAndTableau20233AndReservedCards_ShouldReturnExpectedPurchaseActions(TokenGroup player1Store, ImmutableList<DevelopmentCard> player1Reserved, PurchaseAction[] expectedActions)
+        {
+            // Arrange
+            var playerTableau20233 = new List<DevelopmentCard>();
+
+            playerTableau20233.AddRange(Cards.Level1.Where(card => card.Bonus == DevelopmentBonus.Yellow).Take(2).ToList());
+            playerTableau20233.AddRange(Cards.Level1.Where(card => card.Bonus == DevelopmentBonus.Green).Take(2).ToList());
+            playerTableau20233.AddRange(Cards.Level1.Where(card => card.Bonus == DevelopmentBonus.Brown).Take(3).ToList());
+            playerTableau20233.AddRange(Cards.Level1.Where(card => card.Bonus == DevelopmentBonus.Red).Take(3).ToList());
+
+            int testSeed = 12345;
+
+            var seededCardSetup = GameFactory.GetRandomizedCardSetup(testSeed);
+
+            var gameState = _defaultBuilder
+                .WithLevel1(seededCardSetup[0])
+                .WithLevel2(seededCardSetup[1])
+                .WithLevel3(seededCardSetup[2])
+                .WithPlayerStore(1, player1Store)
+                .WithPlayerTableau(1, playerTableau20233.ToImmutableList())
+                .WithPlayerReservedCards(1, player1Reserved)
+                .WithCurrentPlayer(1)
                 .Build();
 
             // Act
@@ -79,41 +158,17 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
         private static IEnumerable<TestCaseData> PurchaseActionEmptyTableauCases()
         {
             yield return new TestCaseData(
-
-                new List<Player>()
-                {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        Store = TokenGroup.FromArray([0, 0, 0, 0, 0, 0])
-                    }
-                },
+                TokenGroup.FromArray([0, 0, 0, 0, 0, 0]),
                 new PurchaseAction[] { })
                 .SetName("Purchase Action - Empty Tableau - no tokens");
 
             yield return new TestCaseData(
-
-                new List<Player>()
-                {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        Store = TokenGroup.FromArray([3, 0, 0, 1, 0, 0])
-                    }
-                },
+                TokenGroup.FromArray([3, 0, 0, 1, 0, 0]),
                 new PurchaseAction[] { })
                 .SetName("Purchase Action - Empty Tableau - not suitable tokens");
 
             yield return new TestCaseData(
-
-                new List<Player>()
-                {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        Store = TokenGroup.FromArray([0, 2, 2, 0, 1, 0])
-                    }
-                },
+                TokenGroup.FromArray([0, 2, 2, 0, 1, 0]),
                 new[]
                 {
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 1) }
@@ -121,15 +176,7 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
                 .SetName("Purchase Action - Empty Tableau - 2 blue, 2 green, 1 red");
 
             yield return new TestCaseData(
-
-                new List<Player>()
-                {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        Store = TokenGroup.FromArray([0, 0, 0, 2, 1, 0])
-                    }
-                },
+                TokenGroup.FromArray([0, 0, 0, 2, 1, 0]),
                 new[]
                 {
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 4) }
@@ -137,15 +184,7 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
                 .SetName("Purchase Action - Empty Tableau - 2 brown, 1 red");
 
             yield return new TestCaseData(
-
-                new List<Player>()
-                {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        Store = TokenGroup.FromArray([0, 0, 0, 2, 0, 1])
-                    }
-                },
+                TokenGroup.FromArray([0, 0, 0, 2, 0, 1]),
                 new[]
                 {
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 4) }
@@ -153,28 +192,12 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
                 .SetName("Purchase Action - Empty Tableau -  2 brown, 1 polymath");
 
             yield return new TestCaseData(
-
-                new List<Player>()
-                {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        Store = TokenGroup.FromArray([0, 0, 0, 0, 0, 2])
-                    }
-                },
+                TokenGroup.FromArray([0, 0, 0, 0, 0, 2]),
                 new PurchaseAction[] { })
                 .SetName("Purchase Action - Empty Tableau - 2 polymath");
 
             yield return new TestCaseData(
-
-                new List<Player>()
-                {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        Store = TokenGroup.FromArray([0, 0, 0, 0, 0, 3])
-                    }
-                },
+                TokenGroup.FromArray([0, 0, 0, 0, 0, 3]),
                 new[]
                 {
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 2) },
@@ -183,15 +206,7 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
                 .SetName("Purchase Action - Empty Tableau - 3 polymath");
 
             yield return new TestCaseData(
-
-                new List<Player>()
-                {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        Store = TokenGroup.FromArray([3, 4, 1, 0, 1, 1])
-                    }
-                },
+                TokenGroup.FromArray([3, 4, 1, 0, 1, 1]),
                 new[]
                 {
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 1) },
@@ -201,15 +216,7 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
                 .SetName("Purchase Action - Empty Tableau - lots of tokens #1");
 
             yield return new TestCaseData(
-
-                new List<Player>()
-                {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        Store = TokenGroup.FromArray([0, 0, 1, 5, 2, 0])
-                    }
-                },
+                TokenGroup.FromArray([0, 0, 1, 5, 2, 0]),
                 new[]
                 {
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 4) },
@@ -221,24 +228,8 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
 
         private static IEnumerable<TestCaseData> PurchaseActionTableau42011Cases()
         {
-            var playerTableau42011 = new List<DevelopmentCard>();
-
-            playerTableau42011.AddRange(Cards.Level1.Where(card => card.Bonus == DevelopmentBonus.Yellow).Take(4).ToList());
-            playerTableau42011.AddRange(Cards.Level1.Where(card => card.Bonus == DevelopmentBonus.Blue).Take(2).ToList());
-            playerTableau42011.AddRange(Cards.Level1.Where(card => card.Bonus == DevelopmentBonus.Brown).Take(1).ToList());
-            playerTableau42011.AddRange(Cards.Level1.Where(card => card.Bonus == DevelopmentBonus.Red).Take(1).ToList());
-
             yield return new TestCaseData(
-
-                new List<Player>()
-                {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        Store = TokenGroup.FromArray([0, 0, 0, 0, 0, 0]),
-                        Tableau = playerTableau42011.ToImmutableList()
-                    }
-                },
+                TokenGroup.FromArray([0, 0, 0, 0, 0, 0]),
                 new[]
                 {
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 3) },
@@ -247,16 +238,7 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
                 .SetName("Purchase Action - Tableau 42011 - Card Setup #0 - empty store");
 
             yield return new TestCaseData(
-
-                new List<Player>()
-                {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        Store = TokenGroup.FromArray([0, 1, 1, 0, 1, 0]),
-                        Tableau = playerTableau42011.ToImmutableList()
-                    }
-                },
+                TokenGroup.FromArray([0, 1, 1, 0, 1, 0]),
                 new[]
                 {
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 2) },
@@ -266,16 +248,7 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
                 .SetName("Purchase Action - Tableau 42011 - Card Setup #0 + 3-long store balanced");
 
             yield return new TestCaseData(
-
-                new List<Player>()
-                {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        Store = TokenGroup.FromArray([3, 0, 0, 0, 0, 0]),
-                        Tableau = playerTableau42011.ToImmutableList()
-                    }
-                },
+                TokenGroup.FromArray([3, 0, 0, 0, 0, 0]),
                 new[]
                 {
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 3) },
@@ -284,16 +257,7 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
                 .SetName("Purchase Action - Tableau 42011 - Card Setup #0 + 3-long store yellow-heavy");
 
             yield return new TestCaseData(
-
-                new List<Player>()
-                {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        Store = TokenGroup.FromArray([1, 0, 1, 0, 0, 1]),
-                        Tableau = playerTableau42011.ToImmutableList()
-                    }
-                },
+                TokenGroup.FromArray([1, 0, 1, 0, 0, 1]),
                 new[]
                 {
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 1) },
@@ -306,16 +270,7 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
                 .SetName("Purchase Action - Tableau 42011 - Card Setup #0 - 3-long store with polymath");
 
             yield return new TestCaseData(
-
-                new List<Player>()
-                {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        Store = TokenGroup.FromArray([1, 1, 1, 1, 1, 0]),
-                        Tableau = playerTableau42011.ToImmutableList()
-                    }
-                },
+                TokenGroup.FromArray([1, 1, 1, 1, 1, 0]),
                 new[]
                 {
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 2) },
@@ -326,16 +281,7 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
                 .SetName("Purchase Action - Tableau 42011 - Card Setup #0 - 5-long store balanced");
 
             yield return new TestCaseData(
-
-                new List<Player>()
-                {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        Store = TokenGroup.FromArray([0, 0, 0, 5, 0, 0]),
-                        Tableau = playerTableau42011.ToImmutableList()
-                    }
-                },
+                TokenGroup.FromArray([0, 0, 0, 5, 0, 0]),
                 new[]
                 {
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 3) },
@@ -346,16 +292,7 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
                 .SetName("Purchase Action - Tableau 42011 - Card Setup #0 - 5-long store brown-heavy");
 
             yield return new TestCaseData(
-
-                new List<Player>()
-                {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        Store = TokenGroup.FromArray([2, 0, 0, 0, 1, 2]),
-                        Tableau = playerTableau42011.ToImmutableList()
-                    }
-                },
+                TokenGroup.FromArray([2, 0, 0, 0, 1, 2]),
                 new[]
                 {
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 1) },
@@ -367,16 +304,7 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
                 .SetName("Purchase Action - Tableau 42011 - Card Setup #0 - 5-long store with polymath");
 
             yield return new TestCaseData(
-
-                new List<Player>()
-                {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        Store = TokenGroup.FromArray([0, 0, 0, 0, 0, 5]),
-                        Tableau = playerTableau42011.ToImmutableList()
-                    }
-                },
+                TokenGroup.FromArray([0, 0, 0, 0, 0, 5]),
                 new[]
                 {
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 1) },
@@ -390,16 +318,7 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
                 .SetName("Purchase Action - Tableau 42011 - Card Setup #0 - 5-long store only polymath");
 
             yield return new TestCaseData(
-
-                new List<Player>()
-                {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        Store = TokenGroup.FromArray([2, 1, 2, 1, 2, 0]),
-                        Tableau = playerTableau42011.ToImmutableList()
-                    }
-                },
+                TokenGroup.FromArray([2, 1, 2, 1, 2, 0]),
                 new[]
                 {
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 1) },
@@ -411,16 +330,7 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
                 .SetName("Purchase Action - Tableau 42011 - Card Setup #0 - 8-long store balanced");
 
             yield return new TestCaseData(
-
-                new List<Player>()
-                {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        Store = TokenGroup.FromArray([0, 1, 0, 5, 2, 0]),
-                        Tableau = playerTableau42011.ToImmutableList()
-                    }
-                },
+                TokenGroup.FromArray([0, 1, 0, 5, 2, 0]),
                 new[]
                 {
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 2) },
@@ -432,16 +342,7 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
                 .SetName("Purchase Action - Tableau 42011 - Card Setup #0 - 8-long store brown-heavy");
 
             yield return new TestCaseData(
-
-                new List<Player>()
-                {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        Store = TokenGroup.FromArray([3, 0, 0, 2, 1, 2]),
-                        Tableau = playerTableau42011.ToImmutableList()
-                    }
-                },
+                TokenGroup.FromArray([3, 0, 0, 2, 1, 2]),
                 new[]
                 {
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 1) },
@@ -455,16 +356,7 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
                 .SetName("Purchase Action - Tableau 42011 - Card Setup #0 - 8-long store with polymath");
 
             yield return new TestCaseData(
-
-                new List<Player>()
-                {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        Store = TokenGroup.FromArray([2, 1, 2, 3, 2, 0]),
-                        Tableau = playerTableau42011.ToImmutableList()
-                    }
-                },
+                TokenGroup.FromArray([2, 1, 2, 3, 2, 0]),
                 new[]
                 {
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 1) },
@@ -477,16 +369,7 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
                 .SetName("Purchase Action - Tableau 42011 - Card Setup #0 - 10-long store balanced");
 
             yield return new TestCaseData(
-
-                new List<Player>()
-                {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        Store = TokenGroup.FromArray([1, 1, 0, 2, 6, 0]),
-                        Tableau = playerTableau42011.ToImmutableList()
-                    }
-                },
+                TokenGroup.FromArray([1, 1, 0, 2, 6, 0]),
                 new[]
                 {
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 2) },
@@ -499,16 +382,7 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
                 .SetName("Purchase Action - Tableau 42011 - Card Setup #0 - 10-long store red-heavy");
 
             yield return new TestCaseData(
-
-                new List<Player>()
-                {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        Store = TokenGroup.FromArray([1, 1, 2, 2, 2, 2]),
-                        Tableau = playerTableau42011.ToImmutableList()
-                    }
-                },
+                TokenGroup.FromArray([1, 1, 2, 2, 2, 2]),
                 new[]
                 {
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 1) },
@@ -521,23 +395,17 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
                     new PurchaseAction() { Card = Cards.Level2.First(c => c.Id == 44) },
                 })
                 .SetName("Purchase Action - Tableau 42011 - Card Setup #0 - 10-long store with polymath");
+        }
 
+        private static IEnumerable<TestCaseData> PurchaseActionTableau42011ReservedCardCases()
+        {
             yield return new TestCaseData(
-
-                new List<Player>()
+                TokenGroup.FromArray([0, 5, 0, 0, 0, 0]),
+                new List<DevelopmentCard>()
                 {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        Store = TokenGroup.FromArray([0, 5, 0, 0, 0, 0]),
-                        ReservedCards = new List<DevelopmentCard>()
-                        {
-                            Cards.Level3.First(c => c.Id == 81),
+                    Cards.Level3.First(c => c.Id == 81),
 
-                        }.ToImmutableList(),
-                        Tableau = playerTableau42011.ToImmutableList()
-                    }
-                },
+                }.ToImmutableList(),
                 new[]
                 {
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 2) },
@@ -547,22 +415,13 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
                 .SetName("Purchase Action - Tableau 42011 - Card Setup #0 - one reserved card + 5-long store");
 
             yield return new TestCaseData(
-
-                new List<Player>()
+                TokenGroup.FromArray([1, 1, 0, 2, 2, 2]),
+                new List<DevelopmentCard>()
                 {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        Store = TokenGroup.FromArray([1, 1, 0, 2, 2, 2]),
-                        ReservedCards = new List<DevelopmentCard>()
-                        {
-                            Cards.Level1.First(c => c.Id == 32),
-                            Cards.Level3.First(c => c.Id == 82),
+                    Cards.Level1.First(c => c.Id == 32),
+                    Cards.Level3.First(c => c.Id == 82),
 
-                        }.ToImmutableList(),
-                        Tableau = playerTableau42011.ToImmutableList()
-                    }
-                },
+                }.ToImmutableList(),
                 new[]
                 {
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 1) },
@@ -581,17 +440,6 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
 
         private static IEnumerable<TestCaseData> PurchaseActionTableau20233CardSeed12345Cases()
         {
-            var playerTableau20233 = new List<DevelopmentCard>();
-
-            playerTableau20233.AddRange(Cards.Level1.Where(card => card.Bonus == DevelopmentBonus.Yellow).Take(2).ToList());
-            playerTableau20233.AddRange(Cards.Level1.Where(card => card.Bonus == DevelopmentBonus.Green).Take(2).ToList());
-            playerTableau20233.AddRange(Cards.Level1.Where(card => card.Bonus == DevelopmentBonus.Brown).Take(3).ToList());
-            playerTableau20233.AddRange(Cards.Level1.Where(card => card.Bonus == DevelopmentBonus.Red).Take(3).ToList());
-
-            int testSeed = 12345;
-
-            var seededCardSetup = GameFactory.GetRandomizedCardSetup(testSeed);
-
             // Level 1
             //+ [0] { DevelopmentCard { Id = 3, Name = Kereskedőház, VictoryPoints = 0, Cost = TokenGroup { Yellow = 3, Blue = 1, Green = 0, Brown = 0, Red = 1, Polymath = 0 }, Bonus = Yellow } }
             //+ [1] { DevelopmentCard { Id = 2, Name = Borászat, VictoryPoints = 0, Cost = TokenGroup { Yellow = 0, Blue = 3, Green = 0, Brown = 0, Red = 0, Polymath = 0 }, Bonus = Yellow } }
@@ -611,32 +459,12 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
             //+ [3] { DevelopmentCard { Id = 76, Name = Epheszoszi Artemisz Templom, VictoryPoints = 5, Cost = TokenGroup { Yellow = 7, Blue = 3, Green = 0, Brown = 0, Red = 0, Polymath = 0 }, Bonus = Blue } }
 
             yield return new TestCaseData(
-
-                new List<Player>()
-                {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        Store = TokenGroup.FromArray([0, 0, 0, 0, 0, 0]),
-                        Tableau = playerTableau20233.ToImmutableList()
-                    }
-                },
-                seededCardSetup,
+                TokenGroup.FromArray([0, 0, 0, 0, 0, 0]),
                 new PurchaseAction[] { })
                 .SetName("Purchase Action - Tableau 20233 - Card Setup #12345 - empty store");
 
             yield return new TestCaseData(
-
-                new List<Player>()
-                {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        Store = TokenGroup.FromArray([1, 1, 0, 0, 1, 0]),
-                        Tableau = playerTableau20233.ToImmutableList()
-                    }
-                },
-                seededCardSetup,
+                TokenGroup.FromArray([1, 1, 0, 0, 1, 0]),
                 new[]
                 {
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 3) },
@@ -647,17 +475,7 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
                 .SetName("Purchase Action - Tableau 20233 - Card Setup #12345 + 3-long store balanced");
 
             yield return new TestCaseData(
-
-                new List<Player>()
-                {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        Store = TokenGroup.FromArray([0, 3, 0, 0, 0, 0]),
-                        Tableau = playerTableau20233.ToImmutableList()
-                    }
-                },
-                seededCardSetup,
+                TokenGroup.FromArray([0, 3, 0, 0, 0, 0]),
                 new[]
                 {
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 2) },
@@ -666,17 +484,7 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
                 .SetName("Purchase Action - Tableau 20233 - Card Setup #12345 + 3-long store blue-heavy");
 
             yield return new TestCaseData(
-
-                new List<Player>()
-                {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        Store = TokenGroup.FromArray([0, 1, 1, 0, 0, 1]),
-                        Tableau = playerTableau20233.ToImmutableList()
-                    }
-                },
-                seededCardSetup,
+                TokenGroup.FromArray([0, 1, 1, 0, 0, 1]),
                 new[]
                 {
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 3) },
@@ -687,17 +495,7 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
                 .SetName("Purchase Action - Tableau 20233 - Card Setup #12345 + 3-long store with polymath");
 
             yield return new TestCaseData(
-
-                new List<Player>()
-                {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        Store = TokenGroup.FromArray([1, 1, 1, 1, 1, 0]),
-                        Tableau = playerTableau20233.ToImmutableList()
-                    }
-                },
-                seededCardSetup,
+                TokenGroup.FromArray([1, 1, 1, 1, 1, 0]),
                 new[]
                 {
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 3) },
@@ -708,17 +506,7 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
                 .SetName("Purchase Action - Tableau 20233 - Card Setup #12345 + 5-long store balanced");
 
             yield return new TestCaseData(
-
-                new List<Player>()
-                {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        Store = TokenGroup.FromArray([0, 1, 0, 4, 0, 0]),
-                        Tableau = playerTableau20233.ToImmutableList()
-                    }
-                },
-                seededCardSetup,
+                TokenGroup.FromArray([0, 1, 0, 4, 0, 0]),
                 new[]
                 {
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 6) },
@@ -728,17 +516,7 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
                 .SetName("Purchase Action - Tableau 20233 - Card Setup #12345 + 5-long store brown-heavy");
 
             yield return new TestCaseData(
-
-                new List<Player>()
-                {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        Store = TokenGroup.FromArray([2, 0, 0, 0, 1, 2]),
-                        Tableau = playerTableau20233.ToImmutableList()
-                    }
-                },
-                seededCardSetup,
+                TokenGroup.FromArray([2, 0, 0, 0, 1, 2]),
                 new[]
                 {
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 3) },
@@ -749,17 +527,7 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
                 .SetName("Purchase Action - Tableau 20233 - Card Setup #12345 + 5-long store with polymath");
 
             yield return new TestCaseData(
-
-                new List<Player>()
-                {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        Store = TokenGroup.FromArray([0, 0, 0, 0, 0, 5]),
-                        Tableau = playerTableau20233.ToImmutableList()
-                    }
-                },
-                seededCardSetup,
+                TokenGroup.FromArray([0, 0, 0, 0, 0, 5]),
                 new[]
                 {
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 2) },
@@ -773,17 +541,7 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
                 .SetName("Purchase Action - Tableau 20233 - Card Setup #12345 + 5-long store only polymath");
 
             yield return new TestCaseData(
-
-                new List<Player>()
-                {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        Store = TokenGroup.FromArray([2, 1, 2, 1, 2, 0]),
-                        Tableau = playerTableau20233.ToImmutableList()
-                    }
-                },
-                seededCardSetup,
+                TokenGroup.FromArray([2, 1, 2, 1, 2, 0]),
                 new[]
                 {
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 3) },
@@ -793,17 +551,7 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
                 .SetName("Purchase Action - Tableau 20233 - Card Setup #12345 + 8-long store balanced");
 
             yield return new TestCaseData(
-
-                new List<Player>()
-                {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        Store = TokenGroup.FromArray([0, 6, 0, 0, 1, 0]),
-                        Tableau = playerTableau20233.ToImmutableList()
-                    }
-                },
-                seededCardSetup,
+                TokenGroup.FromArray([0, 6, 0, 0, 1, 0]),
                 new[]
                 {
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 2) },
@@ -814,17 +562,7 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
                 .SetName("Purchase Action - Tableau 20233 - Card Setup #12345 + 8-long store blue-heavy");
 
             yield return new TestCaseData(
-
-                new List<Player>()
-                {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        Store = TokenGroup.FromArray([3, 0, 0, 2, 1, 2]),
-                        Tableau = playerTableau20233.ToImmutableList()
-                    }
-                },
-                seededCardSetup,
+                TokenGroup.FromArray([3, 0, 0, 2, 1, 2]),
                 new[]
                 {
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 3) },
@@ -836,17 +574,7 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
                 .SetName("Purchase Action - Tableau 20233 - Card Setup #12345 + 8-long store with polymath");
 
             yield return new TestCaseData(
-
-                new List<Player>()
-                {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        Store = TokenGroup.FromArray([3, 3, 2, 1, 1, 0]),
-                        Tableau = playerTableau20233.ToImmutableList()
-                    }
-                },
-                seededCardSetup,
+                TokenGroup.FromArray([3, 3, 2, 1, 1, 0]),
                 new[]
                 {
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 2) },
@@ -859,17 +587,7 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
                 .SetName("Purchase Action - Tableau 20233 - Card Setup #12345 + 10-long store balanced");
 
             yield return new TestCaseData(
-
-                new List<Player>()
-                {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        Store = TokenGroup.FromArray([5, 3, 1, 0, 1, 0]),
-                        Tableau = playerTableau20233.ToImmutableList()
-                    }
-                },
-                seededCardSetup,
+                TokenGroup.FromArray([5, 3, 1, 0, 1, 0]),
                 new[]
                 {
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 2) },
@@ -883,17 +601,7 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
                 .SetName("Purchase Action - Tableau 20233 - Card Setup #12345 + 10-long store yellow-heavy");
 
             yield return new TestCaseData(
-
-                new List<Player>()
-                {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        Store = TokenGroup.FromArray([1, 0, 3, 2, 2, 2]),
-                        Tableau = playerTableau20233.ToImmutableList()
-                    }
-                },
-                seededCardSetup,
+                TokenGroup.FromArray([1, 0, 3, 2, 2, 2]),
                 new[]
                 {
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 3) },
@@ -904,24 +612,17 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
                     new PurchaseAction() { Card = Cards.Level3.First(c => c.Id == 71) }
                 })
                 .SetName("Purchase Action - Tableau 20233 - Card Setup #12345 + 10-long store with polymath");
+        }
 
+        private static IEnumerable<TestCaseData> PurchaseActionTableau20233CardSeed12345ReservedCardCases() 
+        { 
             yield return new TestCaseData(
-
-                new List<Player>()
+                TokenGroup.FromArray([0, 5, 0, 0, 0, 0]),
+                new List<DevelopmentCard>()
                 {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        Store = TokenGroup.FromArray([0, 5, 0, 0, 0, 0]),
-                        ReservedCards = new List<DevelopmentCard>()
-                        {
-                            Cards.Level2.First(c => c.Id == 49),
+                    Cards.Level2.First(c => c.Id == 49),
 
-                        }.ToImmutableList(),
-                        Tableau = playerTableau20233.ToImmutableList()
-                    }
-                },
-                seededCardSetup,
+                }.ToImmutableList(),
                 new[]
                 {
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 2) },
@@ -931,23 +632,13 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
                 .SetName("Purchase Action - Tableau 20233 - Card Setup #12345 + one reserved card + 5-long store");
 
             yield return new TestCaseData(
-
-                new List<Player>()
+                TokenGroup.FromArray([1, 1, 0, 2, 2, 2]),
+                new List<DevelopmentCard>()
                 {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        Store = TokenGroup.FromArray([1, 1, 0, 2, 2, 2]),
-                        ReservedCards = new List<DevelopmentCard>()
-                        {
-                            Cards.Level1.First(c => c.Id == 36),
-                            Cards.Level2.First(c => c.Id == 51),
-                            Cards.Level3.First(c => c.Id == 88),
-                        }.ToImmutableList(),
-                        Tableau = playerTableau20233.ToImmutableList()
-                    }
-                },
-                seededCardSetup,
+                    Cards.Level1.First(c => c.Id == 36),
+                    Cards.Level2.First(c => c.Id == 51),
+                    Cards.Level3.First(c => c.Id == 88),
+                }.ToImmutableList(),
                 new[]
                 {
                     new PurchaseAction() { Card = Cards.Level1.First(c => c.Id == 2) },

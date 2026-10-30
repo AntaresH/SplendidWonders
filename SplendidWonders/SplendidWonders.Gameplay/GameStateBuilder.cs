@@ -5,27 +5,40 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Text;
 
-namespace SplendidWonders.Gameplay.Tests
+namespace SplendidWonders.Gameplay
 {
-    internal class GameStateBuilder
+    public class GameStateBuilder
     {
-        private Player _currentPlayer;
+        internal Player _currentPlayer;
 
-        private ImmutableList<Leader> _leaders;
+        internal ImmutableList<Leader> _leaders;
 
-        private CardGroup _level1;
+        internal CardGroup _level1;
 
-        private CardGroup _level2;
+        internal CardGroup _level2;
 
-        private CardGroup _level3;
+        internal CardGroup _level3;
 
-        private List<Player> _players;
+        internal List<Player> _players;
 
-        private TokenGroup _tokenSupply;
+        internal TokenGroup _tokenSupply;
 
-        public GameStateBuilder WithCurrentPlayer(Player currentPlayer)
+        public GameStateBuilder() { }
+
+        public GameStateBuilder(GameState existingState)
         {
-            _currentPlayer = currentPlayer;
+            _currentPlayer = existingState.CurrentPlayer;
+            _leaders = existingState.Leaders;
+            _level1 = existingState.Level1;
+            _level2 = existingState.Level2;
+            _level3 = existingState.Level3;
+            _players = existingState.Players;
+            _tokenSupply = existingState.TokenSupply;
+        }
+
+        public GameStateBuilder WithCurrentPlayer(int currentPlayerId)
+        {
+            _currentPlayer = _players.First(p => p.Id == currentPlayerId);
             return this;
         }
 
@@ -59,6 +72,27 @@ namespace SplendidWonders.Gameplay.Tests
             return this;
         }
 
+        public GameStateBuilder WithPlayerStore(int playerId, TokenGroup store)
+        {
+            var player = _players.First(p => p.Id == playerId);
+            player.Store = store;
+            return this;
+        }
+
+        public GameStateBuilder WithPlayerReservedCards(int playerId, ImmutableList<DevelopmentCard> reservedCards)
+        {
+            var player = _players.First(p => p.Id == playerId);
+            player.ReservedCards = reservedCards;
+            return this;
+        }
+
+        public GameStateBuilder WithPlayerTableau(int playerId, ImmutableList<DevelopmentCard> tableau)
+        {
+            var player = _players.First(p => p.Id == playerId);
+            player.Tableau = tableau;
+            return this;
+        }
+
         public GameStateBuilder WithTokenSupply(TokenGroup tokenSupply)
         {
             _tokenSupply = tokenSupply;
@@ -88,12 +122,14 @@ namespace SplendidWonders.Gameplay.Tests
                 {
                     new Player()
                     {
+                        Id = 1,
                         Name = "Test player 1",
                         ReservedCards = ImmutableList<DevelopmentCard>.Empty,
                         Store = TokenGroup.FromArray([0, 0, 0, 0, 0, 0])
                     },
                     new Player()
                     {
+                        Id = 2,
                         Name = "Test player 2",
                         ReservedCards = ImmutableList<DevelopmentCard>.Empty,
                         Store = TokenGroup.FromArray([0, 0, 0, 0, 0, 0])
@@ -105,12 +141,12 @@ namespace SplendidWonders.Gameplay.Tests
                 var defaultTokenSupply = TokenGroup.FromArray([0, 0, 0, 0, 0, 0]);
 
                 return new GameStateBuilder()
-                    .WithCurrentPlayer(defaultPlayers[0])
                     .WithLeaders(defaultLeaders)
                     .WithLevel1(defaultCards[0])
                     .WithLevel2(defaultCards[1])
                     .WithLevel3(defaultCards[2])
                     .WithPlayers(defaultPlayers)
+                    .WithCurrentPlayer(1)
                     .WithTokenSupply(defaultTokenSupply);
             }
         }

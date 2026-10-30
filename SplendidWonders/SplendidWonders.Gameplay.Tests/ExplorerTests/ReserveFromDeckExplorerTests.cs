@@ -23,15 +23,15 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
         }
 
         [TestCaseSource(nameof(ReserveFromDeckActionCases))]
-        public void Explore_WithDifferentPlayerAndDeckSetup_ShouldReturnExpectedReserveFromDeckActions(List<Player> playerSetup, CardGroup[] cardSetup, ReserveFromDeckAction[] expectedActions)
+        public void Explore_WithDifferentPlayerAndDeckSetup_ShouldReturnExpectedReserveFromDeckActions(ImmutableList<DevelopmentCard> player1Reserved, CardGroup[] cardSetup, ReserveFromDeckAction[] expectedActions)
         {
             // Arrange
             var gameState = _defaultBuilder
-                .WithCurrentPlayer(playerSetup[0])
+                .WithPlayerReservedCards(1, player1Reserved)
+                .WithCurrentPlayer(1)
                 .WithLevel1(cardSetup[0])
                 .WithLevel2(cardSetup[1])
                 .WithLevel3(cardSetup[2])
-                .WithPlayers(playerSetup)
                 .Build();
 
             // Act
@@ -71,15 +71,7 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
             var multipleDecksEmpty = new CardGroup[] { defaultCards[0], emptyLevel2, emptyLevel3 };
 
             yield return new TestCaseData(
-                new List<Player>()
-                {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        ReservedCards = ImmutableList<DevelopmentCard>.Empty,
-                        Store = TokenGroup.FromArray([0, 0, 0, 0, 0, 0])
-                    }
-                },
+                ImmutableList<DevelopmentCard>.Empty,
                 fullCardsSetup,
                 new[]
                 {
@@ -90,30 +82,14 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
                 .SetName("Reserve From Deck - Zero reserved cards + non-zero decks");
 
             yield return new TestCaseData(
-                new List<Player>()
-                {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        ReservedCards = defaultCards[0].Deck.Take(3).ToImmutableList(),
-                        Store = TokenGroup.FromArray([4, 4, 2, 0, 0, 0])
-                    }
-                },
+                defaultCards[0].Deck.Take(3).ToImmutableList(),
                 fullCardsSetup,
                 new ReserveFromDeckAction[] { })
                 .SetName("Reserve From Deck - Three  reserved cards + non-zero decks");
 
 
             yield return new TestCaseData(
-                new List<Player>()
-                {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        ReservedCards = ImmutableList<DevelopmentCard>.Empty,
-                        Store = TokenGroup.FromArray([0, 0, 0, 0, 0, 0])
-                    }
-                },
+                ImmutableList<DevelopmentCard>.Empty,
                 level1DeckEmpty,
                 new[]
                 {
@@ -123,15 +99,7 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
                 .SetName("Reserve From Deck - Zero reserved cards + one empty deck");
 
             yield return new TestCaseData(
-                new List<Player>()
-                {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        ReservedCards = ImmutableList<DevelopmentCard>.Empty,
-                        Store = TokenGroup.FromArray([0, 0, 0, 0, 0, 0])
-                    }
-                },
+                ImmutableList<DevelopmentCard>.Empty,
                 multipleDecksEmpty,
                 new[]
                 {
@@ -140,15 +108,7 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
                 .SetName("Reserve From Deck - Zero reserved cards + multiple empty deck");
 
             yield return new TestCaseData(
-                new List<Player>()
-                {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        ReservedCards = defaultCards[0].Deck.Take(3).ToImmutableList(),
-                        Store = TokenGroup.FromArray([4, 4, 2, 0, 0, 0])
-                    }
-                },
+                defaultCards[0].Deck.Take(3).ToImmutableList(),
                 level1DeckEmpty,
                 new ReserveFromDeckAction[] { })
                 .SetName("Reserve From Deck - Three  reserved cards + one empty deck");

@@ -23,12 +23,12 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
         }
 
         [TestCaseSource(nameof(ReturnTokensActionCases))]
-        public void Explore_WithDifferentPlayerSetup_ShouldReturnExpectedReturnTokensActions(List<Player> playerSetup, ReturnTokensAction[] expectedActions)
+        public void Explore_WithDifferentPlayerSetup_ShouldReturnExpectedReturnTokensActions(TokenGroup player1Store, ReturnTokensAction[] expectedActions)
         {
             // Arrange
             var gameState = _defaultBuilder
-                .WithPlayers(playerSetup)
-                .WithCurrentPlayer(playerSetup[0])
+                .WithPlayerStore(1, player1Store)
+                .WithCurrentPlayer(1)
                 .Build();
 
             // Act
@@ -42,15 +42,7 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
         private static IEnumerable<TestCaseData> ReturnTokensActionCases()
         {
             yield return new TestCaseData(
-                new List<Player>()
-                {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        ReservedCards = ImmutableList<DevelopmentCard>.Empty,
-                        Store = TokenGroup.FromArray([2, 2, 2, 2, 3, 0])
-                    }
-                },
+                TokenGroup.FromArray([2, 2, 2, 2, 3, 0]),
                 new[]
                 {
                     new ReturnTokensAction() { Tokens = TokenGroup.FromArray([1, 0, 0, 0, 0, 0]) },
@@ -62,15 +54,7 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
                 .SetName("Return Tokens - 11 player tokens, balanced");
 
             yield return new TestCaseData(
-                new List<Player>()
-                {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        ReservedCards = ImmutableList<DevelopmentCard>.Empty,
-                        Store = TokenGroup.FromArray([4, 2, 5, 0, 0, 0]),
-                    }
-                },
+                TokenGroup.FromArray([4, 2, 5, 0, 0, 0]),
                 new[]
                 {
                     new ReturnTokensAction() { Tokens = TokenGroup.FromArray([1, 0, 0, 0, 0, 0]) },
@@ -80,15 +64,7 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
                 .SetName("Return Tokens - 11 player tokens, no brown and red tokens");
 
             yield return new TestCaseData(
-                new List<Player>()
-                {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        ReservedCards = ImmutableList<DevelopmentCard>.Empty,
-                        Store = TokenGroup.FromArray([3, 3, 2, 2, 2, 0])
-                    }
-                },
+                TokenGroup.FromArray([3, 3, 2, 2, 2, 0]),
                 new[]
                 {
                     new ReturnTokensAction() { Tokens = TokenGroup.FromArray([2, 0, 0, 0, 0, 0]) },
@@ -110,15 +86,7 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
                 .SetName("Return Tokens - 12 player tokens, balanced");
 
             yield return new TestCaseData(
-                new List<Player>()
-                {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        ReservedCards = ImmutableList<DevelopmentCard>.Empty,
-                        Store = TokenGroup.FromArray([4, 0, 3, 2, 3, 0])
-                    }
-                },
+                TokenGroup.FromArray([4, 0, 3, 2, 3, 0]),
                 new[]
                 {
                     new ReturnTokensAction() { Tokens = TokenGroup.FromArray([2, 0, 0, 0, 0, 0]) },
@@ -135,15 +103,7 @@ namespace SplendidWonders.Gameplay.Tests.ExplorerTests
                 .SetName("Return Tokens - 12 player tokens, no blue tokens");
 
             yield return new TestCaseData(
-                new List<Player>()
-                {
-                    new Player()
-                    {
-                        Name = "Test player 1",
-                        ReservedCards = ImmutableList<DevelopmentCard>.Empty,
-                        Store = TokenGroup.FromArray([3, 2, 3, 3, 2, 0])
-                    }
-                },
+                TokenGroup.FromArray([3, 2, 3, 3, 2, 0]),
                 new[]
                 {
                     new ReturnTokensAction() { Tokens = TokenGroup.FromArray([3, 0, 0, 0, 0, 0]) },
