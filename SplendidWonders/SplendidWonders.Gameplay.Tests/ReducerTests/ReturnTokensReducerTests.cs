@@ -22,7 +22,7 @@ namespace SplendidWonders.Gameplay.Tests.ReducerTests
             _sut = new TokenActionReducer();
         }
 
-        [TestCaseSource(nameof(ReturnTokensActionCases))]
+        [TestCaseSource(nameof(ReturnTokensCases))]
         public void Reduce_WithDifferentTokenSuppliesAndPlayerStores_ShouldReturnNewStateWithExpectedValues(TokenGroup tokenSupplySetup, TokenGroup player1StoreSetup, 
             ReturnTokensAction actionToApply, 
             TokenGroup expectedTokenSupply, TokenGroup expectedPlayerStore, int expectedCurrentPlayerId)
@@ -44,7 +44,7 @@ namespace SplendidWonders.Gameplay.Tests.ReducerTests
             Assert.That(newState.CurrentPlayer.Id, Is.EqualTo(expectedCurrentPlayerId));
         }
 
-        private static IEnumerable<TestCaseData> ReturnTokensActionCases()
+        private static IEnumerable<TestCaseData> ReturnTokensCases()
         {
             yield return new TestCaseData(
                 TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
