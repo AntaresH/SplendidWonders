@@ -19,7 +19,7 @@ namespace SplendidWonders.Gameplay.Tests.ReducerTests
         {
             _defaultBuilder = GameStateBuilder.Default;
 
-            _sut = new DrawTokensReducer();
+            _sut = new TokenActionReducer();
         }
 
         [TestCaseSource(nameof(DrawDoubleTokensActionCases))]

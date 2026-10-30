@@ -3,12 +3,11 @@ using SplendidWonders.Gameplay.Actions;
 
 namespace SplendidWonders.Gameplay.Reducers
 {
-    public class DrawTokensReducer : IStateReducer<DrawDoubleTokensAction>, IStateReducer<DrawThreeTokensAction>
+    public class TokenActionReducer : IStateReducer<DrawDoubleTokensAction>, IStateReducer<DrawThreeTokensAction>, IStateReducer<ReturnTokensAction>
     {
-        private GameState ReduceGeneralDrawAction(GameState baseState, TokensAction action)
+        private GameState ReduceGeneralTokenAction(GameState baseState, int[] selectedTokens)
         {
             var playerStore = baseState.CurrentPlayer.Store.ToArray();
-            var selectedTokens = action.Tokens.ToArray();
             var tokenSupply = baseState.TokenSupply.ToArray();
 
             var reducedStateBuilder = new GameStateBuilder(baseState);
@@ -33,12 +32,17 @@ namespace SplendidWonders.Gameplay.Reducers
 
         public GameState Reduce(GameState state, DrawThreeTokensAction action)
         {
-            return ReduceGeneralDrawAction(state, action);
+            return ReduceGeneralTokenAction(state, action.Tokens.ToArray());
         }
 
         public GameState Reduce(GameState state, DrawDoubleTokensAction action)
         {
-            return ReduceGeneralDrawAction(state, action);
+            return ReduceGeneralTokenAction(state, action.Tokens.ToArray());
+        }
+
+        public GameState Reduce(GameState state, ReturnTokensAction action)
+        {
+            return ReduceGeneralTokenAction(state, action.Tokens.ToArray());
         }
     }
 }
