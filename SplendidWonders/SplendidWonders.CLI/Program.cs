@@ -44,8 +44,10 @@ internal class Program
         services.AddSingleton<IActionExplorer<SelectLeaderAction>, SelectLeaderExplorer>();
         services.AddSingleton<IActionExplorer, ActionExplorer>();
 
-        services.AddSingleton<IStateReducer<DrawThreeTokensAction>, DrawThreeTokensReducer>();
-        services.AddSingleton<IStateReducer<DrawDoubleTokensAction>, DrawDoubleTokensReducer>();
+        services.AddSingleton<DrawTokensReducer>();
+        services.AddSingleton<IStateReducer<DrawThreeTokensAction>>(sp => sp.GetRequiredService<DrawTokensReducer>());
+        services.AddSingleton<IStateReducer<DrawDoubleTokensAction>>(sp => sp.GetRequiredService<DrawTokensReducer>());
+
         services.AddSingleton<IStateReducer<ReturnTokensAction>, ReturnTokensReducer>();
         services.AddSingleton<IStateReducer<ReserveFromBoardAction>, ReserveFromBoardReducer>();
         services.AddSingleton<IStateReducer<ReserveFromDeckAction>, ReserveFromDeckReducer>();
