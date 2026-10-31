@@ -51,7 +51,7 @@ internal class Program
 
         services.AddSingleton<ReserveActionReducer>();
         services.AddSingleton<IStateReducer<ReserveFromBoardAction>>(sp => sp.GetRequiredService<ReserveActionReducer>());
-        services.AddSingleton<IStateReducer<ReserveFromBoardAction>>(sp => sp.GetRequiredService<ReserveActionReducer>());
+        services.AddSingleton<IStateReducer<ReserveFromDeckAction>>(sp => sp.GetRequiredService<ReserveActionReducer>());
 
         services.AddSingleton<IStateReducer<PurchaseAction>, PurchaseReducer>();
         services.AddSingleton<IStateReducer<SelectLeaderAction>, SelectLeaderReducer>();
