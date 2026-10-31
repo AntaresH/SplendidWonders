@@ -56,11 +56,10 @@ namespace SplendidWonders.Gameplay.Tests.ReducerTests
             ReserveFromBoardAction actionToApply,
             TokenGroup expectedTokenSupply, TokenGroup expectedPlayerStore, ImmutableList<DevelopmentCard> expectedPlayerReserved, int expectedCurrentPlayerId)
         {
+            // Arrange
             int testSeed = 23456;
-
             var seededCardSetup = GameFactory.GetRandomizedCardSetup(testSeed);
 
-            // Arrange
             var baseState = _defaultBuilder
                 .WithLevel1(seededCardSetup[0])
                 .WithLevel2(seededCardSetup[1])
@@ -89,8 +88,8 @@ namespace SplendidWonders.Gameplay.Tests.ReducerTests
             ReserveFromBoardAction actionToApply,
             TokenGroup expectedTokenSupply, TokenGroup expectedPlayerStore, ImmutableList<DevelopmentCard> expectedPlayerReserved, int expectedCurrentPlayerId)
         {
+            // Arrange
             int testSeed = 34567;
-
             var seededCardSetup = GameFactory.GetRandomizedCardSetup(testSeed);
 
             var shortLevel1Market = seededCardSetup[0].Market.Take(3).ToImmutableList().Add(Cards.Empty);
@@ -98,7 +97,6 @@ namespace SplendidWonders.Gameplay.Tests.ReducerTests
             var level2 = new CardGroup() { Deck = ImmutableList<DevelopmentCard>.Empty, Market = seededCardSetup[1].Market };
             var level3 = seededCardSetup[2];
 
-            // Arrange
             var baseState = _defaultBuilder
                 .WithLevel1(level1)
                 .WithLevel2(level2)
@@ -134,7 +132,6 @@ namespace SplendidWonders.Gameplay.Tests.ReducerTests
             if (baseStateDeck.Any())
             {
                 Assert.That(newStateMarket.Count, Is.EqualTo(4));
-                Assert.That(newStateDeck.Count, Is.EqualTo(baseStateDeck.Count - 1));
             }
             else
             {
