@@ -49,8 +49,10 @@ internal class Program
         services.AddSingleton<IStateReducer<DrawDoubleTokensAction>>(sp => sp.GetRequiredService<TokenActionReducer>());
         services.AddSingleton<IStateReducer<ReturnTokensAction>>(sp => sp.GetRequiredService<TokenActionReducer>());
 
-        services.AddSingleton<IStateReducer<ReserveFromBoardAction>, ReserveFromBoardReducer>();
-        services.AddSingleton<IStateReducer<ReserveFromDeckAction>, ReserveFromDeckReducer>();
+        services.AddSingleton<ReserveActionReducer>();
+        services.AddSingleton<IStateReducer<ReserveFromBoardAction>>(sp => sp.GetRequiredService<ReserveActionReducer>());
+        services.AddSingleton<IStateReducer<ReserveFromBoardAction>>(sp => sp.GetRequiredService<ReserveActionReducer>());
+
         services.AddSingleton<IStateReducer<PurchaseAction>, PurchaseReducer>();
         services.AddSingleton<IStateReducer<SelectLeaderAction>, SelectLeaderReducer>();
         services.AddSingleton<IStateReducer, StateReducer>();

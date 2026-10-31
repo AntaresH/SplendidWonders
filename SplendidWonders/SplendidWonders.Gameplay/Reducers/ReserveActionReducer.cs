@@ -4,25 +4,48 @@ using SplendidWonders.Gameplay.Actions;
 
 namespace SplendidWonders.Gameplay.Reducers
 {
-    public class ReserveFromBoardReducer : IStateReducer<ReserveFromBoardAction>
+    public class ReserveActionReducer : IStateReducer<ReserveFromBoardAction>, IStateReducer<ReserveFromDeckAction>
     {
         public GameState Reduce(GameState baseState, ReserveFromBoardAction action)
         {
             var currentPlayerId = baseState.CurrentPlayer.Id;
             var reducedStateBuilder = new GameStateBuilder(baseState);
 
-            SetPlayerReservedCards(baseState, action, currentPlayerId, reducedStateBuilder);
+            SetPlayerReservedCards(baseState, action.Card, currentPlayerId, reducedStateBuilder);
             SetPolymaths(baseState, currentPlayerId, reducedStateBuilder);
-            SetCurrentPlayer(baseState, reducedStateBuilder);
-            SetReplacementCard(baseState, action, reducedStateBuilder);
+            SetReplacementCard(baseState, action.Card, reducedStateBuilder);
+            SetActivePlayer(baseState, reducedStateBuilder);
 
             return reducedStateBuilder.Build();
         }
 
-        private static void SetPlayerReservedCards(GameState baseState, ReserveFromBoardAction action, int currentPlayerId, GameStateBuilder reducedStateBuilder)
+        public GameState Reduce(GameState baseState, ReserveFromDeckAction action)
+        {
+            var currentPlayerId = baseState.CurrentPlayer.Id;
+            var reducedStateBuilder = new GameStateBuilder(baseState);
+
+            SetPlayerReservedCards(baseState, baseState[action.Level].Deck[0], currentPlayerId, reducedStateBuilder);
+            SetPolymaths(baseState, currentPlayerId, reducedStateBuilder);
+            SetShorterDeck(baseState, action.Level, reducedStateBuilder);
+            SetActivePlayer(baseState, reducedStateBuilder);
+
+            return reducedStateBuilder.Build();
+        }
+
+        private void SetShorterDeck(GameState baseState, int level, GameStateBuilder reducedStateBuilder)
+        {
+            reducedStateBuilder.WithLevel(
+                level, 
+                new CardGroup() { 
+                    Market = baseState[level].Market, 
+                    Deck = baseState[level].Deck.RemoveAt(0) 
+                });
+        }
+
+        private static void SetPlayerReservedCards(GameState baseState, DevelopmentCard card, int currentPlayerId, GameStateBuilder reducedStateBuilder)
         {
             var playerReserved = baseState.CurrentPlayer.ReservedCards;
-            playerReserved = playerReserved.Add(action.Card);
+            playerReserved = playerReserved.Add(card);
 
             reducedStateBuilder.WithPlayerReservedCards(currentPlayerId, playerReserved);
         }
@@ -42,7 +65,7 @@ namespace SplendidWonders.Gameplay.Reducers
             }
         }
 
-        private void SetCurrentPlayer(GameState baseState, GameStateBuilder reducedStateBuilder)
+        private void SetActivePlayer(GameState baseState, GameStateBuilder reducedStateBuilder)
         {
             var playerStore = baseState.CurrentPlayer.Store;
 
@@ -54,12 +77,12 @@ namespace SplendidWonders.Gameplay.Reducers
             reducedStateBuilder.WithCurrentPlayer(currentPlayerId);
         }
 
-        private static void SetReplacementCard(GameState baseState, ReserveFromBoardAction action, GameStateBuilder reducedStateBuilder)
+        private static void SetReplacementCard(GameState baseState, DevelopmentCard card, GameStateBuilder reducedStateBuilder)
         {
-            int level = action.Card.Level;
+            int level = card.Level;
 
             var cardGroup = baseState[level];
-            int index = cardGroup.Market.IndexOf(action.Card);
+            int index = cardGroup.Market.IndexOf(card);
 
             var newMarket = cardGroup.Market.RemoveAt(index);
             var newDeck = cardGroup.Deck;

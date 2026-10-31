@@ -22,7 +22,7 @@ namespace SplendidWonders.Gameplay.Tests.ReducerTests
         {
             _defaultBuilder = GameStateBuilder.Default;
 
-            _sut = new ReserveFromDeckReducer();
+            _sut = new ReserveActionReducer();
         }
 
         [TestCaseSource(nameof(ReserveFromDeckCardSeed0Cases))]
@@ -174,7 +174,7 @@ namespace SplendidWonders.Gameplay.Tests.ReducerTests
                 new ReserveFromDeckAction() { Level = 2 },
                 TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
                 TokenGroup.FromArray([1, 3, 3, 1, 1, 1]),
-                new List<DevelopmentCard>() { level3DeckTopCard }.ToImmutableList(),
+                new List<DevelopmentCard>() { level2DeckTopCard }.ToImmutableList(),
                 2)
                 .SetName("Reserve From Deck - Card Setup #0 - level 2, zero reserved, 9-long store, polymath available - does not exceed");
 

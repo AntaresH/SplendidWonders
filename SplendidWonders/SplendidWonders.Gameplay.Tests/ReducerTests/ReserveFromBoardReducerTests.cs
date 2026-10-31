@@ -22,7 +22,7 @@ namespace SplendidWonders.Gameplay.Tests.ReducerTests
         {
             _defaultBuilder = GameStateBuilder.Default;
 
-            _sut = new ReserveFromBoardReducer();
+            _sut = new ReserveActionReducer();
         }
 
         [TestCaseSource(nameof(ReserveFromBoardCardSeed0Cases))]
@@ -135,7 +135,7 @@ namespace SplendidWonders.Gameplay.Tests.ReducerTests
             }
             else
             {
-                Assert.That(newStateMarket.Count(c => c != Cards.Empty), Is.EqualTo(baseStateMarket.Count - 1));
+                Assert.That(newStateMarket.Count(c => c != Cards.Empty), Is.EqualTo(baseStateMarket.Count(c => c != Cards.Empty) - 1));
                 Assert.That(newStateDeck.Count, Is.EqualTo(0));
             }
         }
