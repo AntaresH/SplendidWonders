@@ -49,9 +49,12 @@ internal class GameOrchestrator
 
     private void HandleCommand()
     {
+        string invalidCommandMsg = null;
+
         while (true)
         {
-            _gameView.DisplayGame(_game.GameState, _game.ValidActions);
+            _gameView.DisplayGame(_game.GameState, _game.ValidActions, invalidCommandMsg);
+            invalidCommandMsg = null;
 
             var command = _commandHandler.ReadCommand(_game.GameState, _game.ValidActions);
 
@@ -62,7 +65,7 @@ internal class GameOrchestrator
             }
             else
             {
-                _gameView.DisplayInvalidCommand(command);
+                invalidCommandMsg = string.Format(Strings.InvalidCommandTypeStateFormat, command.GetType().Name);
             }
         }
     }

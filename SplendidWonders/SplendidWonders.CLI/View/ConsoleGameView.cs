@@ -24,11 +24,19 @@ namespace SplendidWonders.CLI.View
             }
         }
 
-        public void DisplayGame(GameState gameState, IEnumerable<GameAction> validActions)
+        public void DisplayGame(GameState gameState, IEnumerable<GameAction> validActions, string previousInvalidCommand)
         {
             Console.Clear();
             DisplayGameTitle();
             _gameStateRenderer.Render(gameState);
+
+            if (!string.IsNullOrEmpty(previousInvalidCommand))
+            {
+                Console.WriteLine();
+                Console.WriteLine(previousInvalidCommand);
+                Console.WriteLine();
+            }
+
             _gameActionsRenderer.Render(validActions);
         }
 
@@ -75,7 +83,7 @@ namespace SplendidWonders.CLI.View
 
         public void DisplayReserveFromBoardArgumentRequest()
         {
-            Console.WriteLine(Strings.SelectCardToReserve);
+            Console.WriteLine(Strings.SelectcardToBuy);
         }
 
         public void DisplayInvalidCommand(GameAction command)

@@ -23,7 +23,7 @@ namespace SplendidWonders.Gameplay.Reducers
 
             int allPlayerTokens = playerStore[0] + playerStore[1] + playerStore[2] + playerStore[3] + playerStore[4] + playerStore[5];
             var currentPlayerId = allPlayerTokens <= 10
-                ? baseState.CurrentPlayer.Id + 1 % baseState.Players.Count
+                ? baseState.CurrentPlayer.Id % baseState.Players.Count + 1
                 : baseState.CurrentPlayer.Id;
 
             reducedStateBuilder.WithCurrentPlayer(currentPlayerId);

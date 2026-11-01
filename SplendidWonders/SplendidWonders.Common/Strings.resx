@@ -390,31 +390,16 @@
   <data name="ColorBlue" xml:space="preserve">
     <value>K</value>
   </data>
-  <data name="ColorBlue1" xml:space="preserve">
-    <value>K</value>
-  </data>
   <data name="ColorBrown" xml:space="preserve">
-    <value>B</value>
-  </data>
-  <data name="ColorBrown1" xml:space="preserve">
     <value>B</value>
   </data>
   <data name="ColorGreen" xml:space="preserve">
     <value>Z</value>
   </data>
-  <data name="ColorGreen1" xml:space="preserve">
-    <value>Z</value>
-  </data>
   <data name="ColorRed" xml:space="preserve">
     <value>P</value>
   </data>
-  <data name="ColorRed1" xml:space="preserve">
-    <value>P</value>
-  </data>
   <data name="ColorYellow" xml:space="preserve">
-    <value>S</value>
-  </data>
-  <data name="ColorYellow1" xml:space="preserve">
     <value>S</value>
   </data>
   <data name="EmptyTableau" xml:space="preserve">
@@ -436,7 +421,7 @@
     <value>A megadott parancs nem érvényes a jelenlegi játékállapotban!</value>
   </data>
   <data name="InvalidCommandTypeStateFormat" xml:space="preserve">
-    <value>A megadott parancs ({0}) nem érvényes a jelenlegi játékállapotban!</value>
+    <value>A megadott parancs ({0}) a paramétereivel nem végrehajtható a játék jelenlegi állapotában!</value>
   </data>
   <data name="InvalidYesNo" xml:space="preserve">
     <value>Érvénytelen válasz. Kérlek válassz 'i' vagy 'n'!</value>
@@ -540,14 +525,14 @@
   <data name="SelectCardToBuy" xml:space="preserve">
     <value>Kérlek válaszd ki a kártyát, amit meg szeretnél vásárolni. Add meg a kártya szintjét (1-3) és az oszlopszámot (1-4). Például: "1,2" vagy "3,3":</value>
   </data>
-  <data name="SelectCardToReserve" xml:space="preserve">
+  <data name="SelectcardToBuy" xml:space="preserve">
     <value>Kérlek válaszd ki a kártyát, amit le szeretnél foglalni. Add meg a kártya szintjét (1-3) és az oszlopszámot (1-4). Például: "1,2" vagy "3,3":</value>
   </data>
   <data name="SelectDeckToReserve" xml:space="preserve">
     <value>Kérlek válaszd ki a paklit (1-3), aminek legfelső lapját le szeretnéd foglalni. Például: "1"</value>
   </data>
   <data name="DrawThreeTokensActionDescription" xml:space="preserve">
-    <value>Húzz 2 azonos kategóriájú fejlődéslapkát!</value>
+    <value>Húzz 1-1 fejlődéslapkát három különböző kategóriákból!</value>
   </data>
   <data name="UseExtendedLeaders" xml:space="preserve">
     <value>Akarod használni az extra vezetőket? (i/n):</value>
@@ -562,7 +547,7 @@
     <value>Paraméterek száma:</value>
   </data>
   <data name="DrawDoubleTokensActionDescription" xml:space="preserve">
-    <value>Húzz 1-1 fejlődéslapkát három különböző kategóriákból!</value>
+    <value>Húzz 2 azonos kategóriájú fejlődéslapkát!</value>
   </data>
   <data name="ReturnTokensActionDescription" xml:space="preserve">
     <value>Tegyél vissza fejlődéslapkákat a játéktérre!</value>

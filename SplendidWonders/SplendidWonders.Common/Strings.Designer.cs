@@ -880,29 +880,11 @@ namespace SplendidWonders.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to K.
-        /// </summary>
-        public static string ColorBlue1 {
-            get {
-                return ResourceManager.GetString("ColorBlue1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to B.
         /// </summary>
         public static string ColorBrown {
             get {
                 return ResourceManager.GetString("ColorBrown", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to B.
-        /// </summary>
-        public static string ColorBrown1 {
-            get {
-                return ResourceManager.GetString("ColorBrown1", resourceCulture);
             }
         }
         
@@ -916,29 +898,11 @@ namespace SplendidWonders.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Z.
-        /// </summary>
-        public static string ColorGreen1 {
-            get {
-                return ResourceManager.GetString("ColorGreen1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to P.
         /// </summary>
         public static string ColorRed {
             get {
                 return ResourceManager.GetString("ColorRed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to P.
-        /// </summary>
-        public static string ColorRed1 {
-            get {
-                return ResourceManager.GetString("ColorRed1", resourceCulture);
             }
         }
         
@@ -952,16 +916,7 @@ namespace SplendidWonders.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to S.
-        /// </summary>
-        public static string ColorYellow1 {
-            get {
-                return ResourceManager.GetString("ColorYellow1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Húzz 1-1 fejlődéslapkát három különböző kategóriákból!.
+        ///   Looks up a localized string similar to Húzz 2 azonos kategóriájú fejlődéslapkát!.
         /// </summary>
         public static string DrawDoubleTokensActionDescription {
             get {
@@ -970,7 +925,7 @@ namespace SplendidWonders.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Húzz 2 azonos kategóriájú fejlődéslapkát!.
+        ///   Looks up a localized string similar to Húzz 1-1 fejlődéslapkát három különböző kategóriákból!.
         /// </summary>
         public static string DrawThreeTokensActionDescription {
             get {
@@ -1033,7 +988,7 @@ namespace SplendidWonders.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A megadott parancs ({0}) nem érvényes a jelenlegi játékállapotban!.
+        ///   Looks up a localized string similar to A megadott parancs ({0}) a paramétereivel nem végrehajtható a játék jelenlegi állapotában!.
         /// </summary>
         public static string InvalidCommandTypeStateFormat {
             get {
@@ -1395,9 +1350,9 @@ namespace SplendidWonders.Common {
         /// <summary>
         ///   Looks up a localized string similar to Kérlek válaszd ki a kártyát, amit le szeretnél foglalni. Add meg a kártya szintjét (1-3) és az oszlopszámot (1-4). Például: &quot;1,2&quot; vagy &quot;3,3&quot;:.
         /// </summary>
-        public static string SelectCardToReserve {
+        public static string SelectcardToBuy {
             get {
-                return ResourceManager.GetString("SelectCardToReserve", resourceCulture);
+                return ResourceManager.GetString("SelectcardToBuy", resourceCulture);
             }
         }
         

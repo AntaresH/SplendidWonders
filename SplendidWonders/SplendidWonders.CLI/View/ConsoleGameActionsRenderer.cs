@@ -28,6 +28,9 @@ namespace SplendidWonders.CLI.View
             if (validActions.OfType<SelectLeaderAction>().Any())
                 Console.WriteLine(string.Format("{0} - {1}", GenericUtils.CommandShortHandMap[nameof(SelectLeaderAction)], Strings.SelectLeaderActionDescriptionFormat));
 
+            if (validActions.OfType<PurchaseAction>().Any())
+                Console.WriteLine(string.Format("{0} - {1}", GenericUtils.CommandShortHandMap[nameof(PurchaseAction)], Strings.PurchaseActionDescription));
+
             Console.WriteLine();
         }
     }

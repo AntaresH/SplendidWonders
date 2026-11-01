@@ -24,11 +24,9 @@ namespace SplendidWonders.CLI.Input
             {
                 try
                 {
-                    var validActionCategories = validActions.Select(x => GenericUtils.CommandShortHandMap[x.GetType().Name]).Distinct().ToList();
-
                     string userInput = ReadAndApplyDefaultHandling();
 
-                    if (!GenericUtils.CommandShortHandMap.ContainsValue(userInput))
+                    if (!GenericUtils.CommandShortHandMap.ContainsValue(userInput.ToUpper()))
                         continue;
 
                     return CreateCommandFromUserInput(userInput, gameState);
@@ -60,7 +58,7 @@ namespace SplendidWonders.CLI.Input
 
         private GameAction CreateCommandFromUserInput(string userInput, GameState gameState)
         {
-            var commandKey = GenericUtils.CommandShortHandMap.FirstOrDefault(x => x.Value == userInput).Key;
+            var commandKey = GenericUtils.CommandShortHandMap.FirstOrDefault(x => x.Value == userInput.ToUpper()).Key;
 
             switch (commandKey)
             {
@@ -181,17 +179,17 @@ namespace SplendidWonders.CLI.Input
 
                 string userInput = ReadAndApplyDefaultHandling();
 
-                Match match = Regex.Match(userInput, @"^[SKZBPskzbp] [SKZBPskzbp]* [SKZBPskzbp]*$");
+                Match match = Regex.Match(userInput, @"^[SKZBPskzbp]+( [SKZBPskzbp])*( [SKZBPskzbp])*$");
 
                 if (match.Success)
                 {
                     action.Tokens = new TokenGroup
                     {
-                        Yellow = userInput.Contains('S', StringComparison.OrdinalIgnoreCase) ? 2 : 0,
-                        Blue = userInput.Contains('K', StringComparison.OrdinalIgnoreCase) ? 2 : 0,
-                        Green = userInput.Contains('Z', StringComparison.OrdinalIgnoreCase) ? 2 : 0,
-                        Brown = userInput.Contains('B', StringComparison.OrdinalIgnoreCase) ? 2 : 0,
-                        Red = userInput.Contains('P', StringComparison.OrdinalIgnoreCase) ? 2 : 0
+                        Yellow = userInput.Contains('S', StringComparison.OrdinalIgnoreCase) ? 1 : 0,
+                        Blue = userInput.Contains('K', StringComparison.OrdinalIgnoreCase) ? 1 : 0,
+                        Green = userInput.Contains('Z', StringComparison.OrdinalIgnoreCase) ? 1 : 0,
+                        Brown = userInput.Contains('B', StringComparison.OrdinalIgnoreCase) ? 1 : 0,
+                        Red = userInput.Contains('P', StringComparison.OrdinalIgnoreCase) ? 1 : 0
                     };
 
                     return action;

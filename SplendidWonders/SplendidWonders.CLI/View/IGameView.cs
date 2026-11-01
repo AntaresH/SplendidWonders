@@ -9,7 +9,7 @@ namespace SplendidWonders.CLI.View
     public interface IGameView
     {
         void DisplayGameOver(Dictionary<string, int> value);
-        void DisplayGame(GameState gameState, IEnumerable<GameAction> validActions);
+        void DisplayGame(GameState gameState, IEnumerable<GameAction> validActions, string previousInvalidCommand);
         void DisplayValidActions(IEnumerable<GameAction> validActions);
         void DisplayTurnStart(Player currentPlayer);
         void DisplayInvalidCommandMessage();
