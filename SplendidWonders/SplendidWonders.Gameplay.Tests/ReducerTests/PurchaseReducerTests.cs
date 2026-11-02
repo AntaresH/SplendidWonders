@@ -386,7 +386,7 @@ namespace SplendidWonders.Gameplay.Tests.ReducerTests
                 new PurchaseAction() { Card = cardToBuy2 },
                 new ReducerTestData()
                 {
-                    ActivePlayerId = 1,
+                    ActivePlayerId = 2,
                     PlayerReservedCards = ImmutableList<DevelopmentCard>.Empty,
                     PlayerStore = TokenGroup.FromArray([0, 0, 0, 0, 0, 0]),
                     PlayerTableau = [cardToBuy2],
@@ -397,7 +397,7 @@ namespace SplendidWonders.Gameplay.Tests.ReducerTests
             yield return new TestCaseData(
                 new ReducerTestData()
                 {
-                    ActivePlayerId = 1,
+                    ActivePlayerId = 2,
                     PlayerReservedCards = ImmutableList<DevelopmentCard>.Empty,
                     PlayerStore = TokenGroup.FromArray([0, 0, 0, 2, 1, 0]),
                     PlayerTableau = ImmutableList<DevelopmentCard>.Empty,
@@ -417,7 +417,7 @@ namespace SplendidWonders.Gameplay.Tests.ReducerTests
             yield return new TestCaseData(
                 new ReducerTestData()
                 {
-                    ActivePlayerId = 1,
+                    ActivePlayerId = 2,
                     PlayerReservedCards = ImmutableList<DevelopmentCard>.Empty,
                     PlayerStore = TokenGroup.FromArray([0, 1, 2, 5, 0, 0]),
                     PlayerTableau = ImmutableList<DevelopmentCard>.Empty,
@@ -446,7 +446,7 @@ namespace SplendidWonders.Gameplay.Tests.ReducerTests
                 new PurchaseAction() { Card = cardToBuy74 },
                 new ReducerTestData()
                 {
-                    ActivePlayerId = 1,
+                    ActivePlayerId = 2,
                     PlayerReservedCards = ImmutableList<DevelopmentCard>.Empty,
                     PlayerStore = TokenGroup.FromArray([0, 0, 2, 0, 0, 0]),
                     PlayerTableau = [cardToBuy74],
@@ -466,7 +466,7 @@ namespace SplendidWonders.Gameplay.Tests.ReducerTests
                 new PurchaseAction() { Card = cardToBuy3 },
                 new ReducerTestData()
                 {
-                    ActivePlayerId = 1,
+                    ActivePlayerId = 2,
                     PlayerReservedCards = ImmutableList<DevelopmentCard>.Empty,
                     PlayerStore = TokenGroup.FromArray([0, 1, 1, 3, 0, 0]),
                     PlayerTableau = [cardToBuy3],
@@ -477,7 +477,7 @@ namespace SplendidWonders.Gameplay.Tests.ReducerTests
             yield return new TestCaseData(
                 new ReducerTestData()
                 {
-                    ActivePlayerId = 1,
+                    ActivePlayerId = 2,
                     PlayerReservedCards = ImmutableList<DevelopmentCard>.Empty,
                     PlayerStore = TokenGroup.FromArray([5, 2, 1, 0, 1, 1]),
                     PlayerTableau = ImmutableList<DevelopmentCard>.Empty,
@@ -506,7 +506,7 @@ namespace SplendidWonders.Gameplay.Tests.ReducerTests
                 new PurchaseAction() { Card = cardToBuy72 },
                 new ReducerTestData()
                 {
-                    ActivePlayerId = 1,
+                    ActivePlayerId = 2,
                     PlayerReservedCards = ImmutableList<DevelopmentCard>.Empty,
                     PlayerStore = TokenGroup.FromArray([0, 0, 0, 0, 0, 0]),
                     PlayerTableau = [cardToBuy72],
@@ -526,7 +526,7 @@ namespace SplendidWonders.Gameplay.Tests.ReducerTests
                 new PurchaseAction() { Card = alreadyReserved23 },
                 new ReducerTestData()
                 {
-                    ActivePlayerId = 1,
+                    ActivePlayerId = 2,
                     PlayerReservedCards = ImmutableList<DevelopmentCard>.Empty,
                     PlayerStore = TokenGroup.FromArray([2, 2, 1, 0, 0, 0]),
                     PlayerTableau = [alreadyReserved23],
@@ -546,7 +546,7 @@ namespace SplendidWonders.Gameplay.Tests.ReducerTests
                 new PurchaseAction() { Card = alreadyReserved58 },
                 new ReducerTestData()
                 {
-                    ActivePlayerId = 1,
+                    ActivePlayerId = 2,
                     PlayerReservedCards = ImmutableList<DevelopmentCard>.Empty,
                     PlayerStore = TokenGroup.FromArray([0, 0, 0, 0, 0, 0]),
                     PlayerTableau = [alreadyReserved58],
@@ -557,7 +557,7 @@ namespace SplendidWonders.Gameplay.Tests.ReducerTests
             yield return new TestCaseData(
                 new ReducerTestData()
                 {
-                    ActivePlayerId = 1,
+                    ActivePlayerId = 2,
                     PlayerReservedCards = [alreadyReserved58, alreadyReserved64],
                     PlayerStore = TokenGroup.FromArray([1, 3, 1, 2, 3, 0]),
                     PlayerTableau = ImmutableList<DevelopmentCard>.Empty,
@@ -577,7 +577,7 @@ namespace SplendidWonders.Gameplay.Tests.ReducerTests
             yield return new TestCaseData(
                 new ReducerTestData()
                 {
-                    ActivePlayerId = 1,
+                    ActivePlayerId = 2,
                     PlayerReservedCards = [alreadyReserved23, alreadyReserved58, alreadyReserved89],
                     PlayerStore = TokenGroup.FromArray([1, 2, 1, 3, 3, 0]),
                     PlayerTableau = ImmutableList<DevelopmentCard>.Empty,
@@ -586,7 +586,7 @@ namespace SplendidWonders.Gameplay.Tests.ReducerTests
                 new PurchaseAction() { Card = alreadyReserved23 },
                 new ReducerTestData()
                 {
-                    ActivePlayerId = 2,
+                    ActivePlayerId = 1,
                     PlayerReservedCards = [alreadyReserved58, alreadyReserved89],
                     PlayerStore = TokenGroup.FromArray([1, 1, 1, 1, 1, 0]),
                     PlayerTableau = [alreadyReserved23],

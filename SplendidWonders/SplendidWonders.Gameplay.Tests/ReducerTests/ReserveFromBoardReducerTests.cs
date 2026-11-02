@@ -4,6 +4,7 @@ using SplendidWonders.Core.Setup;
 using SplendidWonders.Gameplay.Actions;
 using SplendidWonders.Gameplay.Explorers;
 using SplendidWonders.Gameplay.Reducers;
+using SplendidWonders.Gameplay.Tests.TestDataModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -26,16 +27,15 @@ namespace SplendidWonders.Gameplay.Tests.ReducerTests
         }
 
         [TestCaseSource(nameof(ReserveFromBoardCardSeed0Cases))]
-        public void Reduce_CardSeed0WithDifferentTokenSuppliesAndPlayerStores_ShouldReturnNewStateWithExpectedValues(TokenGroup tokenSupply, TokenGroup player1Store, ImmutableList<DevelopmentCard> player1Reserved,
-            ReserveFromBoardAction actionToApply, 
-            TokenGroup expectedTokenSupply, TokenGroup expectedPlayerStore, ImmutableList<DevelopmentCard> expectedPlayerReserved, int expectedCurrentPlayerId)
+        public void Reduce_CardSeed0WithDifferentTokenSuppliesAndPlayerStores_ShouldReturnNewStateWithExpectedValues(
+            ReducerTestData input, ReserveFromBoardAction actionToApply, ReducerTestData expected)
         {
             // Arrange
             var baseState = _defaultBuilder
-                .WithCurrentPlayer(1)
-                .WithPlayerStore(1, player1Store)
-                .WithPlayerReservedCards(1, player1Reserved)
-                .WithTokenSupply(tokenSupply)
+                .WithCurrentPlayer(input.ActivePlayerId)
+                .WithPlayerStore(input.ActivePlayerId, input.PlayerStore)
+                .WithPlayerReservedCards(input.ActivePlayerId, input.PlayerReservedCards)
+                .WithTokenSupply(input.TokenSupply)
                 .Build();
 
             // Act
@@ -43,31 +43,27 @@ namespace SplendidWonders.Gameplay.Tests.ReducerTests
 
             // Assert
             Assert.IsNotNull(newState);
-            Assert.That(newState.TokenSupply, Is.EqualTo(expectedTokenSupply));
-            Assert.That(newState.Players[0].Store, Is.EqualTo(expectedPlayerStore));
-            Assert.That(newState.Players[0].ReservedCards, Is.EquivalentTo(expectedPlayerReserved));
-            Assert.That(newState.CurrentPlayer.Id, Is.EqualTo(expectedCurrentPlayerId));
+            Assert.That(newState.TokenSupply, Is.EqualTo(expected.TokenSupply));
+            Assert.That(newState.Players[input.ActivePlayerId - 1].Store, Is.EqualTo(expected.PlayerStore));
+            Assert.That(newState.Players[input.ActivePlayerId - 1].ReservedCards, Is.EquivalentTo(expected.PlayerReservedCards));
+            Assert.That(newState.CurrentPlayer.Id, Is.EqualTo(expected.ActivePlayerId));
 
             AssertCardReplacement(baseState, newState, actionToApply);
         }
 
         [TestCaseSource(nameof(ReserveFromBoardCardSeed23456Cases))]
-        public void Reduce_CardSeed23456WithDifferentTokenSuppliesAndPlayerStores_ShouldReturnNewStateWithExpectedValues(TokenGroup tokenSupply, TokenGroup player1Store, ImmutableList<DevelopmentCard> player1Reserved,
-            ReserveFromBoardAction actionToApply,
-            TokenGroup expectedTokenSupply, TokenGroup expectedPlayerStore, ImmutableList<DevelopmentCard> expectedPlayerReserved, int expectedCurrentPlayerId)
+        public void Reduce_CardSeed23456WithDifferentTokenSuppliesAndPlayerStores_ShouldReturnNewStateWithExpectedValues(
+            CardGroup[] seededCardSetup, ReducerTestData input, ReserveFromBoardAction actionToApply, ReducerTestData expected)
         {
             // Arrange
-            int testSeed = 23456;
-            var seededCardSetup = GameFactory.GetRandomizedCardSetup(testSeed);
-
             var baseState = _defaultBuilder
                 .WithLevel1(seededCardSetup[0])
                 .WithLevel2(seededCardSetup[1])
                 .WithLevel3(seededCardSetup[2])
-                .WithCurrentPlayer(1)
-                .WithPlayerStore(1, player1Store)
-                .WithPlayerReservedCards(1, player1Reserved)
-                .WithTokenSupply(tokenSupply)
+                .WithCurrentPlayer(input.ActivePlayerId)
+                .WithPlayerStore(input.ActivePlayerId, input.PlayerStore)
+                .WithPlayerReservedCards(input.ActivePlayerId, input.PlayerReservedCards)
+                .WithTokenSupply(input.TokenSupply)
                 .Build();
 
             // Act
@@ -75,36 +71,27 @@ namespace SplendidWonders.Gameplay.Tests.ReducerTests
 
             // Assert
             Assert.IsNotNull(newState);
-            Assert.That(newState.TokenSupply, Is.EqualTo(expectedTokenSupply));
-            Assert.That(newState.Players[0].Store, Is.EqualTo(expectedPlayerStore));
-            Assert.That(newState.Players[0].ReservedCards, Is.EquivalentTo(expectedPlayerReserved));
-            Assert.That(newState.CurrentPlayer.Id, Is.EqualTo(expectedCurrentPlayerId));
+            Assert.That(newState.TokenSupply, Is.EqualTo(expected.TokenSupply));
+            Assert.That(newState.Players[input.ActivePlayerId - 1].Store, Is.EqualTo(expected.PlayerStore));
+            Assert.That(newState.Players[input.ActivePlayerId - 1].ReservedCards, Is.EquivalentTo(expected.PlayerReservedCards));
+            Assert.That(newState.CurrentPlayer.Id, Is.EqualTo(expected.ActivePlayerId));
 
             AssertCardReplacement(baseState, newState, actionToApply);
         }
 
         [TestCaseSource(nameof(ReserveFromBoardShortDecksCases))]
-        public void Reduce_ShortDecksWithDifferentTokenSuppliesAndPlayerStores_ShouldReturnNewStateWithExpectedValues(TokenGroup tokenSupply, TokenGroup player1Store, ImmutableList<DevelopmentCard> player1Reserved,
-            ReserveFromBoardAction actionToApply,
-            TokenGroup expectedTokenSupply, TokenGroup expectedPlayerStore, ImmutableList<DevelopmentCard> expectedPlayerReserved, int expectedCurrentPlayerId)
+        public void Reduce_ShortDecksWithDifferentTokenSuppliesAndPlayerStores_ShouldReturnNewStateWithExpectedValues(
+            CardGroup[] seededCardSetup, ReducerTestData input, ReserveFromBoardAction actionToApply, ReducerTestData expected)
         {
             // Arrange
-            int testSeed = 34567;
-            var seededCardSetup = GameFactory.GetRandomizedCardSetup(testSeed);
-
-            var shortLevel1Market = seededCardSetup[0].Market.Take(3).ToImmutableList().Add(Cards.Empty);
-            var level1 = new CardGroup() { Deck = ImmutableList<DevelopmentCard>.Empty, Market = shortLevel1Market };
-            var level2 = new CardGroup() { Deck = ImmutableList<DevelopmentCard>.Empty, Market = seededCardSetup[1].Market };
-            var level3 = seededCardSetup[2];
-
             var baseState = _defaultBuilder
-                .WithLevel1(level1)
-                .WithLevel2(level2)
-                .WithLevel3(level3)
+                .WithLevel1(seededCardSetup[0])
+                .WithLevel2(seededCardSetup[1])
+                .WithLevel3(seededCardSetup[2])
                 .WithCurrentPlayer(1)
-                .WithPlayerStore(1, player1Store)
-                .WithPlayerReservedCards(1, player1Reserved)
-                .WithTokenSupply(tokenSupply)
+                .WithPlayerStore(1, input.PlayerStore)
+                .WithPlayerReservedCards(1, input.PlayerReservedCards)
+                .WithTokenSupply(input.TokenSupply)
                 .Build();
 
             // Act
@@ -112,10 +99,10 @@ namespace SplendidWonders.Gameplay.Tests.ReducerTests
 
             // Assert
             Assert.IsNotNull(newState);
-            Assert.That(newState.TokenSupply, Is.EqualTo(expectedTokenSupply));
-            Assert.That(newState.Players[0].Store, Is.EqualTo(expectedPlayerStore));
-            Assert.That(newState.Players[0].ReservedCards, Is.EquivalentTo(expectedPlayerReserved));
-            Assert.That(newState.CurrentPlayer.Id, Is.EqualTo(expectedCurrentPlayerId));
+            Assert.That(newState.TokenSupply, Is.EqualTo(expected.TokenSupply));
+            Assert.That(newState.Players[input.ActivePlayerId - 1].Store, Is.EqualTo(expected.PlayerStore));
+            Assert.That(newState.Players[input.ActivePlayerId - 1].ReservedCards, Is.EquivalentTo(expected.PlayerReservedCards));
+            Assert.That(newState.CurrentPlayer.Id, Is.EqualTo(expected.ActivePlayerId));
 
             AssertCardReplacement(baseState, newState, actionToApply);
         }
@@ -155,139 +142,226 @@ namespace SplendidWonders.Gameplay.Tests.ReducerTests
             var alreadyReserved89 = Cards.Level3.First(c => c.Id == 89);
 
             yield return new TestCaseData(
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
-                TokenGroup.FromArray([0, 0, 0, 0, 0, 0]),
-                ImmutableList<DevelopmentCard>.Empty,
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
+                    PlayerStore = TokenGroup.FromArray([0, 0, 0, 0, 0, 0]),
+                    PlayerReservedCards = ImmutableList<DevelopmentCard>.Empty
+                },
                 new ReserveFromBoardAction() { Card = cardToReserve2 },
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
-                TokenGroup.FromArray([0, 0, 0, 0, 0, 1]),
-                new List<DevelopmentCard>() { cardToReserve2 }.ToImmutableList(),
-                2)
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 2,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
+                    PlayerStore = TokenGroup.FromArray([0, 0, 0, 0, 0, 1]),
+                    PlayerReservedCards = new List<DevelopmentCard>() { cardToReserve2 }.ToImmutableList()
+                })
                 .SetName("Reserve From Board - Card Setup #0 - level 1 reserving #2, zero reserved, zero store, polymath available");
 
             yield return new TestCaseData(
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
-                TokenGroup.FromArray([0, 0, 0, 0, 0, 0]),
-                ImmutableList<DevelopmentCard>.Empty,
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
+                    PlayerStore = TokenGroup.FromArray([0, 0, 0, 0, 0, 0]),
+                    PlayerReservedCards = ImmutableList<DevelopmentCard>.Empty
+                },
                 new ReserveFromBoardAction() { Card = cardToReserve3 },
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
-                TokenGroup.FromArray([0, 0, 0, 0, 0, 1]),
-                new List<DevelopmentCard>() { cardToReserve3 }.ToImmutableList(),
-                2)
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 2,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
+                    PlayerStore = TokenGroup.FromArray([0, 0, 0, 0, 0, 1]),
+                    PlayerReservedCards = new List<DevelopmentCard>() { cardToReserve3 }.ToImmutableList()
+                })
                 .SetName("Reserve From Board - Card Setup #0 - level 1 reserving #3, zero reserved, zero store, polymath available");
 
             yield return new TestCaseData(
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
-                TokenGroup.FromArray([0, 0, 0, 0, 0, 0]),
-                ImmutableList<DevelopmentCard>.Empty,
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
+                    PlayerStore = TokenGroup.FromArray([0, 0, 0, 0, 0, 0]),
+                    PlayerReservedCards = ImmutableList<DevelopmentCard>.Empty
+                },
                 new ReserveFromBoardAction() { Card = cardToReserve41 },
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
-                TokenGroup.FromArray([0, 0, 0, 0, 0, 1]),
-                new List<DevelopmentCard>() { cardToReserve41 }.ToImmutableList(),
-                2)
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 2,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
+                    PlayerStore = TokenGroup.FromArray([0, 0, 0, 0, 0, 1]),
+                    PlayerReservedCards = new List<DevelopmentCard>() { cardToReserve41 }.ToImmutableList()
+                })
                 .SetName("Reserve From Board - Card Setup #0 - level 2 reserving #41, zero reserved, zero store, polymath available");
 
             yield return new TestCaseData(
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
-                TokenGroup.FromArray([0, 0, 0, 0, 0, 0]),
-                ImmutableList<DevelopmentCard>.Empty,
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
+                    PlayerStore = TokenGroup.FromArray([0, 0, 0, 0, 0, 0]),
+                    PlayerReservedCards = ImmutableList<DevelopmentCard>.Empty
+                },
                 new ReserveFromBoardAction() { Card = cardToReserve72 },
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
-                TokenGroup.FromArray([0, 0, 0, 0, 0, 1]),
-                new List<DevelopmentCard>() { cardToReserve72 }.ToImmutableList(),
-                2)
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 2,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
+                    PlayerStore = TokenGroup.FromArray([0, 0, 0, 0, 0, 1]),
+                    PlayerReservedCards = new List<DevelopmentCard>() { cardToReserve72 }.ToImmutableList()
+                })
                 .SetName("Reserve From Board - Card Setup #0 - level 3 reserving #72, zero reserved, zero store, polymath available");
 
             yield return new TestCaseData(
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
-                TokenGroup.FromArray([0, 0, 0, 0, 0, 0]),
-                new List<DevelopmentCard>() { alreadyReserved23 }.ToImmutableList(),
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
+                    PlayerStore = TokenGroup.FromArray([0, 0, 0, 0, 0, 0]),
+                    PlayerReservedCards = new List<DevelopmentCard>() { alreadyReserved23 }.ToImmutableList()
+                },
                 new ReserveFromBoardAction() { Card = cardToReserve43 },
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
-                TokenGroup.FromArray([0, 0, 0, 0, 0, 1]),
-                new List<DevelopmentCard>() { alreadyReserved23, cardToReserve43 }.ToImmutableList(),
-                2)
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 2,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
+                    PlayerStore = TokenGroup.FromArray([0, 0, 0, 0, 0, 1]),
+                    PlayerReservedCards = new List<DevelopmentCard>() { alreadyReserved23, cardToReserve43 }.ToImmutableList()
+                })
                 .SetName("Reserve From Board - Card Setup #0 - level 2 reserving #43, one reserved, zero store, polymath available");
 
             yield return new TestCaseData(
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
-                TokenGroup.FromArray([0, 0, 0, 0, 0, 0]),
-                new List<DevelopmentCard>() { alreadyReserved23, alreadyReserved89 }.ToImmutableList(),
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
+                    PlayerStore = TokenGroup.FromArray([0, 0, 0, 0, 0, 0]),
+                    PlayerReservedCards = new List<DevelopmentCard>() { alreadyReserved23, alreadyReserved89 }.ToImmutableList()
+                },
                 new ReserveFromBoardAction() { Card = cardToReserve72 },
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
-                TokenGroup.FromArray([0, 0, 0, 0, 0, 1]),
-                new List<DevelopmentCard>() { alreadyReserved23, alreadyReserved89, cardToReserve72 }.ToImmutableList(),
-                2)
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 2,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
+                    PlayerStore = TokenGroup.FromArray([0, 0, 0, 0, 0, 1]),
+                    PlayerReservedCards = new List<DevelopmentCard>() { alreadyReserved23, alreadyReserved89, cardToReserve72 }.ToImmutableList()
+                })
                 .SetName("Reserve From Board - Card Setup #0 - level 3 reserving #72, two reserved, zero store, polymath available");
 
             yield return new TestCaseData(
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
-                TokenGroup.FromArray([3, 2, 0, 3, 2, 0]),
-                ImmutableList<DevelopmentCard>.Empty,
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 2,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
+                    PlayerStore = TokenGroup.FromArray([3, 2, 0, 3, 2, 0]),
+                    PlayerReservedCards = ImmutableList<DevelopmentCard>.Empty
+                },
                 new ReserveFromBoardAction() { Card = cardToReserve3 },
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
-                TokenGroup.FromArray([3, 2, 0, 3, 2, 1]),
-                new List<DevelopmentCard>() { cardToReserve3 }.ToImmutableList(),
-                1)
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 2,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
+                    PlayerStore = TokenGroup.FromArray([3, 2, 0, 3, 2, 1]),
+                    PlayerReservedCards = new List<DevelopmentCard>() { cardToReserve3 }.ToImmutableList()
+                })
                 .SetName("Reserve From Board - Card Setup #0 - level 1 reserving #3, zero reserved, full store, polymath available - exceeds");
 
             yield return new TestCaseData(
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
-                TokenGroup.FromArray([6, 4, 0, 0, 0, 0]),
-                ImmutableList<DevelopmentCard>.Empty,
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
+                    PlayerStore = TokenGroup.FromArray([6, 4, 0, 0, 0, 0]),
+                    PlayerReservedCards = ImmutableList<DevelopmentCard>.Empty
+                },
                 new ReserveFromBoardAction() { Card = cardToReserve72 },
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
-                TokenGroup.FromArray([6, 4, 0, 0, 0, 1]),
-                new List<DevelopmentCard>() { cardToReserve72 }.ToImmutableList(),
-                1)
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
+                    PlayerStore = TokenGroup.FromArray([6, 4, 0, 0, 0, 1]),
+                    PlayerReservedCards = new List<DevelopmentCard>() { cardToReserve72 }.ToImmutableList()
+                })
                 .SetName("Reserve From Board - Card Setup #0 - level 3 reserving #72, zero reserved, full store, polymath available - exceeds");
 
             yield return new TestCaseData(
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
-                TokenGroup.FromArray([1, 3, 3, 1, 1, 0]),
-                ImmutableList<DevelopmentCard>.Empty,
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
+                    PlayerStore = TokenGroup.FromArray([1, 3, 3, 1, 1, 0]),
+                    PlayerReservedCards = ImmutableList<DevelopmentCard>.Empty
+                },
                 new ReserveFromBoardAction() { Card = cardToReserve44 },
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
-                TokenGroup.FromArray([1, 3, 3, 1, 1, 1]),
-                new List<DevelopmentCard>() { cardToReserve44 }.ToImmutableList(),
-                2)
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 2,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
+                    PlayerStore = TokenGroup.FromArray([1, 3, 3, 1, 1, 1]),
+                    PlayerReservedCards = new List<DevelopmentCard>() { cardToReserve44 }.ToImmutableList()
+                })
                 .SetName("Reserve From Board - Card Setup #0 - level 2 reserving #44, zero reserved, 9-long store, polymath available - does not exceed");
 
             yield return new TestCaseData(
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
-                TokenGroup.FromArray([2, 0, 0, 0, 1, 1]),
-                ImmutableList<DevelopmentCard>.Empty,
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
+                    PlayerStore = TokenGroup.FromArray([2, 0, 0, 0, 1, 1]),
+                    PlayerReservedCards = ImmutableList<DevelopmentCard>.Empty
+                },
                 new ReserveFromBoardAction() { Card = cardToReserve73 },
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
-                TokenGroup.FromArray([2, 0, 0, 0, 1, 2]),
-                new List<DevelopmentCard>() { cardToReserve73 }.ToImmutableList(),
-                2)
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 2,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
+                    PlayerStore = TokenGroup.FromArray([2, 0, 0, 0, 1, 2]),
+                    PlayerReservedCards = new List<DevelopmentCard>() { cardToReserve73 }.ToImmutableList()
+                })
                 .SetName("Reserve From Board - Card Setup #0 - level 3 reserving #73, zero reserved, 4-long store, polymath available - does not exceed");
 
             yield return new TestCaseData(
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 0]),
-                TokenGroup.FromArray([2, 0, 1, 1, 0, 1]),
-                new List<DevelopmentCard>() { alreadyReserved89, alreadyReserved23 }.ToImmutableList(),
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 0]),
+                    PlayerStore = TokenGroup.FromArray([2, 0, 1, 1, 0, 1]),
+                    PlayerReservedCards = new List<DevelopmentCard>() { alreadyReserved89, alreadyReserved23 }.ToImmutableList()
+                },
                 new ReserveFromBoardAction() { Card = cardToReserve4 },
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 0]),
-                TokenGroup.FromArray([2, 0, 1, 1, 0, 1]),
-                new List<DevelopmentCard>() { cardToReserve4, alreadyReserved23, alreadyReserved89 }.ToImmutableList(),
-                2)
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 2,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 0]),
+                    PlayerStore = TokenGroup.FromArray([2, 0, 1, 1, 0, 1]),
+                    PlayerReservedCards = new List<DevelopmentCard>() { cardToReserve4, alreadyReserved23, alreadyReserved89 }.ToImmutableList()
+                })
                 .SetName("Reserve From Board - Card Setup #0 - level 1 reserving #4, two reserved, 5-long store, no polymath available");
 
             yield return new TestCaseData(
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 0]),
-                TokenGroup.FromArray([2, 3, 3, 1, 1, 0]),
-                new List<DevelopmentCard>() { alreadyReserved89 }.ToImmutableList(),
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 0]),
+                    PlayerStore = TokenGroup.FromArray([2, 3, 3, 1, 1, 0]),
+                    PlayerReservedCards = new List<DevelopmentCard>() { alreadyReserved89 }.ToImmutableList()
+                },
                 new ReserveFromBoardAction() { Card = cardToReserve2 },
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 0]),
-                TokenGroup.FromArray([2, 3, 3, 1, 1, 0]),
-                new List<DevelopmentCard>() { cardToReserve2, alreadyReserved89 }.ToImmutableList(),
-                2)
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 2,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 0]),
+                    PlayerStore = TokenGroup.FromArray([2, 3, 3, 1, 1, 0]),
+                    PlayerReservedCards = new List<DevelopmentCard>() { cardToReserve2, alreadyReserved89 }.ToImmutableList()
+                })
                 .SetName("Reserve From Board - Card Setup #0 - level 1 reserving #2, one reserved, full store, no polymath available - does not exceed");
         }
         private static IEnumerable<TestCaseData> ReserveFromBoardCardSeed23456Cases()
         {
+            int testSeed = 23456;
+            var seededCardSetup = GameFactory.GetRandomizedCardSetup(testSeed);
+
             // Level 1
             //+ [0] { DevelopmentCard { Id = 13, Name = Sírkamra, Level = 1, VictoryPoints = 0, Cost = TokenGroup { Yellow = 1, Blue = 0, Green = 0, Brown = 0, Red = 2, Polymath = 0 }, Bonus = Blue } }
             //+ [1] { DevelopmentCard { Id = 4, Name = Kikötő, Level = 1, VictoryPoints = 0, Cost = TokenGroup { Yellow = 0, Blue = 0, Green = 0, Brown = 2, Red = 1, Polymath = 0 }, Bonus = Yellow } }
@@ -319,139 +393,238 @@ namespace SplendidWonders.Gameplay.Tests.ReducerTests
             var alreadyReserved76 = Cards.Level3.First(c => c.Id == 76);
 
             yield return new TestCaseData(
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
-                TokenGroup.FromArray([0, 0, 0, 0, 0, 0]),
-                ImmutableList<DevelopmentCard>.Empty,
+                seededCardSetup,
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
+                    PlayerStore = TokenGroup.FromArray([0, 0, 0, 0, 0, 0]),
+                    PlayerReservedCards = ImmutableList<DevelopmentCard>.Empty
+                },
                 new ReserveFromBoardAction() { Card = cardToReserve27 },
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
-                TokenGroup.FromArray([0, 0, 0, 0, 0, 1]),
-                new List<DevelopmentCard>() { cardToReserve27 }.ToImmutableList(),
-                2)
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 2,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
+                    PlayerStore = TokenGroup.FromArray([0, 0, 0, 0, 0, 1]),
+                    PlayerReservedCards = new List<DevelopmentCard>() { cardToReserve27 }.ToImmutableList()
+                })
                 .SetName("Reserve From Board - Card Setup #23456 - level 1 reserving #27, zero reserved, zero store, polymath available");
 
             yield return new TestCaseData(
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
-                TokenGroup.FromArray([0, 0, 0, 0, 0, 0]),
-                ImmutableList<DevelopmentCard>.Empty,
+                seededCardSetup,
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
+                    PlayerStore = TokenGroup.FromArray([0, 0, 0, 0, 0, 0]),
+                    PlayerReservedCards = ImmutableList<DevelopmentCard>.Empty
+                },
                 new ReserveFromBoardAction() { Card = cardToReserve13 },
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
-                TokenGroup.FromArray([0, 0, 0, 0, 0, 1]),
-                new List<DevelopmentCard>() { cardToReserve13 }.ToImmutableList(),
-                2)
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 2,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
+                    PlayerStore = TokenGroup.FromArray([0, 0, 0, 0, 0, 1]),
+                    PlayerReservedCards = new List<DevelopmentCard>() { cardToReserve13 }.ToImmutableList()
+                })
                 .SetName("Reserve From Board - Card Setup #23456 - level 1 reserving #13, zero reserved, zero store, polymath available");
 
             yield return new TestCaseData(
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
-                TokenGroup.FromArray([0, 0, 0, 0, 0, 0]),
-                ImmutableList<DevelopmentCard>.Empty,
+                seededCardSetup,
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
+                    PlayerStore = TokenGroup.FromArray([0, 0, 0, 0, 0, 0]),
+                    PlayerReservedCards = ImmutableList<DevelopmentCard>.Empty
+                },
                 new ReserveFromBoardAction() { Card = cardToReserve46 },
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
-                TokenGroup.FromArray([0, 0, 0, 0, 0, 1]),
-                new List<DevelopmentCard>() { cardToReserve46 }.ToImmutableList(),
-                2)
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 2,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
+                    PlayerStore = TokenGroup.FromArray([0, 0, 0, 0, 0, 1]),
+                    PlayerReservedCards = new List<DevelopmentCard>() { cardToReserve46 }.ToImmutableList()
+                })
                 .SetName("Reserve From Board - Card Setup #23456 - level 2 reserving #46, zero reserved, zero store, polymath available");
 
             yield return new TestCaseData(
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
-                TokenGroup.FromArray([0, 0, 0, 0, 0, 0]),
-                ImmutableList<DevelopmentCard>.Empty,
+                seededCardSetup,
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
+                    PlayerStore = TokenGroup.FromArray([0, 0, 0, 0, 0, 0]),
+                    PlayerReservedCards = ImmutableList<DevelopmentCard>.Empty
+                },
                 new ReserveFromBoardAction() { Card = cardToReserve78 },
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
-                TokenGroup.FromArray([0, 0, 0, 0, 0, 1]),
-                new List<DevelopmentCard>() { cardToReserve78 }.ToImmutableList(),
-                2)
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 2,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
+                    PlayerStore = TokenGroup.FromArray([0, 0, 0, 0, 0, 1]),
+                    PlayerReservedCards = new List<DevelopmentCard>() { cardToReserve78 }.ToImmutableList()
+                })
                 .SetName("Reserve From Board - Card Setup #23456 - level 3 reserving #78, zero reserved, zero store, polymath available");
 
             yield return new TestCaseData(
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
-                TokenGroup.FromArray([0, 0, 0, 0, 0, 0]),
-                new List<DevelopmentCard>() { alreadyReserved33 }.ToImmutableList(),
+                seededCardSetup,
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
+                    PlayerStore = TokenGroup.FromArray([0, 0, 0, 0, 0, 0]),
+                    PlayerReservedCards = new List<DevelopmentCard>() { alreadyReserved33 }.ToImmutableList()
+                },
                 new ReserveFromBoardAction() { Card = cardToReserve63 },
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
-                TokenGroup.FromArray([0, 0, 0, 0, 0, 1]),
-                new List<DevelopmentCard>() { alreadyReserved33, cardToReserve63 }.ToImmutableList(),
-                2)
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 2,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
+                    PlayerStore = TokenGroup.FromArray([0, 0, 0, 0, 0, 1]),
+                    PlayerReservedCards = new List<DevelopmentCard>() { alreadyReserved33, cardToReserve63 }.ToImmutableList()
+                })
                 .SetName("Reserve From Board - Card Setup #23456 - level 2 reserving #63, one reserved, zero store, polymath available");
 
             yield return new TestCaseData(
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
-                TokenGroup.FromArray([0, 0, 0, 0, 0, 0]),
-                new List<DevelopmentCard>() { alreadyReserved33, alreadyReserved76 }.ToImmutableList(),
+                seededCardSetup,
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
+                    PlayerStore = TokenGroup.FromArray([0, 0, 0, 0, 0, 0]),
+                    PlayerReservedCards = new List<DevelopmentCard>() { alreadyReserved33, alreadyReserved76 }.ToImmutableList()
+                },
                 new ReserveFromBoardAction() { Card = cardToReserve78 },
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
-                TokenGroup.FromArray([0, 0, 0, 0, 0, 1]),
-                new List<DevelopmentCard>() { alreadyReserved33, alreadyReserved76, cardToReserve78 }.ToImmutableList(),
-                2)
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 2,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
+                    PlayerStore = TokenGroup.FromArray([0, 0, 0, 0, 0, 1]),
+                    PlayerReservedCards = new List<DevelopmentCard>() { alreadyReserved33, alreadyReserved76, cardToReserve78 }.ToImmutableList()
+                })
                 .SetName("Reserve From Board - Card Setup #23456 - level 3 reserving #78, two reserved, zero store, polymath available");
 
             yield return new TestCaseData(
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
-                TokenGroup.FromArray([3, 2, 0, 3, 2, 0]),
-                ImmutableList<DevelopmentCard>.Empty,
+                seededCardSetup,
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
+                    PlayerStore = TokenGroup.FromArray([3, 2, 0, 3, 2, 0]),
+                    PlayerReservedCards = ImmutableList<DevelopmentCard>.Empty
+                },
                 new ReserveFromBoardAction() { Card = cardToReserve13 },
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
-                TokenGroup.FromArray([3, 2, 0, 3, 2, 1]),
-                new List<DevelopmentCard>() { cardToReserve13 }.ToImmutableList(),
-                1)
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
+                    PlayerStore = TokenGroup.FromArray([3, 2, 0, 3, 2, 1]),
+                    PlayerReservedCards = new List<DevelopmentCard>() { cardToReserve13 }.ToImmutableList()
+                })
                 .SetName("Reserve From Board - Card Setup #23456 - level 1 reserving #13, zero reserved, full store, polymath available - exceeds");
 
             yield return new TestCaseData(
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
-                TokenGroup.FromArray([6, 4, 0, 0, 0, 0]),
-                ImmutableList<DevelopmentCard>.Empty,
+                seededCardSetup,
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
+                    PlayerStore = TokenGroup.FromArray([6, 4, 0, 0, 0, 0]),
+                    PlayerReservedCards = ImmutableList<DevelopmentCard>.Empty
+                },
                 new ReserveFromBoardAction() { Card = cardToReserve78 },
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
-                TokenGroup.FromArray([6, 4, 0, 0, 0, 1]),
-                new List<DevelopmentCard>() { cardToReserve78 }.ToImmutableList(),
-                1)
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
+                    PlayerStore = TokenGroup.FromArray([6, 4, 0, 0, 0, 1]),
+                    PlayerReservedCards = new List<DevelopmentCard>() { cardToReserve78 }.ToImmutableList()
+                })
                 .SetName("Reserve From Board - Card Setup #23456 - level 3 reserving #72, zero reserved, full store, polymath available - exceeds");
 
             yield return new TestCaseData(
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
-                TokenGroup.FromArray([1, 3, 3, 1, 1, 0]),
-                ImmutableList<DevelopmentCard>.Empty,
+                seededCardSetup,
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 2,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
+                    PlayerStore = TokenGroup.FromArray([1, 3, 3, 1, 1, 0]),
+                    PlayerReservedCards = ImmutableList<DevelopmentCard>.Empty
+                },
                 new ReserveFromBoardAction() { Card = cardToReserve68 },
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
-                TokenGroup.FromArray([1, 3, 3, 1, 1, 1]),
-                new List<DevelopmentCard>() { cardToReserve68 }.ToImmutableList(),
-                2)
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
+                    PlayerStore = TokenGroup.FromArray([1, 3, 3, 1, 1, 1]),
+                    PlayerReservedCards = new List<DevelopmentCard>() { cardToReserve68 }.ToImmutableList()
+                })
                 .SetName("Reserve From Board - Card Setup #23456 - level 2 reserving #68, zero reserved, 9-long store, polymath available - does not exceed");
 
             yield return new TestCaseData(
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
-                TokenGroup.FromArray([2, 0, 0, 0, 1, 1]),
-                ImmutableList<DevelopmentCard>.Empty,
+                seededCardSetup,
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 2,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
+                    PlayerStore = TokenGroup.FromArray([2, 0, 0, 0, 1, 1]),
+                    PlayerReservedCards = ImmutableList<DevelopmentCard>.Empty
+                },
                 new ReserveFromBoardAction() { Card = cardToReserve81 },
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
-                TokenGroup.FromArray([2, 0, 0, 0, 1, 2]),
-                new List<DevelopmentCard>() { cardToReserve81 }.ToImmutableList(),
-                2)
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
+                    PlayerStore = TokenGroup.FromArray([2, 0, 0, 0, 1, 2]),
+                    PlayerReservedCards = new List<DevelopmentCard>() { cardToReserve81 }.ToImmutableList()
+                })
                 .SetName("Reserve From Board - Card Setup #23456 - level 3 reserving #81, zero reserved, 4-long store, polymath available - does not exceed");
 
             yield return new TestCaseData(
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 0]),
-                TokenGroup.FromArray([2, 0, 1, 1, 0, 1]),
-                new List<DevelopmentCard>() { alreadyReserved76, alreadyReserved33 }.ToImmutableList(),
+                seededCardSetup,
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 0]),
+                    PlayerStore = TokenGroup.FromArray([2, 0, 1, 1, 0, 1]),
+                    PlayerReservedCards = new List<DevelopmentCard>() { alreadyReserved76, alreadyReserved33 }.ToImmutableList()
+                },
                 new ReserveFromBoardAction() { Card = cardToReserve19 },
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 0]),
-                TokenGroup.FromArray([2, 0, 1, 1, 0, 1]),
-                new List<DevelopmentCard>() { cardToReserve19, alreadyReserved33, alreadyReserved76 }.ToImmutableList(),
-                2)
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 2,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 0]),
+                    PlayerStore = TokenGroup.FromArray([2, 0, 1, 1, 0, 1]),
+                    PlayerReservedCards = new List<DevelopmentCard>() { cardToReserve19, alreadyReserved33, alreadyReserved76 }.ToImmutableList()
+                })
                 .SetName("Reserve From Board - Card Setup #23456 - level 1 reserving #19, two reserved, 5-long store, no polymath available");
 
             yield return new TestCaseData(
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 0]),
-                TokenGroup.FromArray([2, 3, 3, 1, 1, 0]),
-                new List<DevelopmentCard>() { alreadyReserved76 }.ToImmutableList(),
+                seededCardSetup,
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 0]),
+                    PlayerStore = TokenGroup.FromArray([2, 3, 3, 1, 1, 0]),
+                    PlayerReservedCards = new List<DevelopmentCard>() { alreadyReserved76 }.ToImmutableList()
+                },
                 new ReserveFromBoardAction() { Card = cardToReserve27 },
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 0]),
-                TokenGroup.FromArray([2, 3, 3, 1, 1, 0]),
-                new List<DevelopmentCard>() { cardToReserve27, alreadyReserved76 }.ToImmutableList(),
-                2)
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 2,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 0]),
+                    PlayerStore = TokenGroup.FromArray([2, 3, 3, 1, 1, 0]),
+                    PlayerReservedCards = new List<DevelopmentCard>() { cardToReserve27, alreadyReserved76 }.ToImmutableList()
+                })
                 .SetName("Reserve From Board - Card Setup #23456 - level 1 reserving #27, one reserved, full store, no polymath available - does not exceed");
         }
         private static IEnumerable<TestCaseData> ReserveFromBoardShortDecksCases()
         {
+            int testSeed = 34567;
+            var seededCardSetup = GameFactory.GetRandomizedCardSetup(testSeed);
+
             // Level 1
             //+ [0] { DevelopmentCard { Id = 40, Name = Városfal, Level = 1, VictoryPoints = 0, Cost = TokenGroup { Yellow = 1, Blue = 2, Green = 1, Brown = 1, Red = 0, Polymath = 0 }, Bonus = Red } }
             //+ [1] { DevelopmentCard { Id = 29, Name = Kőfejtő, Level = 1, VictoryPoints = 0, Cost = TokenGroup { Yellow = 1, Blue = 1, Green = 1, Brown = 0, Red = 1, Polymath = 0 }, Bonus = Brown } }
@@ -470,6 +643,11 @@ namespace SplendidWonders.Gameplay.Tests.ReducerTests
             //+ [2] { DevelopmentCard { Id = 86, Name = Pantheon, Level = 3, VictoryPoints = 3, Cost = TokenGroup { Yellow = 3, Blue = 5, Green = 3, Brown = 0, Red = 2, Polymath = 0 }, Bonus = Brown } }
             //+ [3] { DevelopmentCard { Id = 73, Name = Petra, Level = 3, VictoryPoints = 3, Cost = TokenGroup { Yellow = 0, Blue = 2, Green = 3, Brown = 5, Red = 3, Polymath = 0 }, Bonus = Yellow } }
 
+            var shortLevel1Market = seededCardSetup[0].Market.Take(3).ToImmutableList().Add(Cards.Empty);
+            var level1 = new CardGroup() { Deck = ImmutableList<DevelopmentCard>.Empty, Market = shortLevel1Market };
+            var level2 = new CardGroup() { Deck = ImmutableList<DevelopmentCard>.Empty, Market = seededCardSetup[1].Market };
+            var level3 = seededCardSetup[2];
+
             var cardToReserve40 = Cards.Level1.First(c => c.Id == 40);
             var cardToReserve29 = Cards.Level1.First(c => c.Id == 29);
             var cardToReserve19 = Cards.Level1.First(c => c.Id == 19);
@@ -483,135 +661,269 @@ namespace SplendidWonders.Gameplay.Tests.ReducerTests
             var alreadyReserved81 = Cards.Level3.First(c => c.Id == 81);
 
             yield return new TestCaseData(
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
-                TokenGroup.FromArray([0, 0, 0, 0, 0, 0]),
-                ImmutableList<DevelopmentCard>.Empty,
+                seededCardSetup,
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
+                    PlayerStore = TokenGroup.FromArray([0, 0, 0, 0, 0, 0]),
+                    PlayerReservedCards = ImmutableList<DevelopmentCard>.Empty
+                },
                 new ReserveFromBoardAction() { Card = cardToReserve29 },
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
-                TokenGroup.FromArray([0, 0, 0, 0, 0, 1]),
-                new List<DevelopmentCard>() { cardToReserve29 }.ToImmutableList(),
-                2)
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 2,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
+                    PlayerStore = TokenGroup.FromArray([0, 0, 0, 0, 0, 1]),
+                    PlayerReservedCards = new List<DevelopmentCard>() { cardToReserve29 }.ToImmutableList()
+                })
                 .SetName("Reserve From Board - Short Decks #34567 - level 1 reserving #29, zero reserved, zero store, polymath available");
 
             yield return new TestCaseData(
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
-                TokenGroup.FromArray([0, 0, 0, 0, 0, 0]),
-                ImmutableList<DevelopmentCard>.Empty,
+                seededCardSetup,
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
+                    PlayerStore = TokenGroup.FromArray([0, 0, 0, 0, 0, 0]),
+                    PlayerReservedCards = ImmutableList<DevelopmentCard>.Empty
+                },
                 new ReserveFromBoardAction() { Card = cardToReserve29 },
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
-                TokenGroup.FromArray([0, 0, 0, 0, 0, 1]),
-                new List<DevelopmentCard>() { cardToReserve29 }.ToImmutableList(),
-                2)
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 2,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
+                    PlayerStore = TokenGroup.FromArray([0, 0, 0, 0, 0, 1]),
+                    PlayerReservedCards = new List<DevelopmentCard>() { cardToReserve29 }.ToImmutableList()
+                })
                 .SetName("Reserve From Board - Short Decks #34567 - level 1 reserving #29, zero reserved, zero store, polymath available");
 
             yield return new TestCaseData(
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
-                TokenGroup.FromArray([0, 0, 0, 0, 0, 0]),
-                ImmutableList<DevelopmentCard>.Empty,
+                seededCardSetup,
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
+                    PlayerStore = TokenGroup.FromArray([0, 0, 0, 0, 0, 0]),
+                    PlayerReservedCards = ImmutableList<DevelopmentCard>.Empty
+                },
                 new ReserveFromBoardAction() { Card = cardToReserve56 },
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
-                TokenGroup.FromArray([0, 0, 0, 0, 0, 1]),
-                new List<DevelopmentCard>() { cardToReserve56 }.ToImmutableList(),
-                2)
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 2,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
+                    PlayerStore = TokenGroup.FromArray([0, 0, 0, 0, 0, 1]),
+                    PlayerReservedCards = new List<DevelopmentCard>() { cardToReserve56 }.ToImmutableList()
+                })
                 .SetName("Reserve From Board - Short Decks #34567 - level 2 reserving #56, zero reserved, zero store, polymath available");
 
             yield return new TestCaseData(
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
-                TokenGroup.FromArray([0, 0, 0, 0, 0, 0]),
-                ImmutableList<DevelopmentCard>.Empty,
+                seededCardSetup,
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
+                    PlayerStore = TokenGroup.FromArray([0, 0, 0, 0, 0, 0]),
+                    PlayerReservedCards = ImmutableList<DevelopmentCard>.Empty
+                },
+                new ReserveFromBoardAction() { Card = cardToReserve56 },
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 2,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
+                    PlayerStore = TokenGroup.FromArray([0, 0, 0, 0, 0, 1]),
+                    PlayerReservedCards = new List<DevelopmentCard>() { cardToReserve56 }.ToImmutableList()
+                })
+                .SetName("Reserve From Board - Short Decks #34567 - level 2 reserving #56, zero reserved, zero store, polymath available");
+
+            yield return new TestCaseData(
+                seededCardSetup,
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
+                    PlayerStore = TokenGroup.FromArray([0, 0, 0, 0, 0, 0]),
+                    PlayerReservedCards = ImmutableList<DevelopmentCard>.Empty
+                },
+                new ReserveFromBoardAction() { Card = cardToReserve56 },
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 2,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
+                    PlayerStore = TokenGroup.FromArray([0, 0, 0, 0, 0, 1]),
+                    PlayerReservedCards = new List<DevelopmentCard>() { cardToReserve56 }.ToImmutableList()
+                })
+                .SetName("Reserve From Board - Short Decks #34567 - level 2 reserving #56, zero reserved, zero store, polymath available");
+
+            yield return new TestCaseData(
+                seededCardSetup,
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
+                    PlayerStore = TokenGroup.FromArray([0, 0, 0, 0, 0, 0]),
+                    PlayerReservedCards = ImmutableList<DevelopmentCard>.Empty
+                },
                 new ReserveFromBoardAction() { Card = cardToReserve78 },
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
-                TokenGroup.FromArray([0, 0, 0, 0, 0, 1]),
-                new List<DevelopmentCard>() { cardToReserve78 }.ToImmutableList(),
-                2)
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 2,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
+                    PlayerStore = TokenGroup.FromArray([0, 0, 0, 0, 0, 1]),
+                    PlayerReservedCards = new List<DevelopmentCard>() { cardToReserve78 }.ToImmutableList()
+                })
                 .SetName("Reserve From Board - Short Decks #34567 - level 3 reserving #78, zero reserved, zero store, polymath available");
 
             yield return new TestCaseData(
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
-                TokenGroup.FromArray([0, 0, 0, 0, 0, 0]),
-                new List<DevelopmentCard>() { alreadyReserved25 }.ToImmutableList(),
+                seededCardSetup,
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
+                    PlayerStore = TokenGroup.FromArray([0, 0, 0, 0, 0, 0]),
+                    PlayerReservedCards = new List<DevelopmentCard>() { alreadyReserved25 }.ToImmutableList()
+                },
                 new ReserveFromBoardAction() { Card = cardToReserve55 },
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
-                TokenGroup.FromArray([0, 0, 0, 0, 0, 1]),
-                new List<DevelopmentCard>() { alreadyReserved25, cardToReserve55 }.ToImmutableList(),
-                2)
-                .SetName("Reserve From Board - Short Decks #34567 - level 2 reserving #25, one reserved, zero store, polymath available");
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 2,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
+                    PlayerStore = TokenGroup.FromArray([0, 0, 0, 0, 0, 1]),
+                    PlayerReservedCards = new List<DevelopmentCard>() { alreadyReserved25, cardToReserve55 }.ToImmutableList()
+                })
+                .SetName("Reserve From Board - Short Decks #34567 - level 2 reserving #55, one reserved, zero store, polymath available");
 
             yield return new TestCaseData(
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
-                TokenGroup.FromArray([0, 0, 0, 0, 0, 0]),
-                new List<DevelopmentCard>() { alreadyReserved25, alreadyReserved81 }.ToImmutableList(),
+                seededCardSetup,
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
+                    PlayerStore = TokenGroup.FromArray([0, 0, 0, 0, 0, 0]),
+                    PlayerReservedCards = new List<DevelopmentCard>() { alreadyReserved25, alreadyReserved81 }.ToImmutableList()
+                },
                 new ReserveFromBoardAction() { Card = cardToReserve78 },
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
-                TokenGroup.FromArray([0, 0, 0, 0, 0, 1]),
-                new List<DevelopmentCard>() { alreadyReserved25, alreadyReserved81, cardToReserve78 }.ToImmutableList(),
-                2)
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 2,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
+                    PlayerStore = TokenGroup.FromArray([0, 0, 0, 0, 0, 1]),
+                    PlayerReservedCards = new List<DevelopmentCard>() { alreadyReserved25, alreadyReserved81, cardToReserve78 }.ToImmutableList()
+                })
                 .SetName("Reserve From Board - Short Decks #34567 - level 3 reserving #78, two reserved, zero store, polymath available");
 
             yield return new TestCaseData(
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
-                TokenGroup.FromArray([3, 2, 0, 3, 2, 0]),
-                ImmutableList<DevelopmentCard>.Empty,
+                seededCardSetup,
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
+                    PlayerStore = TokenGroup.FromArray([3, 2, 0, 3, 2, 0]),
+                    PlayerReservedCards = ImmutableList<DevelopmentCard>.Empty
+                },
                 new ReserveFromBoardAction() { Card = cardToReserve29 },
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
-                TokenGroup.FromArray([3, 2, 0, 3, 2, 1]),
-                new List<DevelopmentCard>() { cardToReserve29 }.ToImmutableList(),
-                1)
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
+                    PlayerStore = TokenGroup.FromArray([3, 2, 0, 3, 2, 1]),
+                    PlayerReservedCards = new List<DevelopmentCard>() { cardToReserve29 }.ToImmutableList()
+                })
                 .SetName("Reserve From Board - Short Decks #34567 - level 1 reserving #29, zero reserved, full store, polymath available - exceeds");
 
             yield return new TestCaseData(
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
-                TokenGroup.FromArray([6, 4, 0, 0, 0, 0]),
-                ImmutableList<DevelopmentCard>.Empty,
+                seededCardSetup,
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
+                    PlayerStore = TokenGroup.FromArray([6, 4, 0, 0, 0, 0]),
+                    PlayerReservedCards = ImmutableList<DevelopmentCard>.Empty
+                },
                 new ReserveFromBoardAction() { Card = cardToReserve78 },
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
-                TokenGroup.FromArray([6, 4, 0, 0, 0, 1]),
-                new List<DevelopmentCard>() { cardToReserve78 }.ToImmutableList(),
-                1)
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
+                    PlayerStore = TokenGroup.FromArray([6, 4, 0, 0, 0, 1]),
+                    PlayerReservedCards = new List<DevelopmentCard>() { cardToReserve78 }.ToImmutableList()
+                })
                 .SetName("Reserve From Board - Short Decks #34567 - level 3 reserving #78, zero reserved, full store, polymath available - exceeds");
 
             yield return new TestCaseData(
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
-                TokenGroup.FromArray([1, 3, 3, 1, 1, 0]),
-                ImmutableList<DevelopmentCard>.Empty,
+                seededCardSetup,
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
+                    PlayerStore = TokenGroup.FromArray([1, 3, 3, 1, 1, 0]),
+                    PlayerReservedCards = ImmutableList<DevelopmentCard>.Empty
+                },
                 new ReserveFromBoardAction() { Card = cardToReserve48 },
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
-                TokenGroup.FromArray([1, 3, 3, 1, 1, 1]),
-                new List<DevelopmentCard>() { cardToReserve48 }.ToImmutableList(),
-                2)
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 2,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
+                    PlayerStore = TokenGroup.FromArray([1, 3, 3, 1, 1, 1]),
+                    PlayerReservedCards = new List<DevelopmentCard>() { cardToReserve48 }.ToImmutableList()
+                })
                 .SetName("Reserve From Board - Short Decks #34567 - level 2 reserving #48, zero reserved, 9-long store, polymath available - does not exceed");
 
             yield return new TestCaseData(
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
-                TokenGroup.FromArray([2, 0, 0, 0, 1, 1]),
-                ImmutableList<DevelopmentCard>.Empty,
+                seededCardSetup,
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 5]),
+                    PlayerStore = TokenGroup.FromArray([2, 0, 0, 0, 1, 1]),
+                    PlayerReservedCards = ImmutableList<DevelopmentCard>.Empty
+                },
                 new ReserveFromBoardAction() { Card = cardToReserve89 },
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
-                TokenGroup.FromArray([2, 0, 0, 0, 1, 2]),
-                new List<DevelopmentCard>() { cardToReserve89 }.ToImmutableList(),
-                2)
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 2,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 4]),
+                    PlayerStore = TokenGroup.FromArray([2, 0, 0, 0, 1, 2]),
+                    PlayerReservedCards = new List<DevelopmentCard>() { cardToReserve89 }.ToImmutableList()
+                })
                 .SetName("Reserve From Board - Short Decks #34567 - level 3 reserving #89, zero reserved, 4-long store, polymath available - does not exceed");
 
             yield return new TestCaseData(
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 0]),
-                TokenGroup.FromArray([2, 0, 1, 1, 0, 1]),
-                new List<DevelopmentCard>() { alreadyReserved81, alreadyReserved25 }.ToImmutableList(),
+                seededCardSetup,
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 0]),
+                    PlayerStore = TokenGroup.FromArray([2, 0, 1, 1, 0, 1]),
+                    PlayerReservedCards = new List<DevelopmentCard>() { alreadyReserved81, alreadyReserved25 }.ToImmutableList()
+                },
                 new ReserveFromBoardAction() { Card = cardToReserve19 },
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 0]),
-                TokenGroup.FromArray([2, 0, 1, 1, 0, 1]),
-                new List<DevelopmentCard>() { cardToReserve19, alreadyReserved25, alreadyReserved81 }.ToImmutableList(),
-                2)
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 2,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 0]),
+                    PlayerStore = TokenGroup.FromArray([2, 0, 1, 1, 0, 1]),
+                    PlayerReservedCards = new List<DevelopmentCard>() { cardToReserve19, alreadyReserved25, alreadyReserved81 }.ToImmutableList()
+                })
                 .SetName("Reserve From Board - Short Decks #34567 - level 1 reserving #19, two reserved, 5-long store, no polymath available");
 
             yield return new TestCaseData(
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 0]),
-                TokenGroup.FromArray([2, 3, 3, 1, 1, 0]),
-                new List<DevelopmentCard>() { alreadyReserved81 }.ToImmutableList(),
+                seededCardSetup,
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 0]),
+                    PlayerStore = TokenGroup.FromArray([2, 3, 3, 1, 1, 0]),
+                    PlayerReservedCards = new List<DevelopmentCard>() { alreadyReserved81 }.ToImmutableList()
+                },
                 new ReserveFromBoardAction() { Card = cardToReserve40 },
-                TokenGroup.FromArray([4, 4, 4, 4, 4, 0]),
-                TokenGroup.FromArray([2, 3, 3, 1, 1, 0]),
-                new List<DevelopmentCard>() { cardToReserve40, alreadyReserved81 }.ToImmutableList(),
-                2)
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 2,
+                    TokenSupply = TokenGroup.FromArray([4, 4, 4, 4, 4, 0]),
+                    PlayerStore = TokenGroup.FromArray([2, 3, 3, 1, 1, 0]),
+                    PlayerReservedCards = new List<DevelopmentCard>() { cardToReserve40, alreadyReserved81 }.ToImmutableList()
+                })
                 .SetName("Reserve From Board - Short Decks #34567 - level 1 reserving #40, one reserved, full store, no polymath available - does not exceed");
         }
     }
