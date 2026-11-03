@@ -2,10 +2,8 @@
 
 namespace SplendidWonders.Gameplay.Actions
 {
-    public class ReserveFromBoardAction : ReserveAction
+    public class ReserveFromBoardAction : CardAction
     {
-        public DevelopmentCard Card { get; set; }
-
         public override bool Equals(object? obj)
         {
             if (obj is ReserveFromBoardAction other)

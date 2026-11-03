@@ -23,16 +23,16 @@ namespace SplendidWonders.Gameplay.Explorers
                     if (card == null || card == Cards.Empty)
                         continue;
 
-                    if (CalculatePurchasability(card.Cost, gameState.CurrentPlayer.Store, gameState.CurrentPlayer.Tableau))
+                    if (CalculatePurchasability(card.Cost, gameState.ActivePlayer.Store, gameState.ActivePlayer.Tableau))
                     {
                         purchaseActions.Add(new PurchaseAction() { Card = card });
                     }
                 }
             }
 
-            foreach (var card in gameState.CurrentPlayer.ReservedCards)
+            foreach (var card in gameState.ActivePlayer.ReservedCards)
             {
-                if (CalculatePurchasability(card.Cost, gameState.CurrentPlayer.Store, gameState.CurrentPlayer.Tableau))
+                if (CalculatePurchasability(card.Cost, gameState.ActivePlayer.Store, gameState.ActivePlayer.Tableau))
                 {
                     purchaseActions.Add(new PurchaseAction() { Card = card });
                 }

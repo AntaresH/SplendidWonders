@@ -175,7 +175,7 @@ namespace SplendidWonders.CLI.View
                     continue;
                 }
 
-                string playerName = ReferenceEquals(player, gameState.CurrentPlayer)
+                string playerName = ReferenceEquals(player, gameState.ActivePlayer)
                     ? $"*** {player.Name} ***"
                     : player.Name;
                 AddPlayerBlock(lines, string.Empty, WrapText(playerName, PlayerPanelWidth - 4));

@@ -8,7 +8,7 @@ namespace SplendidWonders.Gameplay.Reducers
     {
         public GameState Reduce(GameState baseState, ReserveFromBoardAction action)
         {
-            var currentPlayerId = baseState.CurrentPlayer.Id;
+            var currentPlayerId = baseState.ActivePlayer.Id;
             var reducedStateBuilder = new GameStateBuilder(baseState);
 
             SetPlayerReservedCards(baseState, action.Card, currentPlayerId, reducedStateBuilder);
@@ -21,7 +21,7 @@ namespace SplendidWonders.Gameplay.Reducers
 
         public GameState Reduce(GameState baseState, ReserveFromDeckAction action)
         {
-            var currentPlayerId = baseState.CurrentPlayer.Id;
+            var currentPlayerId = baseState.ActivePlayer.Id;
             var reducedStateBuilder = new GameStateBuilder(baseState);
 
             SetPlayerReservedCards(baseState, baseState[action.Level].Deck[0], currentPlayerId, reducedStateBuilder);
@@ -44,7 +44,7 @@ namespace SplendidWonders.Gameplay.Reducers
 
         private static void SetPlayerReservedCards(GameState baseState, DevelopmentCard card, int currentPlayerId, GameStateBuilder reducedStateBuilder)
         {
-            var playerReserved = baseState.CurrentPlayer.ReservedCards;
+            var playerReserved = baseState.ActivePlayer.ReservedCards;
             playerReserved = playerReserved.Add(card);
 
             reducedStateBuilder.WithPlayerReservedCards(currentPlayerId, playerReserved);
@@ -54,7 +54,7 @@ namespace SplendidWonders.Gameplay.Reducers
         {
             if (baseState.TokenSupply.Polymath > 0)
             {
-                var playerStore = baseState.CurrentPlayer.Store;
+                var playerStore = baseState.ActivePlayer.Store;
                 var tokenSupply = baseState.TokenSupply;
 
                 playerStore.Polymath++;
@@ -67,12 +67,12 @@ namespace SplendidWonders.Gameplay.Reducers
 
         private void SetActivePlayer(GameState baseState, GameStateBuilder reducedStateBuilder)
         {
-            var playerStore = baseState.CurrentPlayer.Store;
+            var playerStore = baseState.ActivePlayer.Store;
 
             int allPlayerTokens = playerStore.Yellow + playerStore.Blue + playerStore.Green + playerStore.Brown + playerStore.Red + playerStore.Polymath;
             int currentPlayerId = allPlayerTokens <= 10
-                ? baseState.CurrentPlayer.Id % baseState.Players.Count + 1
-                : baseState.CurrentPlayer.Id;
+                ? baseState.ActivePlayer.Id % baseState.Players.Count + 1
+                : baseState.ActivePlayer.Id;
 
             reducedStateBuilder.WithCurrentPlayer(currentPlayerId);
         }

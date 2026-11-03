@@ -9,6 +9,9 @@ namespace SplendidWonders.Gameplay.Tests.TestDataModel
     public record class ReducerTestData
     {
         public TokenGroup TokenSupply { get; set; }
+        public CardGroup Level1 { get; set; }
+        public CardGroup Level2 { get; set; }
+        public CardGroup Level3 { get; set; }
         public ImmutableList<Leader> AvailableLeaders { get; set; } = ImmutableList<Leader>.Empty;
 
         public TokenGroup PlayerStore { get; set; }

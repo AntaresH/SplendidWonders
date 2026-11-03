@@ -7,7 +7,7 @@ namespace SplendidWonders.Gameplay.Reducers
     {
         private GameState ReduceGeneralTokenAction(GameState baseState, int[] selectedTokens)
         {
-            var playerStore = baseState.CurrentPlayer.Store.ToArray();
+            var playerStore = baseState.ActivePlayer.Store.ToArray();
             var tokenSupply = baseState.TokenSupply.ToArray();
 
             var reducedStateBuilder = new GameStateBuilder(baseState);
@@ -18,13 +18,13 @@ namespace SplendidWonders.Gameplay.Reducers
                 tokenSupply[i] -= selectedTokens[i];
             }
 
-            reducedStateBuilder.WithPlayerStore(baseState.CurrentPlayer.Id, TokenGroup.FromArray(playerStore));
+            reducedStateBuilder.WithPlayerStore(baseState.ActivePlayer.Id, TokenGroup.FromArray(playerStore));
             reducedStateBuilder.WithTokenSupply(TokenGroup.FromArray(tokenSupply));
 
             int allPlayerTokens = playerStore[0] + playerStore[1] + playerStore[2] + playerStore[3] + playerStore[4] + playerStore[5];
             var currentPlayerId = allPlayerTokens <= 10
-                ? baseState.CurrentPlayer.Id % baseState.Players.Count + 1
-                : baseState.CurrentPlayer.Id;
+                ? baseState.ActivePlayer.Id % baseState.Players.Count + 1
+                : baseState.ActivePlayer.Id;
 
             reducedStateBuilder.WithCurrentPlayer(currentPlayerId);
             return reducedStateBuilder.Build();

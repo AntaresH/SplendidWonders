@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SplendidWonders.Core.Model
 {
-    public class GameState
+    public record class GameState
     {
         public required List<Player> Players { get; set; }
 
@@ -20,7 +20,19 @@ namespace SplendidWonders.Core.Model
 
         public required CardGroup Level3 { get; set; }
 
-        public required Player CurrentPlayer { get; set; }
+        int _activePlayerId = 1;
+
+        public required Player ActivePlayer
+        {
+            get
+            {
+                return Players[_activePlayerId - 1];
+            }
+            set
+            {
+                _activePlayerId = value.Id;
+            }
+        }
 
         public CardGroup this[int level]
         {

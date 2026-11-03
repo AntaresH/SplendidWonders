@@ -39,7 +39,7 @@ namespace SplendidWonders.Core.Setup
                 Level1 = randomizedDecks[0],
                 Level2 = randomizedDecks[1],
                 Level3 = randomizedDecks[2],
-                CurrentPlayer = players[0]
+                ActivePlayer = players[0]
             };
         }
 

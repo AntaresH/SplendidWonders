@@ -13,7 +13,7 @@ namespace SplendidWonders.Gameplay.Explorers
         {
             List<ReserveFromBoardAction> reserveFromBoardActions = new List<ReserveFromBoardAction>();
 
-            if (gameState.CurrentPlayer.ReservedCards.Count < 3)
+            if (gameState.ActivePlayer.ReservedCards.Count < 3)
             {
                 for (int i = 1; i < 4; i++)
                 {

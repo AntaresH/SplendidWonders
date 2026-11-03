@@ -44,7 +44,7 @@ namespace SplendidWonders.Gameplay.Tests.ReducerTests
 
             // Assert
             Assert.IsNotNull(newState);
-            Assert.That(newState.CurrentPlayer.Id, Is.EqualTo(expected.ActivePlayerId));
+            Assert.That(newState.ActivePlayer.Id, Is.EqualTo(expected.ActivePlayerId));
             Assert.That(newState.TokenSupply, Is.EqualTo(expected.TokenSupply));
             Assert.That(newState.Players[input.ActivePlayerId - 1].Store, Is.EqualTo(expected.PlayerStore));
             Assert.That(newState.Players[input.ActivePlayerId - 1].ReservedCards, Is.EquivalentTo(expected.PlayerReservedCards));
@@ -71,7 +71,7 @@ namespace SplendidWonders.Gameplay.Tests.ReducerTests
 
             // Assert
             Assert.IsNotNull(newState);
-            Assert.That(newState.CurrentPlayer.Id, Is.EqualTo(expected.ActivePlayerId));
+            Assert.That(newState.ActivePlayer.Id, Is.EqualTo(expected.ActivePlayerId));
             Assert.That(newState.TokenSupply, Is.EqualTo(expected.TokenSupply));
             Assert.That(newState.Players[input.ActivePlayerId - 1].Store, Is.EqualTo(expected.PlayerStore));
             Assert.That(newState.Players[input.ActivePlayerId - 1].ReservedCards, Is.EquivalentTo(expected.PlayerReservedCards));
@@ -100,8 +100,8 @@ namespace SplendidWonders.Gameplay.Tests.ReducerTests
 
             // Assert
             Assert.IsNotNull(newState);
-            Assert.That(newState.CurrentPlayer.Id, Is.EqualTo(expected.ActivePlayerId));
             Assert.That(newState.TokenSupply, Is.EqualTo(expected.TokenSupply));
+            Assert.That(newState.ActivePlayer.Id, Is.EqualTo(expected.ActivePlayerId));
             Assert.That(newState.Leaders, Is.EquivalentTo(expected.AvailableLeaders));
             Assert.That(newState.Players[input.ActivePlayerId - 1].Store, Is.EqualTo(expected.PlayerStore));
             Assert.That(newState.Players[input.ActivePlayerId - 1].ReservedCards, Is.EquivalentTo(expected.PlayerReservedCards));

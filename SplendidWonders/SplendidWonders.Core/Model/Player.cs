@@ -2,7 +2,7 @@
 
 namespace SplendidWonders.Core.Model
 {
-    public class Player
+    public record class Player
     {
         public int Id { get; set; }
 

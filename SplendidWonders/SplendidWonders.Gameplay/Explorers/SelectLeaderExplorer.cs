@@ -30,7 +30,7 @@ namespace SplendidWonders.Gameplay.Explorers
                     if (requirement.Value == 0)
                         continue;
 
-                    if (gameState.CurrentPlayer.Tableau.Count(card => card.Bonus == requirement.Key) < requirement.Value)
+                    if (gameState.ActivePlayer.Tableau.Count(card => card.Bonus == requirement.Key) < requirement.Value)
                     {
                         hasFailedRequirement = true;
                         break;

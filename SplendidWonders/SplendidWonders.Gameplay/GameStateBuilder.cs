@@ -27,7 +27,7 @@ namespace SplendidWonders.Gameplay
 
         public GameStateBuilder(GameState existingState)
         {
-            _currentPlayer = existingState.CurrentPlayer;
+            _currentPlayer = existingState.ActivePlayer;
             _leaders = existingState.Leaders;
             _level1 = existingState.Level1;
             _level2 = existingState.Level2;
@@ -90,6 +90,13 @@ namespace SplendidWonders.Gameplay
             return this;
         }
 
+        public GameStateBuilder WithPlayerAcquiredLeaders(int playerId, ImmutableList<Leader> acquiredLeaders)
+        {
+            var player = _players.First(p => p.Id == playerId);
+            player.AcquiredLeaders = acquiredLeaders;
+            return this;
+        }
+
         public GameStateBuilder WithPlayerReservedCards(int playerId, ImmutableList<DevelopmentCard> reservedCards)
         {
             var player = _players.First(p => p.Id == playerId);
@@ -114,7 +121,7 @@ namespace SplendidWonders.Gameplay
         {
             return new GameState()
             {
-                CurrentPlayer = _currentPlayer,
+                ActivePlayer = _currentPlayer,
                 Level1 = _level1,
                 Level2 = _level2,
                 Level3 = _level3,

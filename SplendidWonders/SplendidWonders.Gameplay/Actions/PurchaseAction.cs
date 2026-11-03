@@ -2,10 +2,8 @@
 
 namespace SplendidWonders.Gameplay.Actions
 {
-    public class PurchaseAction : GameAction
+    public class PurchaseAction : CardAction
     {
-        public DevelopmentCard Card { get; set; }
-
         public override bool Equals(object? obj)
         {
             if (obj is PurchaseAction other)

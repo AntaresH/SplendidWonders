@@ -31,7 +31,7 @@ internal class GameOrchestrator
 
             while (!_game.IsGameOver)
             {
-                _gameView.DisplayTurnStart(_game.GameState.CurrentPlayer);
+                _gameView.DisplayTurnStart(_game.GameState.ActivePlayer);
                 HandleCommand();
             }
 

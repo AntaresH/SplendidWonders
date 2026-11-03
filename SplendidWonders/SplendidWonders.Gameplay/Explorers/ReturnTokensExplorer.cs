@@ -12,7 +12,7 @@ namespace SplendidWonders.Gameplay.Explorers
         {
             List<ReturnTokensAction> validReturnTokensActions = new List<ReturnTokensAction>();
 
-            var playerStore = gameState.CurrentPlayer.Store;
+            var playerStore = gameState.ActivePlayer.Store;
             var tokenCount = playerStore.Yellow + playerStore.Blue + playerStore.Green + playerStore.Brown + playerStore.Red + playerStore.Polymath;
 
             if (tokenCount > 10)

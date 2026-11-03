@@ -15,4 +15,9 @@ namespace SplendidWonders.Gameplay.Actions
     public abstract class ReserveAction : GameAction
     {
     }
+
+    public abstract class CardAction : GameAction
+    {
+        public DevelopmentCard Card { get; set; }
+    }
 }
