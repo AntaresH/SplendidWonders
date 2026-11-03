@@ -4,7 +4,7 @@ using SplendidWonders.Gameplay.Actions;
 
 namespace SplendidWonders.Gameplay.Reducers
 {
-    public class ReserveActionReducer : IStateReducer<ReserveFromBoardAction>, IStateReducer<ReserveFromDeckAction>
+    public class ReserveActionReducer : ReducerBase, IStateReducer<ReserveFromBoardAction>, IStateReducer<ReserveFromDeckAction>
     {
         public GameState Reduce(GameState baseState, ReserveFromBoardAction action)
         {
