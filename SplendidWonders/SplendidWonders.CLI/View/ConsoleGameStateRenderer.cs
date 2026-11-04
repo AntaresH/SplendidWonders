@@ -124,7 +124,7 @@ namespace SplendidWonders.CLI.View
             Console.WriteLine();
             if (leaderBlocks.Count > 0)
             {
-                WriteLeaderRow(leaderBlocks, canvas);
+                WriteLeaderRow(leaderBlocks, canvas, playerPanels.Count);
                 Console.WriteLine();
             }
 
@@ -208,13 +208,14 @@ namespace SplendidWonders.CLI.View
             Console.WriteLine(line[position..]);
         }
 
-        private static void WriteLeaderRow(List<RenderedBlock> leaders, string[] board)
+        private static void WriteLeaderRow(List<RenderedBlock> leaders, string[] board, int playerPanelCount)
         {
             int boardWidth = 0;
             foreach (string line in board)
                 boardWidth = Math.Max(boardWidth, line.Length);
 
-            int rowWidth = Math.Max(boardWidth, leaders.Count * LeaderBlockWidth);
+            int widthBeforePlayerPanels = boardWidth - playerPanelCount * (PlayerPanelWidth + 3);
+            int rowWidth = Math.Max(widthBeforePlayerPanels, leaders.Count * LeaderBlockWidth);
             int availableSpacing = rowWidth - leaders.Count * LeaderBlockWidth;
             for (int row = 0; row < LeaderBlockHeight; row++)
             {
