@@ -338,6 +338,8 @@ namespace SplendidWonders.CLI.View
                 AppendTableauCount(tableauSummary, tableauSummaryColorRanges, greenCount, DevelopmentBonus.Green, passiveNumberColor);
                 AppendTableauCount(tableauSummary, tableauSummaryColorRanges, brownCount, DevelopmentBonus.Brown, passiveNumberColor);
                 AppendTableauCount(tableauSummary, tableauSummaryColorRanges, redCount, DevelopmentBonus.Red, passiveNumberColor);
+                tableauLines.Add(string.Empty);
+                tableauLineColorRanges.Add(new List<ColorRange>());
                 tableauLines.Add(tableauSummary.ToString());
                 tableauLineColorRanges.Add(tableauSummaryColorRanges);
 
