@@ -25,7 +25,7 @@ namespace SplendidWonders.Gameplay.Explorers
 
                     if (CalculatePurchasability(card.Cost, gameState.ActivePlayer.Store, gameState.ActivePlayer.Tableau))
                     {
-                        purchaseActions.Add(new PurchaseAction() { Card = card });
+                        purchaseActions.Add(new PurchaseFromBoardAction() { Card = card });
                     }
                 }
             }
@@ -34,7 +34,7 @@ namespace SplendidWonders.Gameplay.Explorers
             {
                 if (CalculatePurchasability(card.Cost, gameState.ActivePlayer.Store, gameState.ActivePlayer.Tableau))
                 {
-                    purchaseActions.Add(new PurchaseAction() { Card = card });
+                    purchaseActions.Add(new PurchaseFromReservedAction() { Card = card });
                 }
             }
 

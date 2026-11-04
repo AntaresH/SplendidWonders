@@ -1,6 +1,6 @@
 ﻿namespace SplendidWonders.Gameplay.Actions
 {
-    public class ReserveFromDeckAction : ReserveAction
+    public class ReserveFromDeckAction : GameAction
     {
         public int Level { get; set; }
 

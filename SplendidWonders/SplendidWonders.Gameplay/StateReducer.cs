@@ -38,25 +38,17 @@ namespace SplendidWonders.Gameplay
 
         public GameState Reduce(GameState gameState, GameAction command)
         {
-            switch (command)
+            return command switch
             {
-                case DrawThreeTokensAction a:
-                    return _drawThreeTokensReducer.Reduce(gameState, a);
-                case DrawDoubleTokensAction a:
-                    return _drawDoubleTokensReducer.Reduce(gameState, a);
-                case ReturnTokensAction a:
-                    return _returnTokensReducer.Reduce(gameState, a);
-                case PurchaseAction a:
-                    return _purchaseReducer.Reduce(gameState, a);
-                case ReserveFromBoardAction a:
-                    return _reserveFromBoardReducer.Reduce(gameState, a);
-                case ReserveFromDeckAction a:
-                    return _reserveFromDeckReducer.Reduce(gameState, a);
-                case SelectLeaderAction a:
-                    return _selectLeaderReducer.Reduce(gameState, a);
-                default:
-                    throw new InvalidOperationException("This action is not supported... yet");
-            }
+                DrawThreeTokensAction a => _drawThreeTokensReducer.Reduce(gameState, a),
+                DrawDoubleTokensAction a => _drawDoubleTokensReducer.Reduce(gameState, a),
+                ReturnTokensAction a => _returnTokensReducer.Reduce(gameState, a),
+                PurchaseAction a => _purchaseReducer.Reduce(gameState, a),
+                ReserveFromBoardAction a => _reserveFromBoardReducer.Reduce(gameState, a),
+                ReserveFromDeckAction a => _reserveFromDeckReducer.Reduce(gameState, a),
+                SelectLeaderAction a => _selectLeaderReducer.Reduce(gameState, a),
+                _ => throw new InvalidOperationException("This action is not supported... yet"),
+            };
         }
     }
 }

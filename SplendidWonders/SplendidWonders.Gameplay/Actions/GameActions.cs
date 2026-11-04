@@ -12,10 +12,6 @@ namespace SplendidWonders.Gameplay.Actions
         public TokenGroup Tokens { get; set; }
     }
 
-    public abstract class ReserveAction : GameAction
-    {
-    }
-
     public abstract class CardAction : GameAction
     {
         public DevelopmentCard Card { get; set; }
