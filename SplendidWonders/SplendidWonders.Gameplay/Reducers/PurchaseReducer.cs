@@ -11,7 +11,7 @@ namespace SplendidWonders.Gameplay.Reducers
         {
             return baseState
                 .Transform(action, ResolvePurchase)
-                .Transform(action, ResolveMarket)
+                .Transform(action, ResolveReplacement)
                 .Transform(ResolveLeaders)
                 .Transform(ResolveActivePlayer);
         }

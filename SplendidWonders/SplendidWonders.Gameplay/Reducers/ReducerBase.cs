@@ -9,7 +9,7 @@ namespace SplendidWonders.Gameplay.Reducers
 {
     public class ReducerBase
     {
-        protected GameState ResolveMarket(GameState baseState, CardAction action)
+        protected GameState ResolveReplacement(GameState baseState, CardAction action)
         {
             int level = action.Card.Level;
 

@@ -8,96 +8,53 @@ namespace SplendidWonders.Gameplay.Reducers
     {
         public GameState Reduce(GameState baseState, ReserveFromBoardAction action)
         {
-            var currentPlayerId = baseState.ActivePlayer.Id;
-            var reducedStateBuilder = new GameStateBuilder(baseState);
-
-            SetPlayerReservedCards(baseState, action.Card, currentPlayerId, reducedStateBuilder);
-            SetPolymaths(baseState, currentPlayerId, reducedStateBuilder);
-            SetReplacementCard(baseState, action.Card, reducedStateBuilder);
-            SetActivePlayer(baseState, reducedStateBuilder);
-
-            return reducedStateBuilder.Build();
+            return baseState
+                .Transform(action, ResolveBoardReserve)
+                .Transform(action, ResolveReplacement)
+                .Transform(ResolveActivePlayer);
         }
 
         public GameState Reduce(GameState baseState, ReserveFromDeckAction action)
         {
-            var currentPlayerId = baseState.ActivePlayer.Id;
-            var reducedStateBuilder = new GameStateBuilder(baseState);
-
-            SetPlayerReservedCards(baseState, baseState[action.Level].Deck[0], currentPlayerId, reducedStateBuilder);
-            SetPolymaths(baseState, currentPlayerId, reducedStateBuilder);
-            SetShorterDeck(baseState, action.Level, reducedStateBuilder);
-            SetActivePlayer(baseState, reducedStateBuilder);
-
-            return reducedStateBuilder.Build();
+            return baseState
+                .Transform(action, ResolveDeckReserve)
+                .Transform(action, ResolveDeckDraw)
+                .Transform(ResolveActivePlayer);
         }
 
-        private void SetShorterDeck(GameState baseState, int level, GameStateBuilder reducedStateBuilder)
+        private GameState ResolveDeckDraw(GameState baseState, ReserveFromDeckAction action)
         {
-            reducedStateBuilder.WithLevel(
-                level, 
-                new CardGroup() { 
-                    Market = baseState[level].Market, 
-                    Deck = baseState[level].Deck.RemoveAt(0) 
-                });
+            return baseState.UpdateLevel(action.Level, new CardGroup() { Deck = baseState[action.Level].Deck.RemoveAt(0), Market = baseState[action.Level].Market });
         }
 
-        private static void SetPlayerReservedCards(GameState baseState, DevelopmentCard card, int currentPlayerId, GameStateBuilder reducedStateBuilder)
+        private GameState ResolveBoardReserve(GameState baseState, ReserveFromBoardAction action)
         {
+            return ResolveCardReserve(baseState, action.Card);
+        }
+
+        private GameState ResolveDeckReserve(GameState baseState, ReserveFromDeckAction action)
+        {
+            var card = baseState[action.Level].Deck.First();
+
+            return ResolveCardReserve(baseState, card);
+        }
+
+        private static GameState ResolveCardReserve(GameState baseState, DevelopmentCard card)
+        {
+            var playerStore = baseState.ActivePlayer.Store;
+            var tokenSupply = baseState.TokenSupply;
+
+            if (tokenSupply.Polymath > 0)
+            {
+                playerStore.Polymath++;
+                tokenSupply.Polymath--;
+            }
+
             var playerReserved = baseState.ActivePlayer.ReservedCards;
             playerReserved = playerReserved.Add(card);
 
-            reducedStateBuilder.WithPlayerReservedCards(currentPlayerId, playerReserved);
-        }
-
-        private static void SetPolymaths(GameState baseState, int currentPlayerId, GameStateBuilder reducedStateBuilder)
-        {
-            if (baseState.TokenSupply.Polymath > 0)
-            {
-                var playerStore = baseState.ActivePlayer.Store;
-                var tokenSupply = baseState.TokenSupply;
-
-                playerStore.Polymath++;
-                tokenSupply.Polymath--;
-
-                reducedStateBuilder.WithPlayerStore(currentPlayerId, playerStore);
-                reducedStateBuilder.WithTokenSupply(tokenSupply);
-            }
-        }
-
-        private void SetActivePlayer(GameState baseState, GameStateBuilder reducedStateBuilder)
-        {
-            var playerStore = baseState.ActivePlayer.Store;
-
-            int allPlayerTokens = playerStore.Yellow + playerStore.Blue + playerStore.Green + playerStore.Brown + playerStore.Red + playerStore.Polymath;
-            int currentPlayerId = allPlayerTokens <= 10
-                ? baseState.ActivePlayer.Id % baseState.Players.Count + 1
-                : baseState.ActivePlayer.Id;
-
-            reducedStateBuilder.WithCurrentPlayer(currentPlayerId);
-        }
-
-        private static void SetReplacementCard(GameState baseState, DevelopmentCard card, GameStateBuilder reducedStateBuilder)
-        {
-            int level = card.Level;
-
-            var cardGroup = baseState[level];
-            int index = cardGroup.Market.IndexOf(card);
-
-            var newMarket = cardGroup.Market.RemoveAt(index);
-            var newDeck = cardGroup.Deck;
-
-            if (cardGroup.Deck.Any())
-            {
-                newMarket = newMarket.Insert(index, cardGroup.Deck[0]);
-                newDeck = newDeck.RemoveAt(0);
-            }
-            else
-            {
-                newMarket = newMarket.Insert(index, Cards.Empty);
-            }
-
-            reducedStateBuilder.WithLevel(level, new CardGroup() { Deck = newDeck, Market = newMarket });
+            return baseState.UpdatePlayerData(baseState.ActivePlayer.Id, playerStore, playerReserved, baseState.ActivePlayer.Tableau, baseState.ActivePlayer.AcquiredLeaders)
+                            .UpdateTokenSupply(tokenSupply);
         }
     }
 }
