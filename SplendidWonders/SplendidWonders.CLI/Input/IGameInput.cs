@@ -8,6 +8,6 @@ namespace SplendidWonders.CLI.Input
 {
     public interface IGameInput
     {
-        GameAction ReadCommand(GameState gameState, IEnumerable<GameAction> validActions);
+        GameCommand ReadCommand(GameState gameState, IEnumerable<GameAction> validActions);
     }
 }

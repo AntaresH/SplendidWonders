@@ -58,14 +58,14 @@ internal class GameOrchestrator
 
             var command = _commandHandler.ReadCommand(_game.GameState, _game.ValidActions);
 
-            if (_game.ValidateCommand(command))
+            if (_game.ValidateCommand(command.Action))
             {
-                _game.ExecuteCommand(command);
+                _game.ExecuteCommand(command.Action);
                 return;
             }
             else
             {
-                invalidCommandMsg = string.Format(Strings.InvalidCommandTypeStateFormat, command.GetType().Name);
+                invalidCommandMsg = string.Format(Strings.InvalidCommandTypeStateFormat, command.CommandText);
             }
         }
     }

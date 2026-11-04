@@ -14,12 +14,14 @@ namespace SplendidWonders.CLI.Input
     {
         private IGameView _gameView;
 
+        private static string _lastArguments;
+
         public ConsoleGameInput(IGameView gameView)
         {
             _gameView = gameView;
         }
 
-        public GameAction ReadCommand(GameState gameState, IEnumerable<GameAction> validActions)
+        public GameCommand ReadCommand(GameState gameState, IEnumerable<GameAction> validActions)
         {
             while (true)
             {
@@ -60,40 +62,41 @@ namespace SplendidWonders.CLI.Input
             return userInput;
         }
 
-        private GameAction CreateCommandFromUserInput(string userInput, GameState gameState)
+        private GameCommand CreateCommandFromUserInput(string userInput, GameState gameState)
         {
             var commandKey = GenericUtils.CommandShortHandMap.FirstOrDefault(x => x.Value == userInput.ToUpper()).Key;
 
-            switch (commandKey)
+            return new GameCommand
             {
-                case nameof(DrawThreeTokensAction):
-                    return ResolveThreeTokens(new DrawThreeTokensAction());
-                case nameof(DrawDoubleTokensAction):
-                    return ResolveDoubleTokens(new DrawDoubleTokensAction());
-                case nameof(ReserveFromBoardAction):
-                    return ResolveReserveFromBoard(new ReserveFromBoardAction(), gameState);
-                case nameof(ReserveFromDeckAction):
-                    return ResolveReserveFromDeck(new ReserveFromDeckAction());
-                case nameof(PurchaseFromBoardAction):
-                    return ResolvePurchaseFromBoard(new PurchaseFromBoardAction(), gameState);
-                case nameof(PurchaseFromReservedAction):
-                    return ResolvePurchaseFromReserved(new PurchaseFromReservedAction(), gameState);
-                case nameof(ReturnTokensAction):
-                    return ResolveReturnTokens(new ReturnTokensAction(), gameState);
-                case nameof(SelectLeaderAction):
-                    return ResolveSelectLeader(new SelectLeaderAction(), gameState);
-            }
-
-            throw new InvalidOperationException();
+                Action = CreateAction(commandKey, gameState),
+                CommandText = userInput + " " + _lastArguments,
+            };
         }
 
-        private GameAction ResolvePurchaseFromBoard(PurchaseAction action, GameState gameState)
+        private GameAction CreateAction(string commandKey, GameState gameState)
+        {
+            return commandKey switch
+            {
+                nameof(DrawThreeTokensAction) => CreateThreeTokens(new DrawThreeTokensAction()),
+                nameof(DrawDoubleTokensAction) => CreateDoubleTokens(new DrawDoubleTokensAction()),
+                nameof(ReserveFromBoardAction) => CreateReserveFromBoard(new ReserveFromBoardAction(), gameState),
+                nameof(ReserveFromDeckAction) => CreateReserveFromDeck(new ReserveFromDeckAction()),
+                nameof(PurchaseFromBoardAction) => CreatePurchaseFromBoard(new PurchaseFromBoardAction(), gameState),
+                nameof(PurchaseFromReservedAction) => CreatePurchaseFromReserved(new PurchaseFromReservedAction(), gameState),
+                nameof(ReturnTokensAction) => CreateReturnTokens(new ReturnTokensAction(), gameState),
+                nameof(SelectLeaderAction) => CreateSelectLeader(new SelectLeaderAction(), gameState),
+                _ => throw new InvalidOperationException(),
+            };
+        }
+
+        private GameAction CreatePurchaseFromBoard(PurchaseAction action, GameState gameState)
         {
             while (true)
             {
                 _gameView.DisplayPurchaseFromBoardArgumentRequest();
 
                 string userInput = ReadAndApplyDefaultHandling();
+                _lastArguments = userInput;
 
                 Match match = Regex.Match(userInput, @"^([1-3]),([1-4])$");
 
@@ -111,13 +114,14 @@ namespace SplendidWonders.CLI.Input
             }
         }
 
-        private GameAction ResolvePurchaseFromReserved(PurchaseFromReservedAction action, GameState gameState)
+        private GameAction CreatePurchaseFromReserved(PurchaseFromReservedAction action, GameState gameState)
         {
             while (true)
             {
                 _gameView.DisplayPurchaseFromReservedArgumentRequest(gameState.ActivePlayer.ReservedCards);
 
                 string userInput = ReadAndApplyDefaultHandling();
+                _lastArguments = userInput;
 
                 Match match = Regex.Match(userInput, @"^#?([\d]){1,2}$");
 
@@ -135,13 +139,14 @@ namespace SplendidWonders.CLI.Input
             }
         }
 
-        private GameAction ResolveReserveFromDeck(ReserveFromDeckAction action)
+        private GameAction CreateReserveFromDeck(ReserveFromDeckAction action)
         {
             while (true)
             {
                 _gameView.DisplayReserveFromDeckArgumentRequest();
 
                 string userInput = ReadAndApplyDefaultHandling();
+                _lastArguments = userInput;
 
                 Match match = Regex.Match(userInput, @"^([1-3])$");
 
@@ -155,13 +160,14 @@ namespace SplendidWonders.CLI.Input
             }
         }
 
-        private GameAction ResolveReserveFromBoard(ReserveFromBoardAction action, GameState gameState)
+        private GameAction CreateReserveFromBoard(ReserveFromBoardAction action, GameState gameState)
         {
             while (true)
             {
                 _gameView.DisplayPurchaseFromBoardArgumentRequest();
 
                 string userInput = ReadAndApplyDefaultHandling();
+                _lastArguments = userInput;
 
                 Match match = Regex.Match(userInput, @"^([1-3]),([1-4])$");
 
@@ -179,13 +185,14 @@ namespace SplendidWonders.CLI.Input
             }
         }
 
-        private GameAction ResolveDoubleTokens(DrawDoubleTokensAction action)
+        private GameAction CreateDoubleTokens(DrawDoubleTokensAction action)
         {
             while (true)
             {
                 _gameView.DisplayDoubleTokensArgumentRequest();
 
                 string userInput = ReadAndApplyDefaultHandling();
+                _lastArguments = userInput;
 
                 Match match = Regex.Match(userInput, @"^[SsKkZzBbPp]{1}$");
 
@@ -205,13 +212,14 @@ namespace SplendidWonders.CLI.Input
             }
         }
 
-        private GameAction ResolveThreeTokens(DrawThreeTokensAction action)
+        private GameAction CreateThreeTokens(DrawThreeTokensAction action)
         {
             while (true)
             {
                 _gameView.DisplayThreeTokensArgumentRequest();
 
                 string userInput = ReadAndApplyDefaultHandling();
+                _lastArguments = userInput;
 
                 Match match = Regex.Match(userInput, @"^[SKZBPskzbp]+( [SKZBPskzbp])*( [SKZBPskzbp])*$");
 
@@ -231,13 +239,14 @@ namespace SplendidWonders.CLI.Input
             }
         }
 
-        private GameAction ResolveReturnTokens(ReturnTokensAction action, GameState gameState)
+        private GameAction CreateReturnTokens(ReturnTokensAction action, GameState gameState)
         {
             while (true)
             {
                 _gameView.DisplayReturnTokensArgumentRequest();
 
                 string userInput = ReadAndApplyDefaultHandling();
+                _lastArguments = userInput;
 
                 Match match = Regex.Match(userInput, @"^[SKZBPskzbp]+( [SKZBPskzbp])*( [SKZBPskzbp])*$");
 
@@ -257,7 +266,7 @@ namespace SplendidWonders.CLI.Input
             }
         }
 
-        private GameAction ResolveSelectLeader(SelectLeaderAction selectLeaderAction, GameState gameState)
+        private GameAction CreateSelectLeader(SelectLeaderAction selectLeaderAction, GameState gameState)
         {
             throw new NotImplementedException();
         }

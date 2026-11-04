@@ -1,9 +1,11 @@
 ﻿using SplendidWonders.Common;
 using SplendidWonders.Core.Model;
+using SplendidWonders.Core.Setup;
 using SplendidWonders.Gameplay.Actions;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Net.WebSockets;
 
 namespace SplendidWonders.CLI.View
 {
@@ -34,7 +36,8 @@ namespace SplendidWonders.CLI.View
             if (!string.IsNullOrEmpty(previousInvalidCommand))
             {
                 Console.WriteLine();
-                Console.WriteLine(previousInvalidCommand);
+                PrintColoredLine(previousInvalidCommand, ConsoleColor.Red);
+                Console.WriteLine();
                 Console.WriteLine();
             }
 
@@ -113,35 +116,51 @@ namespace SplendidWonders.CLI.View
         public void DisplayPurchaseFromReservedArgumentRequest(ImmutableList<DevelopmentCard> reservedCards)
         {
             Console.WriteLine(Strings.SelectCardToBuyFromReserved);
+
             foreach (var card in reservedCards)
             {
-                Console.Write($"{card.Id} \u001b[38;2;{ConvertRgbColorIntoText(card.Bonus)}m{card.Name}\u001b[0m Költségek: ");
+                List<string> colorCostTexts = new List<string>();
 
                 if (card.Cost.Yellow > 0)
                 {
-                    Console.Write($"\u001b[38;2;{ConvertRgbColorIntoText(DevelopmentBonus.Yellow)}m{card.Cost.Yellow}\u001b[0m ");
+                    colorCostTexts.Add(GetRgbColoredConsoleText(card.Cost.Yellow.ToString(), DevelopmentBonus.Yellow));
                 }
 
                 if (card.Cost.Blue > 0)
                 {
-                    Console.Write($"\u001b[38;2;{ConvertRgbColorIntoText(DevelopmentBonus.Blue)}m{card.Cost.Blue}\u001b[0m ");
+                    colorCostTexts.Add(GetRgbColoredConsoleText(card.Cost.Blue.ToString(), DevelopmentBonus.Blue));
                 }
 
                 if (card.Cost.Green > 0)
                 {
-                    Console.Write($"\u001b[38;2;{ConvertRgbColorIntoText(DevelopmentBonus.Green)}m{card.Cost.Green}\u001b[0m ");
+                    colorCostTexts.Add(GetRgbColoredConsoleText(card.Cost.Green.ToString(), DevelopmentBonus.Green));
                 }
 
                 if (card.Cost.Brown > 0)
                 {
-                    Console.Write($"\u001b[38;2;{ConvertRgbColorIntoText(DevelopmentBonus.Brown)}m{card.Cost.Brown}\u001b[0m ");
+                    colorCostTexts.Add(GetRgbColoredConsoleText(card.Cost.Brown.ToString(), DevelopmentBonus.Brown));
                 }
 
                 if (card.Cost.Red > 0)
                 {
-                    Console.Write($"\u001b[38;2;{ConvertRgbColorIntoText(DevelopmentBonus.Red)}m{card.Cost.Red}\u001b[0m ");
+                    colorCostTexts.Add(GetRgbColoredConsoleText(card.Cost.Red.ToString(), DevelopmentBonus.Red));
                 }
+
+                Console.WriteLine($"{card.Id} {GetRgbColoredConsoleText(card.Name, card.Bonus)} Költségek: {string.Join(" ", colorCostTexts)}");
             }
+        }
+
+        private static void PrintColoredLine(string text, ConsoleColor color)
+        {
+            var previousColor = Console.ForegroundColor;
+            Console.ForegroundColor = color;
+            Console.WriteLine(text);
+            Console.ForegroundColor = previousColor;
+        }
+
+        private static string GetRgbColoredConsoleText(string text, DevelopmentBonus trueColorRgbFormat)
+        {
+            return $"\u001b[38;2;{ConvertRgbColorIntoText(trueColorRgbFormat)}m{text}\u001b[0m";
         }
 
         private static string ConvertRgbColorIntoText(DevelopmentBonus bonus)
