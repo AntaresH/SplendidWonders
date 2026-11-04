@@ -1,4 +1,5 @@
-﻿using SplendidWonders.Core.Model;
+﻿using SplendidWonders.CLI.Input;
+using SplendidWonders.Core.Model;
 using SplendidWonders.Gameplay.Actions;
 using System;
 using System.Collections.Generic;
@@ -23,5 +24,6 @@ namespace SplendidWonders.CLI.View
         void DisplayInvalidCommand(GameAction command);
         void DisplayGameTitle();
         void DisplayReturnTokensArgumentRequest();
+        void DisplayPresentationCommand(ApplicationCommand command, GameState gameState);
     }
 }

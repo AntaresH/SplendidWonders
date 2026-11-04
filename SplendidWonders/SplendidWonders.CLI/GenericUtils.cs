@@ -1,4 +1,5 @@
-﻿using SplendidWonders.Gameplay.Actions;
+﻿using SplendidWonders.CLI.Input;
+using SplendidWonders.Gameplay.Actions;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -16,7 +17,8 @@ namespace SplendidWonders.CLI
             { nameof(PurchaseFromBoardAction), "KJ" },
             { nameof(PurchaseFromReservedAction), "KK" },
             { nameof(ReturnTokensAction), "LV" },
-            { nameof(SelectLeaderAction), "VV" }
+            { nameof(SelectLeaderAction), "VV" },
+            { nameof(DisplayReservedCardsCommand), "FL" }
         };
     }
 }

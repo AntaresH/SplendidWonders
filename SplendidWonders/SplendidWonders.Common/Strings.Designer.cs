@@ -1213,6 +1213,15 @@ namespace SplendidWonders.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Foglalt kártyák listázása.
+        /// </summary>
+        public static string ListReservedCardsPresentationCommandDescription {
+            get {
+                return ResourceManager.GetString("ListReservedCardsPresentationCommandDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A név nem lehet üres. Kérlek add meg újra a játékos nevét:.
         /// </summary>
         public static string NameCannotBeEmpty {

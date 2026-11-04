@@ -1,4 +1,5 @@
-﻿using SplendidWonders.Common;
+﻿using SplendidWonders.CLI.Input;
+using SplendidWonders.Common;
 using SplendidWonders.Core.Model;
 using SplendidWonders.Core.Setup;
 using SplendidWonders.Gameplay.Actions;
@@ -40,8 +41,7 @@ namespace SplendidWonders.CLI.View
                 Console.WriteLine();
                 Console.WriteLine();
             }
-
-            _gameActionsRenderer.Render(validActions);
+            _gameActionsRenderer.Render(gameState, validActions);
         }
 
         public void DisplayValidActions(IEnumerable<GameAction> validActions)
@@ -117,40 +117,51 @@ namespace SplendidWonders.CLI.View
         {
             Console.WriteLine(Strings.SelectCardToBuyFromReserved);
 
+            DisplayReservedCards(reservedCards);
+        }
+
+        private void DisplayReservedCards(ImmutableList<DevelopmentCard> reservedCards)
+        {
             foreach (var card in reservedCards)
             {
-                List<string> colorCostTexts = new List<string>();
-
-                if (card.Cost.Yellow > 0)
-                {
-                    colorCostTexts.Add(GetRgbColoredConsoleText(card.Cost.Yellow.ToString(), DevelopmentBonus.Yellow));
-                }
-
-                if (card.Cost.Blue > 0)
-                {
-                    colorCostTexts.Add(GetRgbColoredConsoleText(card.Cost.Blue.ToString(), DevelopmentBonus.Blue));
-                }
-
-                if (card.Cost.Green > 0)
-                {
-                    colorCostTexts.Add(GetRgbColoredConsoleText(card.Cost.Green.ToString(), DevelopmentBonus.Green));
-                }
-
-                if (card.Cost.Brown > 0)
-                {
-                    colorCostTexts.Add(GetRgbColoredConsoleText(card.Cost.Brown.ToString(), DevelopmentBonus.Brown));
-                }
-
-                if (card.Cost.Red > 0)
-                {
-                    colorCostTexts.Add(GetRgbColoredConsoleText(card.Cost.Red.ToString(), DevelopmentBonus.Red));
-                }
-
-                Console.WriteLine($"{card.Id} {GetRgbColoredConsoleText(card.Name, card.Bonus)} Költségek: {string.Join(" ", colorCostTexts)}");
+                PrintCard(card);
             }
         }
 
-        private static void PrintColoredLine(string text, ConsoleColor color)
+        public static void PrintCard(DevelopmentCard card)
+        {
+            List<string> colorCostTexts = new List<string>();
+
+            if (card.Cost.Yellow > 0)
+            {
+                colorCostTexts.Add(GetRgbColoredConsoleText(card.Cost.Yellow.ToString(), DevelopmentBonus.Yellow));
+            }
+
+            if (card.Cost.Blue > 0)
+            {
+                colorCostTexts.Add(GetRgbColoredConsoleText(card.Cost.Blue.ToString(), DevelopmentBonus.Blue));
+            }
+
+            if (card.Cost.Green > 0)
+            {
+                colorCostTexts.Add(GetRgbColoredConsoleText(card.Cost.Green.ToString(), DevelopmentBonus.Green));
+            }
+
+            if (card.Cost.Brown > 0)
+            {
+                colorCostTexts.Add(GetRgbColoredConsoleText(card.Cost.Brown.ToString(), DevelopmentBonus.Brown));
+            }
+
+            if (card.Cost.Red > 0)
+            {
+                colorCostTexts.Add(GetRgbColoredConsoleText(card.Cost.Red.ToString(), DevelopmentBonus.Red));
+            }
+
+            string vpDisplay = card.VictoryPoints > 0 ? $"{{{card.VictoryPoints}}}" : string.Empty;
+            Console.WriteLine($"{card.Id} {GetRgbColoredConsoleText(card.Name, card.Bonus)} {vpDisplay} Költségek: {string.Join(" ", colorCostTexts)}");
+        }
+
+        public static void PrintColoredLine(string text, ConsoleColor color)
         {
             var previousColor = Console.ForegroundColor;
             Console.ForegroundColor = color;
@@ -158,12 +169,12 @@ namespace SplendidWonders.CLI.View
             Console.ForegroundColor = previousColor;
         }
 
-        private static string GetRgbColoredConsoleText(string text, DevelopmentBonus trueColorRgbFormat)
+        public static string GetRgbColoredConsoleText(string text, DevelopmentBonus trueColorRgbFormat)
         {
             return $"\u001b[38;2;{ConvertRgbColorIntoText(trueColorRgbFormat)}m{text}\u001b[0m";
         }
 
-        private static string ConvertRgbColorIntoText(DevelopmentBonus bonus)
+        public static string ConvertRgbColorIntoText(DevelopmentBonus bonus)
         {
             return bonus switch
             {
@@ -174,6 +185,15 @@ namespace SplendidWonders.CLI.View
                 DevelopmentBonus.Red => "255;80;80",
                 _ => "192;192;192"
             };
+        }
+
+        public void DisplayPresentationCommand(ApplicationCommand command, GameState gameState)
+        {
+            if (command is DisplayReservedCardsCommand)
+            {
+                DisplayReservedCards(gameState.ActivePlayer.ReservedCards);
+                Console.ReadLine();
+            }
         }
     }
 }

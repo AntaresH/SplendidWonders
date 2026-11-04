@@ -6,9 +6,13 @@ namespace SplendidWonders.CLI.View
 {
     internal class ConsoleGameActionsRenderer
     {
-        internal void Render(IEnumerable<GameAction> validActions)
+        internal void Render(GameState gameState, IEnumerable<GameAction> validActions)
         {
+
             Console.WriteLine(Strings.ValidCommands);
+
+            if (gameState.ActivePlayer.ReservedCards.Any())
+                ConsoleGameView.PrintColoredLine(string.Format("FL - {0}", Strings.ListReservedCardsPresentationCommandDescription), ConsoleColor.Yellow);
 
             if (validActions.OfType<DrawThreeTokensAction>().Any())
                 Console.WriteLine(string.Format("{0} - {1}", GenericUtils.CommandShortHandMap[nameof(DrawThreeTokensAction)], Strings.DrawThreeTokensActionDescription));

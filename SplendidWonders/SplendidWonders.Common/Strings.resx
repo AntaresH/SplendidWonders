@@ -573,4 +573,7 @@
   <data name="SelectCardToBuyFromReserved" xml:space="preserve">
     <value>Kérlek válaszd ki a kártyát, amit meg szeretnél vásárolni. Add meg a kártya számát az alábbi listából:</value>
   </data>
+  <data name="ListReservedCardsPresentationCommandDescription" xml:space="preserve">
+    <value>Foglalt kártyák listázása</value>
+  </data>
 </root>

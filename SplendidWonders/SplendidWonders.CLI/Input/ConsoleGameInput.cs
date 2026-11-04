@@ -21,7 +21,7 @@ namespace SplendidWonders.CLI.Input
             _gameView = gameView;
         }
 
-        public GameCommand ReadCommand(GameState gameState, IEnumerable<GameAction> validActions)
+        public ApplicationCommand ReadCommand(GameState gameState, IEnumerable<GameAction> validActions)
         {
             while (true)
             {
@@ -32,9 +32,19 @@ namespace SplendidWonders.CLI.Input
                     if (!GenericUtils.CommandShortHandMap.ContainsValue(userInput.ToUpper()))
                         continue;
 
+                    var commandKey = GenericUtils.CommandShortHandMap.FirstOrDefault(x => x.Value == userInput.ToUpper()).Key;
+
+                    if (commandKey == nameof(DisplayReservedCardsCommand))
+                    {
+                        return new DisplayReservedCardsCommand
+                        {
+                            CommandText = userInput,
+                        };
+                    }
+
                     if (validActions.Any(a => GenericUtils.CommandShortHandMap[a.GetType().Name] == userInput.ToUpper()))
                     {
-                        return CreateCommandFromUserInput(userInput, gameState);
+                        return CreateGameCommandFromUserInput(userInput, gameState);
                     }
                 }
                 catch (UserCancelException)
@@ -62,7 +72,7 @@ namespace SplendidWonders.CLI.Input
             return userInput;
         }
 
-        private GameCommand CreateCommandFromUserInput(string userInput, GameState gameState)
+        private ApplicationCommand CreateGameCommandFromUserInput(string userInput, GameState gameState)
         {
             var commandKey = GenericUtils.CommandShortHandMap.FirstOrDefault(x => x.Value == userInput.ToUpper()).Key;
 
