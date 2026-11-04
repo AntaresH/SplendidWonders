@@ -1258,7 +1258,7 @@ namespace SplendidWonders.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Kijátszott kártyák.
+        ///   Looks up a localized string similar to Fejlődés bónuszok.
         /// </summary>
         public static string PlayerTableauTitle {
             get {

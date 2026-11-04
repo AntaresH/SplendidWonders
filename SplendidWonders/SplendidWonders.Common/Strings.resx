@@ -505,7 +505,7 @@
     <value>Saját készlet</value>
   </data>
   <data name="PlayerTableauTitle" xml:space="preserve">
-    <value>Kijátszott kártyák</value>
+    <value>Fejlődés bónuszok</value>
   </data>
   <data name="PlayerTitleFormat" xml:space="preserve">
     <value>Játékos {0}</value>

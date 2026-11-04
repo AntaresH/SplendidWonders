@@ -145,14 +145,19 @@ namespace SplendidWonders.CLI.View
 
         private static void AppendTableauCount(StringBuilder text, List<ColorRange> colorRanges, int count, DevelopmentBonus bonus, RgbColor numberColor)
         {
+            const int blockWidth = 3;
             if (text.Length > 0)
+            {
+                colorRanges.Add(new ColorRange(text.Length, 1, null, new RgbColor(0, 0, 0)));
                 text.Append(' ');
+            }
 
-            int numberStart = text.Length;
             string number = count.ToString();
-            var backgroundColor = GetRgbColor(bonus);
-            colorRanges.Add(new ColorRange(numberStart, number.Length, numberColor, backgroundColor));
-            text.Append(number);
+            int leftPadding = (blockWidth - number.Length) / 2;
+            int blockStart = text.Length;
+            var backgroundColor = GetTableauCountBackgroundColor(bonus);
+            colorRanges.Add(new ColorRange(blockStart, blockWidth, numberColor, backgroundColor));
+            text.Append(' ', leftPadding).Append(number).Append(' ', blockWidth - leftPadding - number.Length);
         }
 
         private static void AppendBonusNumbers(StringBuilder text, List<ColorRange> colorRanges, TokenGroup bonuses)
@@ -332,7 +337,7 @@ namespace SplendidWonders.CLI.View
                 var tableauSummaryColorRanges = new List<ColorRange>();
                 var passiveNumberColor = ReferenceEquals(player, gameState.ActivePlayer)
                     ? new RgbColor(255, 255, 255)
-                    : new RgbColor(160, 160, 160);
+                    : new RgbColor(220, 220, 220);
                 AppendTableauCount(tableauSummary, tableauSummaryColorRanges, yellowCount, DevelopmentBonus.Yellow, passiveNumberColor);
                 AppendTableauCount(tableauSummary, tableauSummaryColorRanges, blueCount, DevelopmentBonus.Blue, passiveNumberColor);
                 AppendTableauCount(tableauSummary, tableauSummaryColorRanges, greenCount, DevelopmentBonus.Green, passiveNumberColor);
@@ -658,6 +663,19 @@ namespace SplendidWonders.CLI.View
                 DevelopmentBonus.Brown => new RgbColor(145, 92, 42),
                 DevelopmentBonus.Red => new RgbColor(255, 80, 80),
                 _ => new RgbColor(192, 192, 192)
+            };
+        }
+
+        private static RgbColor GetTableauCountBackgroundColor(DevelopmentBonus bonus)
+        {
+            return bonus switch
+            {
+                DevelopmentBonus.Yellow => new RgbColor(168, 146, 0),
+                DevelopmentBonus.Blue => new RgbColor(60, 120, 205),
+                DevelopmentBonus.Green => new RgbColor(0, 165, 50),
+                DevelopmentBonus.Brown => new RgbColor(110, 75, 35),
+                DevelopmentBonus.Red => new RgbColor(200, 50, 50),
+                _ => new RgbColor(96, 96, 96)
             };
         }
 
