@@ -21,7 +21,6 @@ namespace SplendidWonders.CLI.View
         private const int PlayerPanelWidth = 36;
         private const int PlayerPanelContentWidth = PlayerPanelWidth - 4;
         private const int PlayerPanelSideWidth = 2;
-        private const int PlayerTableauMinimumPanelHeight = DeckBlockHeight * 3;
 
         public void Render(GameState gameState)
         {
@@ -110,20 +109,15 @@ namespace SplendidWonders.CLI.View
                     string panelLine = row < playerPanel.Lines.Count
                         ? playerPanel.Lines[row]
                         : new string(' ', PlayerPanelWidth);
-                    if (playerPanel.TableauColorRanges.TryGetValue(row, out var tableauColorRanges))
-                    {
-                        AppendCanvas(canvas, colorRanges, row, "   " + panelLine[..PlayerPanelSideWidth]);
-                        AppendCanvas(canvas, colorRanges, row, panelLine.Substring(PlayerPanelSideWidth, PlayerPanelContentWidth), relativeRanges: tableauColorRanges);
-                        AppendCanvas(canvas, colorRanges, row, panelLine[(PlayerPanelSideWidth + PlayerPanelContentWidth)..]);
-                    }
-                    else
-                    {
-                        IReadOnlyList<ColorRange> panelColorRanges = row == playerPanel.StorageLine
-                            ? playerPanel.StorageColorRanges
-                            : null;
-                        AppendCanvas(canvas, colorRanges, row, "   " + panelLine,
-                            relativeRanges: panelColorRanges);
-                    }
+                    var panelColorRanges = new List<ColorRange>();
+                    if (row == playerPanel.StorageLine)
+                        panelColorRanges.AddRange(playerPanel.StorageColorRanges);
+                    if (playerPanel.TableauColorRanges.TryGetValue(row, out var additionalRanges))
+                        panelColorRanges.AddRange(additionalRanges);
+                    var canvasColorRanges = new List<ColorRange>(panelColorRanges.Count);
+                    foreach (var range in panelColorRanges)
+                        canvasColorRanges.Add(range with { Start = range.Start + 3 });
+                    AppendCanvas(canvas, colorRanges, row, "   " + panelLine, relativeRanges: canvasColorRanges);
                 }
             }
 
@@ -149,6 +143,18 @@ namespace SplendidWonders.CLI.View
             text.Append(number);
         }
 
+        private static void AppendTableauCount(StringBuilder text, List<ColorRange> colorRanges, int count, DevelopmentBonus bonus, RgbColor numberColor)
+        {
+            if (text.Length > 0)
+                text.Append(' ');
+
+            int numberStart = text.Length;
+            string number = count.ToString();
+            var backgroundColor = GetRgbColor(bonus);
+            colorRanges.Add(new ColorRange(numberStart, number.Length, numberColor, backgroundColor));
+            text.Append(number);
+        }
+
         private static void AppendBonusNumbers(StringBuilder text, List<ColorRange> colorRanges, TokenGroup bonuses)
         {
             if (bonuses.Yellow > 0) AppendColoredNumber(text, colorRanges, bonuses.Yellow, GetRgbColor(DevelopmentBonus.Yellow));
@@ -170,7 +176,7 @@ namespace SplendidWonders.CLI.View
             else if (relativeRanges is not null)
             {
                 foreach (var range in relativeRanges)
-                    colorRanges[row].Add(new ColorRange(start + range.Start, range.Length, range.Color));
+                    colorRanges[row].Add(range with { Start = start + range.Start });
             }
         }
 
@@ -181,7 +187,16 @@ namespace SplendidWonders.CLI.View
             foreach (var range in ranges)
             {
                 Console.Write(line[position..range.Start]);
-                Console.Write($"\x1b[38;2;{range.Color.Red};{range.Color.Green};{range.Color.Blue}m{line.Substring(range.Start, range.Length)}\x1b[0m");
+                var style = new StringBuilder();
+                if (range.Color is not null)
+                    style.Append($"38;2;{range.Color.Value.Red};{range.Color.Value.Green};{range.Color.Value.Blue}");
+                if (range.Background is not null)
+                {
+                    if (style.Length > 0)
+                        style.Append(';');
+                    style.Append($"48;2;{range.Background.Value.Red};{range.Background.Value.Green};{range.Background.Value.Blue}");
+                }
+                Console.Write($"\x1b[{style}m{line.Substring(range.Start, range.Length)}\x1b[0m");
                 position = range.Start + range.Length;
             }
 
@@ -216,7 +231,7 @@ namespace SplendidWonders.CLI.View
         }
 
         private readonly record struct RgbColor(byte Red, byte Green, byte Blue);
-        private readonly record struct ColorRange(int Start, int Length, RgbColor Color);
+        private readonly record struct ColorRange(int Start, int Length, RgbColor? Color, RgbColor? Background = null);
         private sealed record PlayerPanel(List<string> Lines, int StorageLine, List<ColorRange> StorageColorRanges, Dictionary<int, List<ColorRange>> TableauColorRanges);
         private sealed record RenderedBlock(string[] Lines, List<ColorRange>[] ColorRanges);
         private sealed record ColoredLine(string Text, List<ColorRange> ColorRanges);
@@ -236,7 +251,7 @@ namespace SplendidWonders.CLI.View
                         string.Empty,
                         string.Format(Strings.ReservedCardsCountFormat, 0)
                     });
-                    AddTableauBlock(lines, new List<string> { string.Empty, Strings.EmptyTableau }, PlayerTableauMinimumPanelHeight);
+                    AddTableauBlock(lines, new List<string> { string.Empty, Strings.EmptyTableau });
                     panels.Add(new PlayerPanel(lines, -1, new List<ColorRange>(), new Dictionary<int, List<ColorRange>>()));
                     continue;
                 }
@@ -244,7 +259,22 @@ namespace SplendidWonders.CLI.View
                 string playerName = ReferenceEquals(player, gameState.ActivePlayer)
                     ? $"*** {player.Name} ***"
                     : player.Name;
-                AddPlayerBlock(lines, string.Empty, WrapText(playerName, PlayerPanelContentWidth));
+                int victoryPointTotal = 0;
+                if (player.Tableau is not null)
+                    foreach (var card in player.Tableau)
+                        if (card is not null)
+                            victoryPointTotal += card.VictoryPoints;
+                if (player.AcquiredLeaders is not null)
+                    foreach (var leader in player.AcquiredLeaders)
+                        if (leader is not null)
+                            victoryPointTotal += leader.VictoryPoints;
+
+                string victoryPoints = victoryPointTotal > 0 ? $"{{{victoryPointTotal}}}" : string.Empty;
+                string playerTitle = playerName.Length + victoryPoints.Length + 1 <= PlayerPanelContentWidth
+                    ? playerName.PadRight(PlayerPanelContentWidth - victoryPoints.Length) + victoryPoints
+                    : Ellipsize(playerName, PlayerPanelContentWidth - victoryPoints.Length - 1) + " " + victoryPoints;
+                int nameBlockStart = lines.Count;
+                AddPlayerBlock(lines, string.Empty, new List<string> { playerTitle });
 
                 var storage = player.Store;
                 var storageText = new StringBuilder();
@@ -256,6 +286,7 @@ namespace SplendidWonders.CLI.View
                 AppendColoredNumber(storageText, storageColorRanges, storage.Red, GetRgbColor(DevelopmentBonus.Red));
                 AppendColoredNumber(storageText, storageColorRanges, storage.Polymath, new RgbColor(255, 255, 255), "  ");
                 storageText.Append("   ").Append(string.Format(Strings.ReservedCardsCountFormat, player.ReservedCards?.Count ?? 0));
+                storageText.Append("  ");
                 var playerStorageLines = new List<string>
                 {
                     string.Empty,
@@ -266,47 +297,95 @@ namespace SplendidWonders.CLI.View
                 for (int rangeIndex = 0; rangeIndex < storageColorRanges.Count; rangeIndex++)
                 {
                     var range = storageColorRanges[rangeIndex];
-                    storageColorRanges[rangeIndex] = range with { Start = range.Start + 5 };
+                    storageColorRanges[rangeIndex] = range with { Start = range.Start + 2 };
                 }
 
+                int storageBlockStart = lines.Count;
                 AddPlayerBlock(lines, Strings.PlayerStorageTitle, playerStorageLines);
 
                 var tableauLines = new List<string>();
                 var tableauLineColorRanges = new List<List<ColorRange>>();
+                int yellowCount = 0;
+                int blueCount = 0;
+                int greenCount = 0;
+                int brownCount = 0;
+                int redCount = 0;
                 if (player.Tableau is not null)
                 {
                     foreach (var card in player.Tableau)
                     {
                         if (card is not null)
                         {
-                            var cardLines = FormatTableauCard(card, PlayerPanelContentWidth);
-                            foreach (var cardLine in cardLines)
+                            switch (card.Bonus)
                             {
-                                tableauLines.Add(cardLine.Text);
-                                tableauLineColorRanges.Add(cardLine.ColorRanges);
+                                case DevelopmentBonus.Yellow: yellowCount++; break;
+                                case DevelopmentBonus.Blue: blueCount++; break;
+                                case DevelopmentBonus.Green: greenCount++; break;
+                                case DevelopmentBonus.Brown: brownCount++; break;
+                                case DevelopmentBonus.Red: redCount++; break;
                             }
                         }
                     }
                 }
 
-                if (tableauLines.Count == 0)
-                    tableauLines.Add(Strings.EmptyTableau);
+                var tableauSummary = new StringBuilder();
+                var tableauSummaryColorRanges = new List<ColorRange>();
+                var passiveNumberColor = ReferenceEquals(player, gameState.ActivePlayer)
+                    ? new RgbColor(255, 255, 255)
+                    : new RgbColor(160, 160, 160);
+                AppendTableauCount(tableauSummary, tableauSummaryColorRanges, yellowCount, DevelopmentBonus.Yellow, passiveNumberColor);
+                AppendTableauCount(tableauSummary, tableauSummaryColorRanges, blueCount, DevelopmentBonus.Blue, passiveNumberColor);
+                AppendTableauCount(tableauSummary, tableauSummaryColorRanges, greenCount, DevelopmentBonus.Green, passiveNumberColor);
+                AppendTableauCount(tableauSummary, tableauSummaryColorRanges, brownCount, DevelopmentBonus.Brown, passiveNumberColor);
+                AppendTableauCount(tableauSummary, tableauSummaryColorRanges, redCount, DevelopmentBonus.Red, passiveNumberColor);
+                tableauLines.Add(tableauSummary.ToString());
+                tableauLineColorRanges.Add(tableauSummaryColorRanges);
 
-                tableauLines.Insert(0, string.Empty);
-                tableauLineColorRanges.Insert(0, new List<ColorRange>());
                 int tableauBlockStart = lines.Count;
-                AddTableauBlock(lines, tableauLines, PlayerTableauMinimumPanelHeight);
+                AddTableauBlock(lines, tableauLines);
                 var tableauColorRangesByLine = new Dictionary<int, List<ColorRange>>();
                 for (int lineIndex = 0; lineIndex < tableauLineColorRanges.Count; lineIndex++)
                 {
-                    if (tableauLineColorRanges[lineIndex].Count > 0)
-                        tableauColorRangesByLine[tableauBlockStart + lineIndex + 2] = tableauLineColorRanges[lineIndex];
+                    var ranges = tableauLineColorRanges[lineIndex];
+                    for (int rangeIndex = 0; rangeIndex < ranges.Count; rangeIndex++)
+                        ranges[rangeIndex] = ranges[rangeIndex] with { Start = ranges[rangeIndex].Start + 2 };
+                    int row = tableauBlockStart + lineIndex + 2;
+                    if (ranges.Count > 0)
+                        tableauColorRangesByLine[row] = ranges;
+                }
+
+                if (!ReferenceEquals(player, gameState.ActivePlayer))
+                {
+                    var dimBorder = new RgbColor(96, 96, 96);
+                    AddDimPanelBorderRanges(tableauColorRangesByLine, nameBlockStart, nameBlockStart + 2, dimBorder);
+                    AddDimPanelBorderRanges(tableauColorRangesByLine, storageBlockStart, tableauBlockStart - 1, dimBorder, storageLine);
+                    AddDimPanelBorderRanges(tableauColorRangesByLine, tableauBlockStart, lines.Count - 1, dimBorder);
                 }
 
                 panels.Add(new PlayerPanel(lines, storageLine, storageColorRanges, tableauColorRangesByLine));
             }
 
             return panels;
+        }
+
+        private static void AddDimPanelBorderRanges(Dictionary<int, List<ColorRange>> colorRangesByLine, int blockStart, int blockEnd, RgbColor color, int extendedRightBorderRow = -1)
+        {
+            for (int row = blockStart; row <= blockEnd; row++)
+            {
+                if (!colorRangesByLine.TryGetValue(row, out var ranges))
+                    colorRangesByLine[row] = ranges = new List<ColorRange>();
+
+                if (row == blockStart || row == blockEnd)
+                    ranges.Add(new ColorRange(0, PlayerPanelWidth, color));
+                else
+                {
+                    ranges.Add(new ColorRange(0, 1, color));
+                    int rightBorderPosition = row == extendedRightBorderRow
+                        ? PlayerPanelWidth
+                        : PlayerPanelWidth - 1;
+                    ranges.Add(new ColorRange(rightBorderPosition, 1, color));
+                }
+            }
         }
 
         private static void AddPlayerBlock(List<string> lines, string title, List<string> contentLines)
@@ -323,20 +402,21 @@ namespace SplendidWonders.CLI.View
             lines.Add(border);
         }
 
-        private static void AddTableauBlock(List<string> lines, List<string> contentLines, int minimumPanelHeight)
+        private static void AddTableauBlock(List<string> lines, List<string> contentLines)
         {
-            int minimumContentHeight = minimumPanelHeight - lines.Count - 3;
-            while (contentLines.Count < minimumContentHeight)
-                contentLines.Add(string.Empty);
-
             AddPlayerBlock(lines, Strings.PlayerTableauTitle, contentLines);
         }
 
         private static string FormatPlayerPanelLine(string content, bool extraSpaceBeforeRightBorder = false)
         {
-            int contentWidth = PlayerPanelContentWidth;
-            string rightBorder = extraSpaceBeforeRightBorder ? "  |" : " |";
-            return "| " + content.PadRight(contentWidth) + rightBorder;
+            int contentWidth = extraSpaceBeforeRightBorder
+                ? PlayerPanelContentWidth - 1
+                : PlayerPanelContentWidth;
+            string panelContent = content.Length > contentWidth
+                ? content[..contentWidth]
+                : content.PadRight(contentWidth);
+            string rightBorder = extraSpaceBeforeRightBorder ? "   |" : " |";
+            return "| " + panelContent + rightBorder;
         }
 
         private static List<string> WrapText(string text, int width, int maxLines = int.MaxValue)
@@ -381,37 +461,6 @@ namespace SplendidWonders.CLI.View
 
             if (lines.Count == 0)
                 lines.Add(string.Empty);
-
-            return lines;
-        }
-
-        private static List<ColoredLine> FormatTableauCard(DevelopmentCard card, int width)
-        {
-            string name = card.Name ?? string.Empty;
-            var lines = new List<ColoredLine>();
-            foreach (string nameLine in WrapText(name, width))
-            {
-                var lineColorRanges = new List<ColorRange>();
-                if (nameLine.Length > 0)
-                    lineColorRanges.Add(new ColorRange(0, nameLine.Length, GetRgbColor(card.Bonus)));
-                lines.Add(new ColoredLine(nameLine, lineColorRanges));
-            }
-
-            if (card.VictoryPoints > 0)
-            {
-                int lastLineIndex = lines.Count - 1;
-                var lastLine = lines[lastLineIndex];
-                string separator = lastLine.Text.Length > 0 ? " " : string.Empty;
-                string victoryPoints = $"{{{card.VictoryPoints}}}";
-                if (lastLine.Text.Length + separator.Length + victoryPoints.Length <= width)
-                {
-                    lines[lastLineIndex] = lastLine with { Text = lastLine.Text + separator + victoryPoints };
-                }
-                else
-                {
-                    lines.Add(new ColoredLine(victoryPoints, new List<ColorRange>()));
-                }
-            }
 
             return lines;
         }

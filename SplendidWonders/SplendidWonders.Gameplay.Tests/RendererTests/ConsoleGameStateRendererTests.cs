@@ -13,28 +13,59 @@ namespace SplendidWonders.Gameplay.Tests.RendererTests
     public class ConsoleGameStateRendererTests
     {
         [Test]
-        public void Render_TableauCard_ColorsEntireNameButNotBorderOrVictoryPoints()
+        public void Render_TableauSummary_GroupsBonusCountsAndShowsCombinedVictoryPoints()
         {
-            const string cardName = "Marble Fountain";
             const string escape = "\u001b";
-            var card = new DevelopmentCard
+            var activeTableau = ImmutableList.Create(
+                new DevelopmentCard
+                {
+                    Id = 1,
+                    Name = "Marble Fountain",
+                    VictoryPoints = 3,
+                    Cost = TokenGroup.FromArray([1, 2, 3, 4, 5, 0]),
+                    Bonus = DevelopmentBonus.Green
+                },
+                new DevelopmentCard
+                {
+                    Id = 2,
+                    Name = "Blue Observatory",
+                    VictoryPoints = 0,
+                    Cost = TokenGroup.FromArray([0, 0, 0, 0, 0, 0]),
+                    Bonus = DevelopmentBonus.Green
+                });
+            var passiveTableau = ImmutableList.Create(new DevelopmentCard
+            {
+                Id = 3,
+                Name = "Hidden Red Card",
+                VictoryPoints = 2,
+                Cost = TokenGroup.FromArray([0, 0, 0, 0, 0, 0]),
+                Bonus = DevelopmentBonus.Red
+            });
+            var acquiredLeaders = ImmutableList.Create(new Leader
             {
                 Id = 1,
-                Name = cardName,
-                VictoryPoints = 3,
-                Cost = TokenGroup.FromArray([1, 2, 3, 4, 5, 0]),
-                Bonus = DevelopmentBonus.Green
-            };
+                Name = "Acquired Leader",
+                VictoryPoints = 4
+            });
             var gameState = GameStateBuilder.Default
-                .WithPlayerTableau(1, ImmutableList.Create(card))
+                .WithPlayerTableau(1, activeTableau)
+                .WithPlayerTableau(2, passiveTableau)
+                .WithPlayerAcquiredLeaders(1, acquiredLeaders)
                 .Build();
-            string renderedOutput = Render(gameState);
-            string coloredName = $"{escape}[38;2;0;220;50m{cardName}{escape}[0m";
-            int coloredNameIndex = renderedOutput.IndexOf(coloredName, StringComparison.Ordinal);
+            string[] lines = Render(gameState).Split('\n');
+            string renderedOutput = string.Join('\n', lines);
+            string activeCount = $"{escape}[38;2;255;255;255;48;2;0;220;50m2{escape}[0m";
+            string passiveCount = $"{escape}[38;2;160;160;160;48;2;255;80;80m1{escape}[0m";
 
-            Assert.That(coloredNameIndex, Is.GreaterThanOrEqualTo(2));
-            Assert.That(renderedOutput.Substring(coloredNameIndex - 2, 2), Is.EqualTo("| "));
-            Assert.That(renderedOutput.Substring(coloredNameIndex + coloredName.Length).StartsWith(" {3}"), Is.True);
+            Assert.That(renderedOutput, Does.Contain(activeCount));
+            Assert.That(renderedOutput, Does.Contain(passiveCount));
+            Assert.That(renderedOutput, Does.Contain("*** Test player 1 ***         {7}"));
+            Assert.That(renderedOutput, Does.Contain("Test player 2                   {2}"));
+            Assert.That(renderedOutput, Does.Not.Contain("Marble Fountain"));
+            Assert.That(renderedOutput, Does.Not.Contain("Hidden Red Card"));
+            Assert.That(renderedOutput, Does.Not.Contain("{0}"));
+            Assert.That(renderedOutput, Does.Contain($"{escape}[38;2;96;96;96m+----------------------------------+{escape}[0m"));
+
         }
 
         [TestCase(3)]
