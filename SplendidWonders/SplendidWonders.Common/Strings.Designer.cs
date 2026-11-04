@@ -1294,11 +1294,29 @@ namespace SplendidWonders.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Vásárolj meg egy kártyát a játéktérről vagy a korábban általad foglaltak közül!.
+        ///   Looks up a localized string similar to Kérlek add meg, hogy milyen színű lapkákat szeretnél visszarakni a játéktérre!(S - sárga, K - kék, Z - zöld, B - barna, P - piros). Például, &quot;S B P&quot; vagy &quot; K K&quot;.
         /// </summary>
-        public static string PurchaseActionDescription {
+        public static string PromptReturnTokens {
             get {
-                return ResourceManager.GetString("PurchaseActionDescription", resourceCulture);
+                return ResourceManager.GetString("PromptReturnTokens", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vásárolj meg egy kártyát a játéktérről!.
+        /// </summary>
+        public static string PurchaseFromBoardActionDescription {
+            get {
+                return ResourceManager.GetString("PurchaseFromBoardActionDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vásárolj meg egy kártyát a korábban általad foglaltak közül!.
+        /// </summary>
+        public static string PurchaseFromReservedActionDescription {
+            get {
+                return ResourceManager.GetString("PurchaseFromReservedActionDescription", resourceCulture);
             }
         }
         
@@ -1348,11 +1366,20 @@ namespace SplendidWonders.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Kérlek válaszd ki a kártyát, amit meg szeretnél vásárolni. Add meg a kártya számát az alábbi listából:.
+        /// </summary>
+        public static string SelectCardToBuyFromReserved {
+            get {
+                return ResourceManager.GetString("SelectCardToBuyFromReserved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Kérlek válaszd ki a kártyát, amit le szeretnél foglalni. Add meg a kártya szintjét (1-3) és az oszlopszámot (1-4). Például: &quot;1,2&quot; vagy &quot;3,3&quot;:.
         /// </summary>
-        public static string SelectcardToBuy {
+        public static string SelectCardToReserve {
             get {
-                return ResourceManager.GetString("SelectcardToBuy", resourceCulture);
+                return ResourceManager.GetString("SelectCardToReserve", resourceCulture);
             }
         }
         

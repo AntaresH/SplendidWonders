@@ -13,7 +13,10 @@ namespace SplendidWonders.CLI
             { nameof(DrawDoubleTokensAction), "H2" },
             { nameof(ReserveFromBoardAction), "FJ" },
             { nameof(ReserveFromDeckAction), "FP" },
-            { nameof(PurchaseAction), "KV" }
+            { nameof(PurchaseFromBoardAction), "KJ" },
+            { nameof(PurchaseFromReservedAction), "KK" },
+            { nameof(ReturnTokensAction), "LV" },
+            { nameof(SelectLeaderAction), "VV" }
         };
     }
 }

@@ -3,6 +3,7 @@ using SplendidWonders.Core.Model;
 using SplendidWonders.Gameplay.Actions;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 
 namespace SplendidWonders.CLI.View
 {
@@ -71,7 +72,7 @@ namespace SplendidWonders.CLI.View
             Console.WriteLine(Strings.PromptChooseDoubleColor);
         }
 
-        public void DisplayPurchaseArgumentRequest()
+        public void DisplayPurchaseFromBoardArgumentRequest()
         {
             Console.WriteLine(Strings.SelectCardToBuy);
         }
@@ -83,7 +84,7 @@ namespace SplendidWonders.CLI.View
 
         public void DisplayReserveFromBoardArgumentRequest()
         {
-            Console.WriteLine(Strings.SelectcardToBuy);
+            Console.WriteLine(Strings.SelectCardToReserve);
         }
 
         public void DisplayInvalidCommand(GameAction command)
@@ -102,6 +103,58 @@ namespace SplendidWonders.CLI.View
             Console.WriteLine("        | |                                                                           ");
             Console.WriteLine("        |_|                                                                           ");
             Console.WriteLine("");
+        }
+
+        public void DisplayReturnTokensArgumentRequest()
+        {
+            Console.WriteLine(Strings.PromptReturnTokens);
+        }
+
+        public void DisplayPurchaseFromReservedArgumentRequest(ImmutableList<DevelopmentCard> reservedCards)
+        {
+            Console.WriteLine(Strings.SelectCardToBuyFromReserved);
+            foreach (var card in reservedCards)
+            {
+                Console.Write($"{card.Id} \u001b[38;2;{ConvertRgbColorIntoText(card.Bonus)}m{card.Name}\u001b[0m Költségek: ");
+
+                if (card.Cost.Yellow > 0)
+                {
+                    Console.Write($"\u001b[38;2;{ConvertRgbColorIntoText(DevelopmentBonus.Yellow)}m{card.Cost.Yellow}\u001b[0m ");
+                }
+
+                if (card.Cost.Blue > 0)
+                {
+                    Console.Write($"\u001b[38;2;{ConvertRgbColorIntoText(DevelopmentBonus.Blue)}m{card.Cost.Blue}\u001b[0m ");
+                }
+
+                if (card.Cost.Green > 0)
+                {
+                    Console.Write($"\u001b[38;2;{ConvertRgbColorIntoText(DevelopmentBonus.Green)}m{card.Cost.Green}\u001b[0m ");
+                }
+
+                if (card.Cost.Brown > 0)
+                {
+                    Console.Write($"\u001b[38;2;{ConvertRgbColorIntoText(DevelopmentBonus.Brown)}m{card.Cost.Brown}\u001b[0m ");
+                }
+
+                if (card.Cost.Red > 0)
+                {
+                    Console.Write($"\u001b[38;2;{ConvertRgbColorIntoText(DevelopmentBonus.Red)}m{card.Cost.Red}\u001b[0m ");
+                }
+            }
+        }
+
+        private static string ConvertRgbColorIntoText(DevelopmentBonus bonus)
+        {
+            return bonus switch
+            {
+                DevelopmentBonus.Yellow => "208;208;0",
+                DevelopmentBonus.Blue => "80;145;255",
+                DevelopmentBonus.Green => "0;220;50",
+                DevelopmentBonus.Brown => "145;92;42",
+                DevelopmentBonus.Red => "255;80;80",
+                _ => "192;192;192"
+            };
         }
     }
 }

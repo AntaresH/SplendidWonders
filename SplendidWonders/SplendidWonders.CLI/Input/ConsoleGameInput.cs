@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
+using static System.Collections.Specialized.BitVector32;
 
 namespace SplendidWonders.CLI.Input
 {
@@ -29,8 +30,10 @@ namespace SplendidWonders.CLI.Input
                     if (!GenericUtils.CommandShortHandMap.ContainsValue(userInput.ToUpper()))
                         continue;
 
-                    return CreateCommandFromUserInput(userInput, gameState);
-
+                    if (validActions.Any(a => GenericUtils.CommandShortHandMap[a.GetType().Name] == userInput.ToUpper()))
+                    {
+                        return CreateCommandFromUserInput(userInput, gameState);
+                    }
                 }
                 catch (UserCancelException)
                 {
@@ -38,6 +41,7 @@ namespace SplendidWonders.CLI.Input
                 }
             }
         }
+
         private static string ReadAndApplyDefaultHandling()
         {
             string userInput = Console.ReadLine().Trim();
@@ -70,18 +74,24 @@ namespace SplendidWonders.CLI.Input
                     return ResolveReserveFromBoard(new ReserveFromBoardAction(), gameState);
                 case nameof(ReserveFromDeckAction):
                     return ResolveReserveFromDeck(new ReserveFromDeckAction());
-                case nameof(PurchaseAction):
-                    return ResolvePurchase(new PurchaseAction(), gameState);
+                case nameof(PurchaseFromBoardAction):
+                    return ResolvePurchaseFromBoard(new PurchaseFromBoardAction(), gameState);
+                case nameof(PurchaseFromReservedAction):
+                    return ResolvePurchaseFromReserved(new PurchaseFromReservedAction(), gameState);
+                case nameof(ReturnTokensAction):
+                    return ResolveReturnTokens(new ReturnTokensAction(), gameState);
+                case nameof(SelectLeaderAction):
+                    return ResolveSelectLeader(new SelectLeaderAction(), gameState);
             }
 
             throw new InvalidOperationException();
         }
 
-        private GameAction ResolvePurchase(PurchaseAction action, GameState gameState)
+        private GameAction ResolvePurchaseFromBoard(PurchaseAction action, GameState gameState)
         {
             while (true)
             {
-                _gameView.DisplayPurchaseArgumentRequest();
+                _gameView.DisplayPurchaseFromBoardArgumentRequest();
 
                 string userInput = ReadAndApplyDefaultHandling();
 
@@ -95,6 +105,30 @@ namespace SplendidWonders.CLI.Input
 
                     if (action.Card == Cards.Empty)
                         continue;
+
+                    return action;
+                }
+            }
+        }
+
+        private GameAction ResolvePurchaseFromReserved(PurchaseFromReservedAction action, GameState gameState)
+        {
+            while (true)
+            {
+                _gameView.DisplayPurchaseFromReservedArgumentRequest(gameState.ActivePlayer.ReservedCards);
+
+                string userInput = ReadAndApplyDefaultHandling();
+
+                Match match = Regex.Match(userInput, @"^#?([\d]){1,2}$");
+
+                if (match.Success)
+                {
+                    int cardId = int.Parse(match.Groups[0].Value);
+
+                    if (!gameState.ActivePlayer.ReservedCards.Any(c => c.Id == cardId))
+                        continue;
+
+                    action.Card = gameState.ActivePlayer.ReservedCards.First(c => c.Id == cardId);
 
                     return action;
                 }
@@ -125,7 +159,7 @@ namespace SplendidWonders.CLI.Input
         {
             while (true)
             {
-                _gameView.DisplayPurchaseArgumentRequest();
+                _gameView.DisplayPurchaseFromBoardArgumentRequest();
 
                 string userInput = ReadAndApplyDefaultHandling();
 
@@ -195,6 +229,37 @@ namespace SplendidWonders.CLI.Input
                     return action;
                 }
             }
+        }
+
+        private GameAction ResolveReturnTokens(ReturnTokensAction action, GameState gameState)
+        {
+            while (true)
+            {
+                _gameView.DisplayReturnTokensArgumentRequest();
+
+                string userInput = ReadAndApplyDefaultHandling();
+
+                Match match = Regex.Match(userInput, @"^[SKZBPskzbp]+( [SKZBPskzbp])*( [SKZBPskzbp])*$");
+
+                if (match.Success)
+                {
+                    action.Tokens = new TokenGroup
+                    {
+                        Yellow = userInput.Count(c => c == 'S' || c == 's'),
+                        Blue = userInput.Count(c => c == 'K' || c == 'k'),
+                        Green = userInput.Count(c => c == 'Z' || c == 'z'),
+                        Brown = userInput.Count(c => c == 'B' || c == 'b'),
+                        Red = userInput.Count(c => c == 'P' || c == 'p')
+                    };
+
+                    return action;
+                }
+            }
+        }
+
+        private GameAction ResolveSelectLeader(SelectLeaderAction selectLeaderAction, GameState gameState)
+        {
+            throw new NotImplementedException();
         }
     }
 }

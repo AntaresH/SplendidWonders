@@ -2,6 +2,7 @@
 using SplendidWonders.Gameplay.Actions;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Text;
 
 namespace SplendidWonders.CLI.View
@@ -15,10 +16,12 @@ namespace SplendidWonders.CLI.View
         void DisplayInvalidCommandMessage();
         void DisplayThreeTokensArgumentRequest();
         void DisplayDoubleTokensArgumentRequest();
-        void DisplayPurchaseArgumentRequest();
+        void DisplayPurchaseFromBoardArgumentRequest();
+        void DisplayPurchaseFromReservedArgumentRequest(ImmutableList<DevelopmentCard> reservedCards);
         void DisplayReserveFromBoardArgumentRequest();
         void DisplayReserveFromDeckArgumentRequest();
         void DisplayInvalidCommand(GameAction command);
         void DisplayGameTitle();
+        void DisplayReturnTokensArgumentRequest();
     }
 }
