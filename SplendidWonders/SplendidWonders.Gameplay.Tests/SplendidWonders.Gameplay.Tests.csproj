@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SplendidWonders.Gameplay\SplendidWonders.Gameplay.csproj" />
+    <ProjectReference Include="..\SplendidWonders.CLI\SplendidWonders.CLI.csproj" />
   </ItemGroup>
 
   <ItemGroup>

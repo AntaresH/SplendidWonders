@@ -8,7 +8,6 @@ namespace SplendidWonders.CLI.View
     {
         internal void Render(GameState gameState, IEnumerable<GameAction> validActions)
         {
-
             Console.WriteLine(Strings.ValidCommands);
 
             if (gameState.ActivePlayer.ReservedCards.Any())
