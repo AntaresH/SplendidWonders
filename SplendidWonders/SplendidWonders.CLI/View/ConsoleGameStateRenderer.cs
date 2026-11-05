@@ -406,6 +406,13 @@ namespace SplendidWonders.CLI.View
                         new ColorRange(2, displayedPlayerName.Length, new RgbColor(255, 255, 128))
                     };
                 }
+                else
+                {
+                    var dimTitleColor = new RgbColor(128, 128, 128);
+                    AddPanelTitleColorRange(tableauColorRangesByLine, nameBlockStart + 1, displayedPlayerName.Length, dimTitleColor);
+                    AddPanelTitleColorRange(tableauColorRangesByLine, storageBlockStart + 1, Math.Min(Strings.PlayerStorageTitle.Length, PlayerPanelContentWidth), dimTitleColor);
+                    AddPanelTitleColorRange(tableauColorRangesByLine, tableauBlockStart + 1, Math.Min(Strings.PlayerTableauTitle.Length, PlayerPanelContentWidth), dimTitleColor);
+                }
 
                 for (int lineIndex = 0; lineIndex < tableauLineColorRanges.Count; lineIndex++)
                 {
@@ -429,6 +436,16 @@ namespace SplendidWonders.CLI.View
             }
 
             return panels;
+        }
+
+        private static void AddPanelTitleColorRange(Dictionary<int, List<ColorRange>> colorRangesByLine, int row, int length, RgbColor color)
+        {
+            if (length <= 0)
+                return;
+
+            if (!colorRangesByLine.TryGetValue(row, out var ranges))
+                colorRangesByLine[row] = ranges = new List<ColorRange>();
+            ranges.Add(new ColorRange(2, length, color));
         }
 
         private static void AddDimPanelBorderRanges(Dictionary<int, List<ColorRange>> colorRangesByLine, int blockStart, int blockEnd, RgbColor color, int extendedRightBorderRow = -1)
@@ -856,8 +873,8 @@ namespace SplendidWonders.CLI.View
                 DevelopmentBonus.Yellow => new RgbColor(138, 116, 0),
                 DevelopmentBonus.Blue => new RgbColor(30, 60, 165),
                 DevelopmentBonus.Green => new RgbColor(0, 125, 30),
-                DevelopmentBonus.Brown => new RgbColor(90, 35, 0),
-                DevelopmentBonus.Red => new RgbColor(170, 0, 0),
+                DevelopmentBonus.Brown => new RgbColor(100, 45, 0),
+                DevelopmentBonus.Red => new RgbColor(160, 10, 20),
                 _ => new RgbColor(96, 96, 96)
             };
         }
