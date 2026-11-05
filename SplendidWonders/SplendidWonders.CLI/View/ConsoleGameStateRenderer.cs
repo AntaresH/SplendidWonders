@@ -590,9 +590,9 @@ namespace SplendidWonders.CLI.View
         {
             return level switch
             {
-                3 => Strings.Level3Title,
-                2 => Strings.Level2Title,
-                1 => Strings.Level1Title,
+                3 => "🌟 " + Strings.Level3Title,
+                2 => "⛯ " + Strings.Level2Title,
+                1 => "🏛️ " + Strings.Level1Title,
                 _ => string.Empty
             };
         }
@@ -853,7 +853,18 @@ namespace SplendidWonders.CLI.View
         private static string DeckLineCentered(string content, int width)
         {
             int contentWidth = width - 4;
-            return (char)0x2551 + " " + CenterText(content, contentWidth) + " " + (char)0x2551;
+            string value = content ?? string.Empty;
+            bool containsWideTempleSymbol = value.StartsWith("🏛️ ", StringComparison.Ordinal);
+            int displayWidth = value.Length - (containsWideTempleSymbol ? 1 : 0);
+            if (displayWidth > contentWidth)
+            {
+                value = Ellipsize(value, contentWidth + (containsWideTempleSymbol ? 1 : 0));
+                displayWidth = value.Length - (containsWideTempleSymbol ? 1 : 0);
+            }
+
+            int leftPadding = (contentWidth - displayWidth) / 2;
+            int rightPadding = contentWidth - displayWidth - leftPadding;
+            return (char)0x2551 + " " + new string(' ', leftPadding) + value + new string(' ', rightPadding) + " " + (char)0x2551;
         }
 
         private static string CenterCardLine(string content, int width)
