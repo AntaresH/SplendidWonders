@@ -15,9 +15,10 @@ namespace SplendidWonders.CLI.View
         private const int DeckLevelCount = 3;
         private const int DeckBlockHeight = 8;
         private const int TokenBlockHeight = 3;
-        private const int LeaderBlockWidth = 20;
-        private const int LeaderBlockHeight = 6;
-        private const int LeaderBlockContentWidth = LeaderBlockWidth - 4;
+        private const int LeaderBlockWidth = 23;
+        private const int LeaderBlockHeight = 8;
+        private const int LeaderBlockContentWidth = LeaderBlockWidth - 2;
+        private const int LeaderRequirementContentWidth = LeaderBlockContentWidth - 4;
         private const int PlayerPanelWidth = 36;
         private const int PlayerPanelContentWidth = PlayerPanelWidth - 4;
         private const int PlayerPanelSideWidth = 2;
@@ -179,6 +180,34 @@ namespace SplendidWonders.CLI.View
             if (bonuses.Red > 0) AppendColoredNumber(text, colorRanges, bonuses.Red, GetRgbColor(DevelopmentBonus.Red));
         }
 
+        private static void AppendLeaderRequirements(StringBuilder text, List<ColorRange> colorRanges, TokenGroup requirements, RgbColor backgroundColor)
+        {
+            AppendLeaderRequirement(text, colorRanges, requirements.Yellow, DevelopmentBonus.Yellow, backgroundColor);
+            AppendLeaderRequirement(text, colorRanges, requirements.Blue, DevelopmentBonus.Blue, backgroundColor);
+            AppendLeaderRequirement(text, colorRanges, requirements.Green, DevelopmentBonus.Green, backgroundColor);
+            AppendLeaderRequirement(text, colorRanges, requirements.Brown, DevelopmentBonus.Brown, backgroundColor);
+            AppendLeaderRequirement(text, colorRanges, requirements.Red, DevelopmentBonus.Red, backgroundColor);
+        }
+
+        private static void AppendLeaderRequirement(StringBuilder text, List<ColorRange> colorRanges, int count, DevelopmentBonus bonus, RgbColor backgroundColor)
+        {
+            const int blockWidth = 3;
+            if (count <= 0)
+                return;
+
+            if (text.Length > 0)
+            {
+                colorRanges.Add(new ColorRange(text.Length, 1, null, backgroundColor));
+                text.Append(' ');
+            }
+
+            string number = count.ToString();
+            int leftPadding = (blockWidth - number.Length) / 2;
+            int blockStart = text.Length;
+            colorRanges.Add(new ColorRange(blockStart, blockWidth, new RgbColor(255, 255, 255), GetTableauCountBackgroundColor(bonus)));
+            text.Append(' ', leftPadding).Append(number).Append(' ', blockWidth - leftPadding - number.Length);
+        }
+
         private static void AppendCanvas(string[] canvas, List<ColorRange>[] colorRanges, int row, string text, RgbColor? color = null, IReadOnlyList<ColorRange> relativeRanges = null)
         {
             int start = canvas[row].Length;
@@ -286,9 +315,17 @@ namespace SplendidWonders.CLI.View
                             victoryPointTotal += leader.VictoryPoints;
 
                 string victoryPoints = victoryPointTotal > 0 ? $"{{{victoryPointTotal}}}" : string.Empty;
-                string playerTitle = playerName.Length + victoryPoints.Length + 1 <= PlayerPanelContentWidth
-                    ? playerName.PadRight(PlayerPanelContentWidth - victoryPoints.Length) + victoryPoints
-                    : Ellipsize(playerName, PlayerPanelContentWidth - victoryPoints.Length - 1) + " " + victoryPoints;
+                string displayedPlayerName = playerName;
+                string playerTitle;
+                if (playerName.Length + victoryPoints.Length + 1 <= PlayerPanelContentWidth)
+                {
+                    playerTitle = playerName.PadRight(PlayerPanelContentWidth - victoryPoints.Length) + victoryPoints;
+                }
+                else
+                {
+                    displayedPlayerName = Ellipsize(playerName, PlayerPanelContentWidth - victoryPoints.Length - 1);
+                    playerTitle = displayedPlayerName + " " + victoryPoints;
+                }
                 int nameBlockStart = lines.Count;
                 AddPlayerBlock(lines, string.Empty, new List<string> { playerTitle });
 
@@ -362,6 +399,14 @@ namespace SplendidWonders.CLI.View
                 int tableauBlockStart = lines.Count;
                 AddTableauBlock(lines, tableauLines);
                 var tableauColorRangesByLine = new Dictionary<int, List<ColorRange>>();
+                if (ReferenceEquals(player, gameState.ActivePlayer))
+                {
+                    tableauColorRangesByLine[nameBlockStart + 1] = new List<ColorRange>
+                    {
+                        new ColorRange(2, displayedPlayerName.Length, new RgbColor(255, 255, 128))
+                    };
+                }
+
                 for (int lineIndex = 0; lineIndex < tableauLineColorRanges.Count; lineIndex++)
                 {
                     var ranges = tableauLineColorRanges[lineIndex];
@@ -567,12 +612,13 @@ namespace SplendidWonders.CLI.View
         {
             var lines = new string[LeaderBlockHeight];
             var colorRanges = CreateColorRanges(LeaderBlockHeight);
+            var backgroundColor = new RgbColor(80, 0, 0);
             var requirements = new StringBuilder();
             var requirementColorRanges = new List<ColorRange>();
-            AppendBonusNumbers(requirements, requirementColorRanges, leader.Requirements);
+            AppendLeaderRequirements(requirements, requirementColorRanges, leader.Requirements, backgroundColor);
 
             string victoryPoints = leader.VictoryPoints > 0 ? $"{{{leader.VictoryPoints}}}" : string.Empty;
-            int requirementWidth = LeaderBlockContentWidth - victoryPoints.Length;
+            int requirementWidth = LeaderRequirementContentWidth - victoryPoints.Length;
             string requirementSummary = requirements.ToString();
             int colorableRequirementLength = requirementSummary.Length;
             if (requirementSummary.Length > requirementWidth)
@@ -581,34 +627,71 @@ namespace SplendidWonders.CLI.View
                 colorableRequirementLength = Math.Max(0, requirementWidth - 3);
             }
 
-            string border = "+" + new string('-', LeaderBlockWidth - 2) + "+";
-            string spacer = "|" + new string(' ', LeaderBlockWidth - 2) + "|";
-            lines[0] = border;
-            lines[1] = "| " + requirementSummary.PadRight(requirementWidth) + victoryPoints + " |";
-            lines[2] = spacer;
-            lines[3] = CenterCardLine(leader.Name, LeaderBlockContentWidth);
-            lines[4] = spacer;
-            lines[5] = border;
-
-            var borderColor = new RgbColor(128, 0, 0);
-            colorRanges[0].Add(new ColorRange(0, LeaderBlockWidth, borderColor));
-            for (int row = 1; row < LeaderBlockHeight - 1; row++)
-                AddCardSideBorderRanges(colorRanges, row, LeaderBlockWidth, borderColor);
-            colorRanges[LeaderBlockHeight - 1].Add(new ColorRange(0, LeaderBlockWidth, borderColor));
-
-            foreach (var range in requirementColorRanges)
+            var white = new RgbColor(255, 255, 255);
+            string border = "+" + new string('=', LeaderBlockWidth - 2) + "+";
+            string title = CenterText("♛  " + (leader.Name ?? string.Empty), LeaderBlockContentWidth);
+            string requirementsLine = new string(' ', 2) + requirementSummary.PadRight(requirementWidth) + victoryPoints + new string(' ', 2);
+            var contentLines = new[]
             {
-                if (range.Start < colorableRequirementLength)
-                {
-                    colorRanges[1].Add(range with
-                    {
-                        Start = range.Start + 2,
-                        Length = Math.Min(range.Length, colorableRequirementLength - range.Start)
-                    });
-                }
+                new string(' ', LeaderBlockContentWidth),
+                title,
+                new string(' ', LeaderBlockContentWidth),
+                new string(' ', LeaderBlockContentWidth),
+                requirementsLine,
+                new string(' ', LeaderBlockContentWidth)
+            };
+
+            lines[0] = border;
+            for (int row = 0; row < contentLines.Length; row++)
+                lines[row + 1] = (char)0x2551 + contentLines[row] + (char)0x2551;
+            lines[LeaderBlockHeight - 1] = border;
+
+            var borderColor = backgroundColor;
+            colorRanges[0].Add(new ColorRange(0, LeaderBlockWidth, borderColor));
+            colorRanges[LeaderBlockHeight - 1].Add(new ColorRange(0, LeaderBlockWidth, borderColor));
+            for (int row = 1; row < LeaderBlockHeight - 1; row++)
+            {
+                AddCardSideBorderRanges(colorRanges, row, LeaderBlockWidth, borderColor);
+                if (row - 1 == 4)
+                    AddLeaderRequirementLineColorRanges(colorRanges[row], requirementColorRanges, colorableRequirementLength, requirementWidth, victoryPoints, backgroundColor);
+                else
+                    colorRanges[row].Add(new ColorRange(1, LeaderBlockContentWidth, white, backgroundColor));
             }
 
             return new RenderedBlock(lines, colorRanges);
+        }
+
+        private static void AddLeaderRequirementLineColorRanges(List<ColorRange> colorRanges, List<ColorRange> requirementColorRanges, int colorableRequirementLength, int requirementWidth, string victoryPoints, RgbColor backgroundColor)
+        {
+            int backgroundStart = 1;
+            foreach (var range in requirementColorRanges)
+            {
+                if (range.Start >= colorableRequirementLength)
+                    continue;
+
+                int textStart = range.Start + 3;
+                int textLength = Math.Min(range.Length, colorableRequirementLength - range.Start);
+                if (textStart > backgroundStart)
+                    colorRanges.Add(new ColorRange(backgroundStart, textStart - backgroundStart, null, backgroundColor));
+                colorRanges.Add(range with { Start = textStart, Length = textLength });
+                backgroundStart = textStart + textLength;
+            }
+
+            int victoryPointsStart = 3 + requirementWidth;
+            if (victoryPointsStart > backgroundStart)
+                colorRanges.Add(new ColorRange(backgroundStart, victoryPointsStart - backgroundStart, null, backgroundColor));
+            if (victoryPoints.Length > 0)
+            {
+                colorRanges.Add(new ColorRange(victoryPointsStart, victoryPoints.Length, new RgbColor(255, 255, 255), backgroundColor));
+                backgroundStart = victoryPointsStart + victoryPoints.Length;
+            }
+            else
+            {
+                backgroundStart = victoryPointsStart;
+            }
+
+            if (backgroundStart < LeaderBlockWidth - 1)
+                colorRanges.Add(new ColorRange(backgroundStart, LeaderBlockWidth - 1 - backgroundStart, null, backgroundColor));
         }
 
         private static List<ColorRange>[] CreateColorRanges(int height)
@@ -761,7 +844,7 @@ namespace SplendidWonders.CLI.View
                 DevelopmentBonus.Blue => new RgbColor(80, 145, 255),
                 DevelopmentBonus.Green => new RgbColor(0, 220, 50),
                 DevelopmentBonus.Brown => new RgbColor(145, 92, 42),
-                DevelopmentBonus.Red => new RgbColor(255, 80, 80),
+                DevelopmentBonus.Red => new RgbColor(220, 80, 80),
                 _ => new RgbColor(192, 192, 192)
             };
         }
@@ -770,11 +853,11 @@ namespace SplendidWonders.CLI.View
         {
             return bonus switch
             {
-                DevelopmentBonus.Yellow => new RgbColor(148, 126, 0),
+                DevelopmentBonus.Yellow => new RgbColor(138, 116, 0),
                 DevelopmentBonus.Blue => new RgbColor(30, 60, 165),
                 DevelopmentBonus.Green => new RgbColor(0, 125, 30),
-                DevelopmentBonus.Brown => new RgbColor(100, 65, 25),
-                DevelopmentBonus.Red => new RgbColor(180, 30, 30),
+                DevelopmentBonus.Brown => new RgbColor(90, 35, 0),
+                DevelopmentBonus.Red => new RgbColor(170, 0, 0),
                 _ => new RgbColor(96, 96, 96)
             };
         }
