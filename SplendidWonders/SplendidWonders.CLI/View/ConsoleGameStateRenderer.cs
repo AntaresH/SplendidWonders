@@ -33,12 +33,12 @@ namespace SplendidWonders.CLI.View
             int deckTotalHeight = DeckLevelCount * DeckBlockHeight;
             var tokenBlocks = new[]
             {
-                (Lines: BuildTokenBlock(gameState.TokenSupply.Yellow), Color: GetRgbColor(DevelopmentBonus.Yellow)),
-                (Lines: BuildTokenBlock(gameState.TokenSupply.Blue), Color: GetRgbColor(DevelopmentBonus.Blue)),
-                (Lines: BuildTokenBlock(gameState.TokenSupply.Green), Color: GetRgbColor(DevelopmentBonus.Green)),
-                (Lines: BuildTokenBlock(gameState.TokenSupply.Brown), Color: GetRgbColor(DevelopmentBonus.Brown)),
-                (Lines: BuildTokenBlock(gameState.TokenSupply.Red), Color: GetRgbColor(DevelopmentBonus.Red)),
-                (Lines: BuildTokenBlock(gameState.TokenSupply.Polymath, isPolymath: true), Color: new RgbColor(255, 255, 255))
+                (Lines: BuildTokenBlock(gameState.TokenSupply.Yellow), BorderColor: GetRgbColor(DevelopmentBonus.Yellow), BackgroundColor: GetTableauCountBackgroundColor(DevelopmentBonus.Yellow), NumberColor: new RgbColor(255, 255, 255)),
+                (Lines: BuildTokenBlock(gameState.TokenSupply.Blue), BorderColor: GetRgbColor(DevelopmentBonus.Blue), BackgroundColor: GetTableauCountBackgroundColor(DevelopmentBonus.Blue), NumberColor: new RgbColor(255, 255, 255)),
+                (Lines: BuildTokenBlock(gameState.TokenSupply.Green), BorderColor: GetRgbColor(DevelopmentBonus.Green), BackgroundColor: GetTableauCountBackgroundColor(DevelopmentBonus.Green), NumberColor: new RgbColor(255, 255, 255)),
+                (Lines: BuildTokenBlock(gameState.TokenSupply.Brown), BorderColor: GetRgbColor(DevelopmentBonus.Brown), BackgroundColor: GetTableauCountBackgroundColor(DevelopmentBonus.Brown), NumberColor: new RgbColor(255, 255, 255)),
+                (Lines: BuildTokenBlock(gameState.TokenSupply.Red), BorderColor: GetRgbColor(DevelopmentBonus.Red), BackgroundColor: GetTableauCountBackgroundColor(DevelopmentBonus.Red), NumberColor: new RgbColor(255, 255, 255)),
+                (Lines: BuildTokenBlock(gameState.TokenSupply.Polymath, isPolymath: true), BorderColor: new RgbColor(255, 255, 255), BackgroundColor: new RgbColor(255, 255, 255), NumberColor: new RgbColor(96, 96, 96))
             };
             int tokenTotalHeight = tokenBlocks.Length * TokenBlockHeight;
             int playerPanelsHeight = 0;
@@ -59,7 +59,10 @@ namespace SplendidWonders.CLI.View
                 int startRow = tokenStartRow + tokenIndex * TokenBlockHeight;
                 var block = tokenBlocks[tokenIndex];
                 for (int row = 0; row < TokenBlockHeight; row++)
-                    AppendCanvas(canvas, colorRanges, startRow + row, block.Lines[row].PadRight(TokenColumnWidth), block.Color);
+                {
+                    var tokenColorRanges = GetTokenBlockColorRanges(row, block.BorderColor, block.BackgroundColor, block.NumberColor);
+                    AppendCanvas(canvas, colorRanges, startRow + row, block.Lines[row].PadRight(TokenColumnWidth), relativeRanges: tokenColorRanges);
+                }
             }
 
             for (int row = 0; row < totalHeight; row++)
@@ -568,6 +571,21 @@ namespace SplendidWonders.CLI.View
             return lines;
         }
 
+        private static List<ColorRange> GetTokenBlockColorRanges(int row, RgbColor borderColor, RgbColor backgroundColor, RgbColor numberColor)
+        {
+            var colorRanges = new List<ColorRange>();
+            if (row == 0 || row == TokenBlockHeight - 1)
+            {
+                colorRanges.Add(new ColorRange(2, TokenColumnWidth - 4, borderColor));
+                return colorRanges;
+            }
+
+            colorRanges.Add(new ColorRange(1, 1, borderColor));
+            colorRanges.Add(new ColorRange(TokenColumnWidth - 2, 1, borderColor));
+            colorRanges.Add(new ColorRange(2, TokenColumnWidth - 4, numberColor, backgroundColor));
+            return colorRanges;
+        }
+
         private static string GetDeckTitle(int level)
         {
             return level switch
@@ -874,7 +892,7 @@ namespace SplendidWonders.CLI.View
                 DevelopmentBonus.Blue => new RgbColor(30, 60, 165),
                 DevelopmentBonus.Green => new RgbColor(0, 125, 30),
                 DevelopmentBonus.Brown => new RgbColor(100, 45, 0),
-                DevelopmentBonus.Red => new RgbColor(160, 10, 20),
+                DevelopmentBonus.Red => new RgbColor(180, 10, 20),
                 _ => new RgbColor(96, 96, 96)
             };
         }
