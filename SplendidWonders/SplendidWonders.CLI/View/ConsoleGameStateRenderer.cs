@@ -590,9 +590,9 @@ namespace SplendidWonders.CLI.View
         {
             return level switch
             {
-                3 => "🌟 " + Strings.Level3Title,
+                3 => "🏛️ " + Strings.Level3Title,
                 2 => "⛯ " + Strings.Level2Title,
-                1 => "🏛️ " + Strings.Level1Title,
+                1 => "🧱 " + Strings.Level1Title,
                 _ => string.Empty
             };
         }
