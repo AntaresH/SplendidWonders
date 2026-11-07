@@ -17,21 +17,6 @@ namespace SplendidWonders.Gameplay.Reducers
                 .Transform(ResolveGameProgression);
         }
 
-        private GameState ResolveGameEndTrigger(GameState baseState)
-        {
-            if (!baseState.IsFinalTurn)
-            {
-                int totalVPs = baseState.ActivePlayer.Tableau.Sum(c => c.VictoryPoints) + baseState.ActivePlayer.AcquiredLeaders.Count * 3;
-
-                if (totalVPs >= 15)
-                {
-                    return baseState with { IsFinalTurn = true };
-                }
-            }
-
-            return baseState;
-        }
-
         private GameState ResolvePurchase(GameState baseState, PurchaseAction action)
         {
             var cardCostArray = action.Card.Cost.ToArray();
@@ -81,14 +66,7 @@ namespace SplendidWonders.Gameplay.Reducers
 
             if (eligibleLeaders.Count() == 1)
             {
-                var leader = eligibleLeaders.First();
-                var acquiredLeaders = baseState.ActivePlayer.AcquiredLeaders.Add(leader);
-                var availableLeaders = baseState.Leaders.Remove(leader);
-
-                return baseState
-                        .UpdatePlayerData(baseState.ActivePlayer.Id, baseState.ActivePlayer.Store, 
-                                          baseState.ActivePlayer.ReservedCards, baseState.ActivePlayer.Tableau, acquiredLeaders)
-                        .UpdateAvailableLeaders(availableLeaders);
+                return AcquireLeader(baseState, eligibleLeaders.First());
             }
 
             return baseState;

@@ -38,6 +38,32 @@ namespace SplendidWonders.Gameplay.Reducers
             return baseState.UpdateLevel(level, new CardGroup() { Deck = newDeck, Market = newMarket });
         }
 
+        protected GameState ResolveGameEndTrigger(GameState baseState)
+        {
+            if (!baseState.IsFinalTurn)
+            {
+                int totalVPs = baseState.ActivePlayer.Tableau.Sum(c => c.VictoryPoints) + baseState.ActivePlayer.AcquiredLeaders.Count * 3;
+
+                if (totalVPs >= 15)
+                {
+                    return baseState with { IsFinalTurn = true };
+                }
+            }
+
+            return baseState;
+        }
+
+        protected GameState AcquireLeader(GameState baseState, Leader leader)
+        {
+            var acquiredLeaders = baseState.ActivePlayer.AcquiredLeaders.Add(leader);
+            var availableLeaders = baseState.Leaders.Remove(leader);
+
+            return baseState
+                    .UpdatePlayerData(baseState.ActivePlayer.Id, baseState.ActivePlayer.Store,
+                                      baseState.ActivePlayer.ReservedCards, baseState.ActivePlayer.Tableau, acquiredLeaders)
+                    .UpdateAvailableLeaders(availableLeaders);
+        }
+
         protected GameState ResolveGameProgression(GameState baseState)
         {
             bool tokenOverflow = CheckTokenOverflow(baseState);

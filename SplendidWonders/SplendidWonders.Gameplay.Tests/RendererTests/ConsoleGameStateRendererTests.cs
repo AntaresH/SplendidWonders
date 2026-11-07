@@ -1,6 +1,7 @@
 using SplendidWonders.CLI.View;
 using SplendidWonders.Core.Model;
 using SplendidWonders.Gameplay;
+using SplendidWonders.Gameplay.Tests.TestDataModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;

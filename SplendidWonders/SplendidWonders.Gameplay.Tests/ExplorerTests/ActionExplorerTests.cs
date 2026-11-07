@@ -2,6 +2,7 @@
 using SplendidWonders.Core.Setup;
 using SplendidWonders.Gameplay.Actions;
 using SplendidWonders.Gameplay.Explorers;
+using SplendidWonders.Gameplay.Tests.TestDataModel;
 using System.Collections.Immutable;
 using System.Numerics;
 
