@@ -33,7 +33,7 @@ namespace SplendidWonders.Core.Setup
             new DevelopmentCard { Id = 5, Name = Strings.Card_Magtar, Bonus = DevelopmentBonus.Yellow, Cost = new TokenGroup { Blue = 1, Green = 2, Brown = 1, Red = 1 }, VictoryPoints = 0 },
             new DevelopmentCard { Id = 6, Name = Strings.Card_Piac, Bonus = DevelopmentBonus.Yellow, Cost = new TokenGroup { Blue = 1, Green = 1, Brown = 1, Red = 1 }, VictoryPoints = 0 },
             new DevelopmentCard { Id = 7, Name = Strings.Card_Tanacs, Bonus = DevelopmentBonus.Yellow, Cost = new TokenGroup { Blue = 2, Red = 2 }, VictoryPoints = 0 },
-            new DevelopmentCard { Id = 8, Name = Strings.Card_Varoshaza, Bonus = DevelopmentBonus.Yellow, Cost = new TokenGroup { Green = 4 }, VictoryPoints = 0 },
+            new DevelopmentCard { Id = 8, Name = Strings.Card_Varoshaza, Bonus = DevelopmentBonus.Yellow, Cost = new TokenGroup { Green = 4 }, VictoryPoints = 1 },
 
             new DevelopmentCard { Id = 9, Name = Strings.Card_Cirkusz, Bonus = DevelopmentBonus.Blue, Cost = new TokenGroup { Red = 3 }, VictoryPoints = 0 },
             new DevelopmentCard { Id = 10, Name = Strings.Card_Furdo, Bonus = DevelopmentBonus.Blue, Cost = new TokenGroup { Blue = 1, Green = 3, Brown = 1 }, VictoryPoints = 0 },

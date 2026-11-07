@@ -19,6 +19,8 @@ namespace SplendidWonders.Gameplay.Tests.TestDataModel
         public ImmutableList<DevelopmentCard> PlayerTableau { get; set; } = ImmutableList<DevelopmentCard>.Empty;
         public ImmutableList<Leader> PlayerAcquiredLeaders { get; set; } = ImmutableList<Leader>.Empty;
 
+        public bool IsFinalTurn { get; set; }
+
         public int ActivePlayerId { get; set; }
     }
 }

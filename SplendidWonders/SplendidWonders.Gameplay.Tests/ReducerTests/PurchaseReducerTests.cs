@@ -110,6 +110,25 @@ namespace SplendidWonders.Gameplay.Tests.ReducerTests
 
             AssertCardReplacement(baseState, newState, actionToApply);
         }
+
+        [TestCaseSource(nameof(FinalTurnTriggerCases))]
+        public void Reduce_FinalTurnTriggerCases_WithDifferentPurchaseScenarios_ShouldReturnExpectedPurchaseResults(
+            ReducerTestData input, PurchaseAction actionToApply, ReducerTestData expected)
+        {
+            // Arrange
+            var baseState = _defaultBuilder
+                .WithCurrentPlayer(input.ActivePlayerId)
+                .WithLeaders(input.AvailableLeaders)
+                .WithPlayerTableau(input.ActivePlayerId, input.PlayerTableau)
+                .Build();
+            // Act
+            var newState = _sut.Reduce(baseState, actionToApply);
+            // Assert
+            Assert.IsNotNull(newState);
+            Assert.That(newState.ActivePlayer.Id, Is.EqualTo(expected.ActivePlayerId));
+            Assert.That(newState.IsFinalTurn, Is.EqualTo(expected.IsFinalTurn));
+        }
+
         private void AssertCardReplacement(GameState baseState, GameState newState, PurchaseAction gameAction)
         {
             int level = gameAction.Card.Id < 41 ? 1 : gameAction.Card.Id < 71 ? 2 : 3;
@@ -987,6 +1006,230 @@ namespace SplendidWonders.Gameplay.Tests.ReducerTests
                 })
                 .SetName("Purchase - Leader Eligibility Multiple - Card Setup #22222 - purchasing #30 - Justinian-QinShiHuang-Solomon choice");
 
+        }
+
+        private static IEnumerable<TestCaseData> FinalTurnTriggerCases()
+        {
+            var playerTableau10VP = new List<DevelopmentCard>()
+            {
+                Cards.Level3.First(c => c.Id == 84),        // 5-VP pyramids
+                Cards.Level3.First(c => c.Id == 88)         // 5-VP great wall
+            };
+
+            var playerTableau11VP = new List<DevelopmentCard>()
+            {
+                Cards.Level1.First(c => c.Id == 1),         // yellow no VP development card
+                Cards.Level1.First(c => c.Id == 2),         // yellow no VP development card
+                Cards.Level1.First(c => c.Id == 3),         // yellow no VP development card
+                Cards.Level1.First(c => c.Id == 18),        // green 1-VP development card
+                Cards.Level1.First(c => c.Id == 35),        // red no VP development card
+                Cards.Level1.First(c => c.Id == 36),        // red no VP development card
+                Cards.Level1.First(c => c.Id == 37),        // red no VP development card
+                Cards.Level3.First(c => c.Id == 84),        // brown 5-VP pyramids
+                Cards.Level3.First(c => c.Id == 88)         // red 5-VP great wall
+            };
+
+            var playerTableau14VP = new List<DevelopmentCard>()
+            {
+                Cards.Level1.First(c => c.Id == 1),         // yellow no VP development card
+                Cards.Level1.First(c => c.Id == 2),         // yellow no VP development card
+                Cards.Level1.First(c => c.Id == 3),         // yellow no VP development card
+                Cards.Level1.First(c => c.Id == 18),        // green 1-VP development card
+                Cards.Level1.First(c => c.Id == 35),        // red no VP development card
+                Cards.Level1.First(c => c.Id == 36),        // red no VP development card
+                Cards.Level1.First(c => c.Id == 37),        // red no VP development card
+                Cards.Level2.First(c => c.Id == 62),        // brown 3-VP development card
+                Cards.Level3.First(c => c.Id == 84),        // brown 5-VP pyramids
+                Cards.Level3.First(c => c.Id == 88)         // red 5-VP great wall
+            };
+
+            var availableLeadersTableau = new List<Leader>()
+            {
+                Leaders.StandardLeaders.First(l => l.Id == 1),       // Dárius
+                Leaders.StandardLeaders.First(l => l.Id == 2),       // Periklész
+                Leaders.StandardLeaders.First(l => l.Id == 5),       // Nagy Sándor
+            };
+
+            var cardToBuy0VP = Cards.Level1.First(c => c.Id == 7);       // Tanács
+            var cardToBuy1VP = Cards.Level1.First(c => c.Id == 8);       // Városháza
+            var cardToBuy3VP = Cards.Level2.First(c => c.Id == 42);      // Köztársaság
+            var cardToBuy5VP = Cards.Level3.First(c => c.Id == 72);      // Perszepolisz
+
+            yield return new TestCaseData(
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    AvailableLeaders = ImmutableList<Leader>.Empty,
+                    PlayerTableau = ImmutableList<DevelopmentCard>.Empty,
+                    PlayerAcquiredLeaders = ImmutableList<Leader>.Empty
+                },
+                new PurchaseFromBoardAction() { Card = cardToBuy0VP },
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 2,
+                    IsFinalTurn = false
+                })
+                .SetName("Purchase - Final Turn Trigger - Empty tableau - purchasing no VP - no trigger");
+
+            yield return new TestCaseData(
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    AvailableLeaders = ImmutableList<Leader>.Empty,
+                    PlayerTableau = ImmutableList<DevelopmentCard>.Empty,
+                    PlayerAcquiredLeaders = ImmutableList<Leader>.Empty
+                },
+                new PurchaseFromBoardAction() { Card = cardToBuy3VP },
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 2,
+                    IsFinalTurn = false
+                })
+                .SetName("Purchase - Final Turn Trigger - Empty tableau - purchasing 3VP - no trigger");
+
+            yield return new TestCaseData(
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    AvailableLeaders = ImmutableList<Leader>.Empty,
+                    PlayerTableau = playerTableau10VP.ToImmutableList(),
+                    PlayerAcquiredLeaders = ImmutableList<Leader>.Empty
+                },
+                new PurchaseFromBoardAction() { Card = cardToBuy3VP },
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 2,
+                    IsFinalTurn = false
+                })
+                .SetName("Purchase - Final Turn Trigger - 10VP-tableau - purchasing 3VP - no trigger");
+
+            yield return new TestCaseData(
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    AvailableLeaders = ImmutableList<Leader>.Empty,
+                    PlayerTableau = playerTableau10VP.ToImmutableList(),
+                    PlayerAcquiredLeaders = ImmutableList<Leader>.Empty
+                },
+                new PurchaseFromBoardAction() { Card = cardToBuy5VP },
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 2,
+                    IsFinalTurn = true
+                })
+                .SetName("Purchase - Final Turn Trigger - 10VP-tableau - purchasing 5VP - trigger");
+
+            yield return new TestCaseData(
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    AvailableLeaders = ImmutableList<Leader>.Empty,
+                    PlayerTableau = playerTableau10VP.ToImmutableList(),
+                    PlayerAcquiredLeaders = ImmutableList<Leader>.Empty
+                },
+                new PurchaseFromBoardAction() { Card = cardToBuy0VP },
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 2,
+                    IsFinalTurn = false
+                })
+                .SetName("Purchase - Final Turn Trigger - 10VP-tableau - purchasing no VP - no trigger");
+
+            yield return new TestCaseData(
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    AvailableLeaders = availableLeadersTableau.ToImmutableList(),
+                    PlayerTableau = playerTableau11VP.ToImmutableList(),
+                    PlayerAcquiredLeaders = ImmutableList<Leader>.Empty
+                },
+                new PurchaseFromBoardAction() { Card = cardToBuy0VP },
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 2,
+                    IsFinalTurn = false
+                })
+                .SetName("Purchase - Final Turn Trigger - 11VP-tableau - purchasing no VP-card results in leader acquisition - no trigger");
+
+            yield return new TestCaseData(
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    AvailableLeaders = availableLeadersTableau.ToImmutableList(),
+                    PlayerTableau = playerTableau11VP.ToImmutableList(),
+                    PlayerAcquiredLeaders = ImmutableList<Leader>.Empty
+                },
+                new PurchaseFromBoardAction() { Card = cardToBuy1VP },
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 2,
+                    IsFinalTurn = true
+                })
+                .SetName("Purchase - Final Turn Trigger - 11VP-tableau - purchasing 1 VP-card results in leader acquisition - trigger");
+
+            yield return new TestCaseData(
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    AvailableLeaders = ImmutableList<Leader>.Empty,
+                    PlayerTableau = playerTableau14VP.ToImmutableList(),
+                    PlayerAcquiredLeaders = ImmutableList<Leader>.Empty
+                },
+                new PurchaseFromBoardAction() { Card = cardToBuy1VP },
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 2,
+                    IsFinalTurn = true
+                })
+                .SetName("Purchase - Final Turn Trigger - 14VP-tableau - purchasing 1VP - trigger");
+
+            yield return new TestCaseData(
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    AvailableLeaders = ImmutableList<Leader>.Empty,
+                    PlayerTableau = playerTableau14VP.ToImmutableList(),
+                    PlayerAcquiredLeaders = ImmutableList<Leader>.Empty
+                },
+                new PurchaseFromBoardAction() { Card = cardToBuy5VP },
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 2,
+                    IsFinalTurn = true
+                })
+                .SetName("Purchase - Final Turn Trigger - 14VP-tableau - purchasing 5VP - trigger");
+
+            yield return new TestCaseData(
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    AvailableLeaders = availableLeadersTableau.ToImmutableList(),
+                    PlayerTableau = playerTableau14VP.ToImmutableList(),
+                    PlayerAcquiredLeaders = ImmutableList<Leader>.Empty
+                },
+                new PurchaseFromBoardAction() { Card = cardToBuy0VP },
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 2,
+                    IsFinalTurn = true
+                })
+                .SetName("Purchase - Final Turn Trigger - 14VP-tableau - purchasing no VP-card results in leader acquisition - trigger");
+
+            yield return new TestCaseData(
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 1,
+                    AvailableLeaders = availableLeadersTableau.ToImmutableList(),
+                    PlayerTableau = playerTableau14VP.ToImmutableList(),
+                    PlayerAcquiredLeaders = ImmutableList<Leader>.Empty
+                },
+                new PurchaseFromBoardAction() { Card = cardToBuy3VP },
+                new ReducerTestData()
+                {
+                    ActivePlayerId = 2,
+                    IsFinalTurn = true
+                })
+                .SetName("Purchase - Final Turn Trigger - 14VP-tableau - purchasing VP-card results in leader acquisition - trigger");
         }
     }
 }
