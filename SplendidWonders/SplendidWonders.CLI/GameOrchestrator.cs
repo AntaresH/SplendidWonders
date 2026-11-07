@@ -31,10 +31,10 @@ internal class GameOrchestrator
 
             while (_game.GameState.Progression == GameProgression.InProgress)
             {
-                _gameView.DisplayTurnStart(_game.GameState.ActivePlayer);
                 HandleCommand();
             }
 
+            _gameView.DisplayBoard(_game.GameState);
             _gameView.DisplayGameOver(_game.GetFinalStandings());
         }
         catch (UserAbortException ex)

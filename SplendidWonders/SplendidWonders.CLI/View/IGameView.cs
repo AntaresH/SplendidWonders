@@ -26,5 +26,6 @@ namespace SplendidWonders.CLI.View
         void DisplayReturnTokensArgumentRequest();
         void DisplayPresentationCommand(ApplicationCommand command, GameState gameState);
         void DisplaySelectLeaderArgumentRequest(IEnumerable<Leader> eligibleLeaders);
+        void DisplayBoard(GameState gameState);
     }
 }

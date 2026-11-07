@@ -40,15 +40,16 @@ namespace SplendidWonders.Gameplay.Reducers
 
         protected GameState ResolveGameProgression(GameState baseState)
         {
-            if (baseState.ActivePlayer.Id == baseState.Players.Count && baseState.IsFinalTurn)
-            {
-                return baseState with { Progression = GameProgression.GameOver };
-            }
-
             bool tokenOverflow = CheckTokenOverflow(baseState);
             bool multipleLeadersEligible = CheckMultipleLeadersEligible(baseState);
 
+            bool isLastPlayer = baseState.ActivePlayer.Id == baseState.Players.Count;
             bool advanceToNextPlayer = !tokenOverflow && !multipleLeadersEligible;
+
+            if (advanceToNextPlayer && isLastPlayer && baseState.IsFinalTurn)
+            {
+                return baseState with { Progression = GameProgression.GameOver };
+            }
 
             int nextPlayerId = advanceToNextPlayer
                 ? baseState.ActivePlayer.Id % baseState.Players.Count + 1

@@ -22,6 +22,7 @@ namespace SplendidWonders.CLI.View
             Console.WriteLine($"{Strings.Winner}: {players.First().Name}");
             Console.WriteLine();
             Console.WriteLine(Strings.FinalScores);
+            Console.WriteLine();
 
             for (int i = 0; i < players.Count; i++)
             {
@@ -31,9 +32,7 @@ namespace SplendidWonders.CLI.View
 
         public void DisplayGame(GameState gameState, IEnumerable<GameAction> validActions, string previousInvalidCommand)
         {
-            Console.Clear();
-            DisplayGameTitle();
-            _gameStateRenderer.Render(gameState);
+            DisplayBoard(gameState);
 
             if (!string.IsNullOrEmpty(previousInvalidCommand))
             {
@@ -43,6 +42,13 @@ namespace SplendidWonders.CLI.View
                 Console.WriteLine();
             }
             _gameActionsRenderer.Render(gameState, validActions);
+        }
+
+        public void DisplayBoard(GameState gameState)
+        {
+            Console.Clear();
+            DisplayGameTitle();
+            _gameStateRenderer.Render(gameState);
         }
 
         public void DisplayValidActions(IEnumerable<GameAction> validActions)
@@ -123,6 +129,54 @@ namespace SplendidWonders.CLI.View
             DisplayCards(reservedCards);
         }
 
+        public static string GetRgbColoredConsoleForeground(string text, DevelopmentBonus trueColorRgbFormat)
+        {
+            return $"\u001b[38;2;{ConvertRgbColorIntoText(trueColorRgbFormat)}m{text}\u001b[0m";
+        }
+
+        public static string GetRgbColoredConsoleBackground(string text, DevelopmentBonus trueColorRgbFormat)
+        {
+            return $"\u001b[48;2;{ConvertRgbColorIntoText(trueColorRgbFormat)}m{text}\u001b[0m";
+        }
+
+        public static string ConvertRgbColorIntoText(DevelopmentBonus bonus)
+        {
+            return bonus switch
+            {
+                DevelopmentBonus.Yellow => "208;208;0",
+                DevelopmentBonus.Blue => "80;145;255",
+                DevelopmentBonus.Green => "0;220;50",
+                DevelopmentBonus.Brown => "145;92;42",
+                DevelopmentBonus.Red => "255;80;80",
+                _ => "192;192;192"
+            };
+        }
+
+        public void DisplayPresentationCommand(ApplicationCommand command, GameState gameState)
+        {
+            if (command is DisplayReservedCardsCommand)
+            {
+                DisplayCards(gameState.ActivePlayer.ReservedCards);
+                Console.ReadLine();
+            }
+        }
+
+        public void DisplaySelectLeaderArgumentRequest(IEnumerable<Leader> eligibleLeaders)
+        {
+            foreach (var leader in eligibleLeaders)
+            {
+                PrintLeader(leader);
+            }
+        }
+
+        private void DisplayCards(IEnumerable<DevelopmentCard> cards)
+        {
+            foreach (var card in cards)
+            {
+                PrintCard(card);
+            }
+        }
+
         public static void PrintCard(DevelopmentCard card)
         {
             List<string> colorCostTexts = new List<string>();
@@ -152,8 +206,12 @@ namespace SplendidWonders.CLI.View
                 colorCostTexts.Add(GetRgbColoredConsoleForeground(card.Cost.Red.ToString(), DevelopmentBonus.Red));
             }
 
-            string vpDisplay = card.VictoryPoints > 0 ? $"{{{card.VictoryPoints}}}" : string.Empty;
-            Console.WriteLine($"{card.Id} {GetRgbColoredConsoleForeground(card.Name, card.Bonus)} {vpDisplay} Költségek: {string.Join(" ", colorCostTexts)}");
+            string vpDisplay = card.VictoryPoints > 0 ? $"{{{card.VictoryPoints}}}" : "   ";
+
+            string namePadding = new string(' ', Math.Max(0, 20 - card.Name.Length));
+            string coloredName = GetRgbColoredConsoleForeground(card.Name, card.Bonus);
+
+            Console.WriteLine($"{card.Id,-5} {coloredName}{namePadding} {vpDisplay} Költségek: {string.Join(" ", colorCostTexts)}");
         }
 
         public static void PrintLeader(Leader leader)
@@ -187,7 +245,7 @@ namespace SplendidWonders.CLI.View
 
             string vpDisplay = leader.VictoryPoints > 0 ? $"{{{leader.VictoryPoints}}}" : string.Empty;
 
-            Console.WriteLine($"{leader.Id} {leader.Name} {vpDisplay} Feltételek: {string.Join(" ", colorCostTexts)}");
+            Console.WriteLine($"{leader.Id} {leader.Name.PadRight(15)} {vpDisplay} Feltételek: {string.Join(" ", colorCostTexts)}");
         }
 
         public static void PrintColoredLine(string text, ConsoleColor color)
@@ -196,53 +254,6 @@ namespace SplendidWonders.CLI.View
             Console.ForegroundColor = color;
             Console.WriteLine(text);
             Console.ForegroundColor = previousColor;
-        }
-
-        public static string GetRgbColoredConsoleForeground(string text, DevelopmentBonus trueColorRgbFormat)
-        {
-            return $"\u001b[38;2;{ConvertRgbColorIntoText(trueColorRgbFormat)}m{text}\u001b[0m";
-        }
-        public static string GetRgbColoredConsoleBackground(string text, DevelopmentBonus trueColorRgbFormat)
-        {
-            return $"\u001b[48;2;{ConvertRgbColorIntoText(trueColorRgbFormat)}m{text}\u001b[0m";
-        }
-
-        public static string ConvertRgbColorIntoText(DevelopmentBonus bonus)
-        {
-            return bonus switch
-            {
-                DevelopmentBonus.Yellow => "208;208;0",
-                DevelopmentBonus.Blue => "80;145;255",
-                DevelopmentBonus.Green => "0;220;50",
-                DevelopmentBonus.Brown => "145;92;42",
-                DevelopmentBonus.Red => "255;80;80",
-                _ => "192;192;192"
-            };
-        }
-
-        public void DisplayPresentationCommand(ApplicationCommand command, GameState gameState)
-        {
-            if (command is DisplayReservedCardsCommand)
-            {
-                DisplayCards(gameState.ActivePlayer.ReservedCards);
-                Console.ReadLine();
-            }
-        }
-
-        private void DisplayCards(IEnumerable<DevelopmentCard> cards)
-        {
-            foreach (var card in cards)
-            {
-                PrintCard(card);
-            }
-        }
-
-        public void DisplaySelectLeaderArgumentRequest(IEnumerable<Leader> eligibleLeaders)
-        {
-            foreach (var leader in eligibleLeaders)
-            {
-                PrintLeader(leader);
-            }
         }
     }
 }
