@@ -15,16 +15,17 @@ namespace SplendidWonders.CLI.View
         private readonly ConsoleGameStateRenderer _gameStateRenderer = new();
         private readonly ConsoleGameActionsRenderer _gameActionsRenderer = new();
 
-        public void DisplayGameOver(Dictionary<string, int> value)
+        public void DisplayGameOver(List<Player> players)
         {
             Console.WriteLine(Strings.GameOverTitle);
             Console.WriteLine();
+            Console.WriteLine($"{Strings.Winner}: {players.First().Name}");
             Console.WriteLine();
             Console.WriteLine(Strings.FinalScores);
 
-            foreach (var item in value.OrderBy(x => x.Value).Reverse())
+            for (int i = 0; i < players.Count; i++)
             {
-                Console.WriteLine($"{item.Key}: {item.Value}");
+                Console.WriteLine($"#{i+1}: {players[i].Name} - {players[i].Tableau.Sum(c => c.VictoryPoints) + players[i].AcquiredLeaders.Count * 3} {Strings.VP}");
             }
         }
 
@@ -75,9 +76,11 @@ namespace SplendidWonders.CLI.View
             Console.WriteLine(Strings.PromptChooseDoubleColor);
         }
 
-        public void DisplayPurchaseFromBoardArgumentRequest()
+        public void DisplayPurchaseFromBoardArgumentRequest(IEnumerable<DevelopmentCard> purchasableCards)
         {
             Console.WriteLine(Strings.SelectCardToBuy);
+
+            DisplayCards(purchasableCards);
         }
 
         public void DisplayReserveFromDeckArgumentRequest()
@@ -117,15 +120,7 @@ namespace SplendidWonders.CLI.View
         {
             Console.WriteLine(Strings.SelectCardToBuyFromReserved);
 
-            DisplayReservedCards(reservedCards);
-        }
-
-        private void DisplayReservedCards(ImmutableList<DevelopmentCard> reservedCards)
-        {
-            foreach (var card in reservedCards)
-            {
-                PrintCard(card);
-            }
+            DisplayCards(reservedCards);
         }
 
         public static void PrintCard(DevelopmentCard card)
@@ -134,31 +129,65 @@ namespace SplendidWonders.CLI.View
 
             if (card.Cost.Yellow > 0)
             {
-                colorCostTexts.Add(GetRgbColoredConsoleText(card.Cost.Yellow.ToString(), DevelopmentBonus.Yellow));
+                colorCostTexts.Add(GetRgbColoredConsoleForeground(card.Cost.Yellow.ToString(), DevelopmentBonus.Yellow));
             }
 
             if (card.Cost.Blue > 0)
             {
-                colorCostTexts.Add(GetRgbColoredConsoleText(card.Cost.Blue.ToString(), DevelopmentBonus.Blue));
+                colorCostTexts.Add(GetRgbColoredConsoleForeground(card.Cost.Blue.ToString(), DevelopmentBonus.Blue));
             }
 
             if (card.Cost.Green > 0)
             {
-                colorCostTexts.Add(GetRgbColoredConsoleText(card.Cost.Green.ToString(), DevelopmentBonus.Green));
+                colorCostTexts.Add(GetRgbColoredConsoleForeground(card.Cost.Green.ToString(), DevelopmentBonus.Green));
             }
 
             if (card.Cost.Brown > 0)
             {
-                colorCostTexts.Add(GetRgbColoredConsoleText(card.Cost.Brown.ToString(), DevelopmentBonus.Brown));
+                colorCostTexts.Add(GetRgbColoredConsoleForeground(card.Cost.Brown.ToString(), DevelopmentBonus.Brown));
             }
 
             if (card.Cost.Red > 0)
             {
-                colorCostTexts.Add(GetRgbColoredConsoleText(card.Cost.Red.ToString(), DevelopmentBonus.Red));
+                colorCostTexts.Add(GetRgbColoredConsoleForeground(card.Cost.Red.ToString(), DevelopmentBonus.Red));
             }
 
             string vpDisplay = card.VictoryPoints > 0 ? $"{{{card.VictoryPoints}}}" : string.Empty;
-            Console.WriteLine($"{card.Id} {GetRgbColoredConsoleText(card.Name, card.Bonus)} {vpDisplay} Költségek: {string.Join(" ", colorCostTexts)}");
+            Console.WriteLine($"{card.Id} {GetRgbColoredConsoleForeground(card.Name, card.Bonus)} {vpDisplay} Költségek: {string.Join(" ", colorCostTexts)}");
+        }
+
+        public static void PrintLeader(Leader leader)
+        {
+            List<string> colorCostTexts = new List<string>();
+
+            if (leader.Requirements.Yellow > 0)
+            {
+                colorCostTexts.Add(GetRgbColoredConsoleBackground($" {leader.Requirements.Yellow.ToString()} ", DevelopmentBonus.Yellow));
+            }
+
+            if (leader.Requirements.Blue > 0)
+            {
+                colorCostTexts.Add(GetRgbColoredConsoleBackground($" {leader.Requirements.Blue.ToString()} ", DevelopmentBonus.Blue));
+            }
+
+            if (leader.Requirements.Green > 0)
+            {
+                colorCostTexts.Add(GetRgbColoredConsoleBackground($" {leader.Requirements.Green.ToString()} ", DevelopmentBonus.Green));
+            }
+
+            if (leader.Requirements.Brown > 0)
+            {
+                colorCostTexts.Add(GetRgbColoredConsoleBackground($" {leader.Requirements.Brown.ToString()} ", DevelopmentBonus.Brown));
+            }
+
+            if (leader.Requirements.Red > 0)
+            {
+                colorCostTexts.Add(GetRgbColoredConsoleBackground($" {leader.Requirements.Red.ToString()} ", DevelopmentBonus.Red));
+            }
+
+            string vpDisplay = leader.VictoryPoints > 0 ? $"{{{leader.VictoryPoints}}}" : string.Empty;
+
+            Console.WriteLine($"{leader.Id} {leader.Name} {vpDisplay} Feltételek: {string.Join(" ", colorCostTexts)}");
         }
 
         public static void PrintColoredLine(string text, ConsoleColor color)
@@ -169,9 +198,13 @@ namespace SplendidWonders.CLI.View
             Console.ForegroundColor = previousColor;
         }
 
-        public static string GetRgbColoredConsoleText(string text, DevelopmentBonus trueColorRgbFormat)
+        public static string GetRgbColoredConsoleForeground(string text, DevelopmentBonus trueColorRgbFormat)
         {
             return $"\u001b[38;2;{ConvertRgbColorIntoText(trueColorRgbFormat)}m{text}\u001b[0m";
+        }
+        public static string GetRgbColoredConsoleBackground(string text, DevelopmentBonus trueColorRgbFormat)
+        {
+            return $"\u001b[48;2;{ConvertRgbColorIntoText(trueColorRgbFormat)}m{text}\u001b[0m";
         }
 
         public static string ConvertRgbColorIntoText(DevelopmentBonus bonus)
@@ -191,8 +224,24 @@ namespace SplendidWonders.CLI.View
         {
             if (command is DisplayReservedCardsCommand)
             {
-                DisplayReservedCards(gameState.ActivePlayer.ReservedCards);
+                DisplayCards(gameState.ActivePlayer.ReservedCards);
                 Console.ReadLine();
+            }
+        }
+
+        private void DisplayCards(IEnumerable<DevelopmentCard> cards)
+        {
+            foreach (var card in cards)
+            {
+                PrintCard(card);
+            }
+        }
+
+        public void DisplaySelectLeaderArgumentRequest(IEnumerable<Leader> eligibleLeaders)
+        {
+            foreach (var leader in eligibleLeaders)
+            {
+                PrintLeader(leader);
             }
         }
     }

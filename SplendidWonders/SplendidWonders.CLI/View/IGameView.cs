@@ -10,14 +10,14 @@ namespace SplendidWonders.CLI.View
 {
     public interface IGameView
     {
-        void DisplayGameOver(Dictionary<string, int> value);
+        void DisplayGameOver(List<Player> players);
         void DisplayGame(GameState gameState, IEnumerable<GameAction> validActions, string previousInvalidCommand);
         void DisplayValidActions(IEnumerable<GameAction> validActions);
         void DisplayTurnStart(Player currentPlayer);
         void DisplayInvalidCommandMessage();
         void DisplayThreeTokensArgumentRequest();
         void DisplayDoubleTokensArgumentRequest();
-        void DisplayPurchaseFromBoardArgumentRequest();
+        void DisplayPurchaseFromBoardArgumentRequest(IEnumerable<DevelopmentCard> purchasableCards);
         void DisplayPurchaseFromReservedArgumentRequest(ImmutableList<DevelopmentCard> reservedCards);
         void DisplayReserveFromBoardArgumentRequest();
         void DisplayReserveFromDeckArgumentRequest();
@@ -25,5 +25,6 @@ namespace SplendidWonders.CLI.View
         void DisplayGameTitle();
         void DisplayReturnTokensArgumentRequest();
         void DisplayPresentationCommand(ApplicationCommand command, GameState gameState);
+        void DisplaySelectLeaderArgumentRequest(IEnumerable<Leader> eligibleLeaders);
     }
 }

@@ -38,8 +38,13 @@ namespace SplendidWonders.Gameplay.Reducers
             return baseState.UpdateLevel(level, new CardGroup() { Deck = newDeck, Market = newMarket });
         }
 
-        protected GameState ResolveActivePlayer(GameState baseState)
+        protected GameState ResolveGameProgression(GameState baseState)
         {
+            if (baseState.ActivePlayer.Id == baseState.Players.Count && baseState.IsFinalTurn)
+            {
+                return baseState with { Progression = GameProgression.GameOver };
+            }
+
             bool tokenOverflow = CheckTokenOverflow(baseState);
             bool multipleLeadersEligible = CheckMultipleLeadersEligible(baseState);
 

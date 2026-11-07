@@ -44,7 +44,7 @@ namespace SplendidWonders.CLI.Input
 
                     if (validActions.Any(a => GenericUtils.CommandShortHandMap[a.GetType().Name] == userInput.ToUpper()))
                     {
-                        return CreateGameCommandFromUserInput(userInput, gameState);
+                        return CreateGameCommandFromUserInput(userInput, gameState, validActions);
                     }
                 }
                 catch (UserCancelException)
@@ -72,18 +72,18 @@ namespace SplendidWonders.CLI.Input
             return userInput;
         }
 
-        private ApplicationCommand CreateGameCommandFromUserInput(string userInput, GameState gameState)
+        private ApplicationCommand CreateGameCommandFromUserInput(string userInput, GameState gameState, IEnumerable<GameAction> validActions)
         {
             var commandKey = GenericUtils.CommandShortHandMap.FirstOrDefault(x => x.Value == userInput.ToUpper()).Key;
 
             return new GameCommand
             {
-                Action = CreateAction(commandKey, gameState),
+                Action = CreateAction(commandKey, gameState, validActions),
                 CommandText = userInput + " " + _lastArguments,
             };
         }
 
-        private GameAction CreateAction(string commandKey, GameState gameState)
+        private GameAction CreateAction(string commandKey, GameState gameState, IEnumerable<GameAction> validActions)
         {
             return commandKey switch
             {
@@ -91,33 +91,34 @@ namespace SplendidWonders.CLI.Input
                 nameof(DrawDoubleTokensAction) => CreateDoubleTokens(new DrawDoubleTokensAction()),
                 nameof(ReserveFromBoardAction) => CreateReserveFromBoard(new ReserveFromBoardAction(), gameState),
                 nameof(ReserveFromDeckAction) => CreateReserveFromDeck(new ReserveFromDeckAction()),
-                nameof(PurchaseFromBoardAction) => CreatePurchaseFromBoard(new PurchaseFromBoardAction(), gameState),
+                nameof(PurchaseFromBoardAction) => CreatePurchaseFromBoard(new PurchaseFromBoardAction(), gameState, validActions),
                 nameof(PurchaseFromReservedAction) => CreatePurchaseFromReserved(new PurchaseFromReservedAction(), gameState),
                 nameof(ReturnTokensAction) => CreateReturnTokens(new ReturnTokensAction(), gameState),
-                nameof(SelectLeaderAction) => CreateSelectLeader(new SelectLeaderAction(), gameState),
+                nameof(SelectLeaderAction) => CreateSelectLeader(new SelectLeaderAction(), gameState, validActions),
                 _ => throw new InvalidOperationException(),
             };
         }
 
-        private GameAction CreatePurchaseFromBoard(PurchaseAction action, GameState gameState)
+        private GameAction CreatePurchaseFromBoard(PurchaseAction action, GameState gameState, IEnumerable<GameAction> validActions)
         {
             while (true)
             {
-                _gameView.DisplayPurchaseFromBoardArgumentRequest();
+                IEnumerable<DevelopmentCard> purchasableCards = validActions.OfType<PurchaseFromBoardAction>().Select(a => a.Card);
+                _gameView.DisplayPurchaseFromBoardArgumentRequest(purchasableCards);
 
                 string userInput = ReadAndApplyDefaultHandling();
                 _lastArguments = userInput;
 
-                Match match = Regex.Match(userInput, @"^([1-3]),([1-4])$");
+                Match match = Regex.Match(userInput, @"^#?([\d]){1,2}$");
 
                 if (match.Success)
                 {
-                    int level = int.Parse(match.Groups[1].Value);
-                    int column = int.Parse(match.Groups[2].Value);
-                    action.Card = gameState[level][column];
+                    int cardId = int.Parse(match.Groups[0].Value);
 
-                    if (action.Card == Cards.Empty)
+                    if (!purchasableCards.Any(c => c.Id == cardId))
                         continue;
+
+                    action.Card = purchasableCards.First(c => c.Id == cardId);
 
                     return action;
                 }
@@ -174,7 +175,7 @@ namespace SplendidWonders.CLI.Input
         {
             while (true)
             {
-                _gameView.DisplayPurchaseFromBoardArgumentRequest();
+                _gameView.DisplayReserveFromBoardArgumentRequest();
 
                 string userInput = ReadAndApplyDefaultHandling();
                 _lastArguments = userInput;
@@ -276,9 +277,30 @@ namespace SplendidWonders.CLI.Input
             }
         }
 
-        private GameAction CreateSelectLeader(SelectLeaderAction selectLeaderAction, GameState gameState)
+        private GameAction CreateSelectLeader(SelectLeaderAction action, GameState gameState, IEnumerable<GameAction> validActions)
         {
-            throw new NotImplementedException();
+            while (true)
+            {
+                IEnumerable<Leader> eligibleLeaders = validActions.OfType<SelectLeaderAction>().Select(a => a.Leader);
+                _gameView.DisplaySelectLeaderArgumentRequest(eligibleLeaders);
+
+                string userInput = ReadAndApplyDefaultHandling();
+                _lastArguments = userInput;
+
+                Match match = Regex.Match(userInput, @"^#?([\d]){1,2}$");
+
+                if (match.Success)
+                {
+                    int cardId = int.Parse(match.Groups[0].Value);
+
+                    if (!eligibleLeaders.Any(c => c.Id == cardId))
+                        continue;
+
+                    action.Leader = eligibleLeaders.First(c => c.Id == cardId);
+
+                    return action;
+                }
+            }
         }
     }
 }

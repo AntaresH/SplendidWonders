@@ -40,24 +40,28 @@ namespace SplendidWonders.Gameplay
         {
             Id = Guid.NewGuid();
             StartedAt = DateTime.UtcNow;
-            IsGameOver = false;
 
             _gameConfiguration = gameConfiguration;
             _actionExplorer = actionExplorer;
             _stateReducer = stateReducer;
+
+            GameState = GameFactory.GetNewGameState(_gameConfiguration);
+
         }
 
         public void Start()
         {
             // Initialize game state, players, and other necessary components
             Console.WriteLine("Starting the game...");
-
-            GameState = GameFactory.GetNewGameState(_gameConfiguration);
+            GameState = GameState with { Progression = GameProgression.InProgress };
         }
 
-        public Dictionary<string, int> GetFinalScores()
+        public List<Player> GetFinalStandings()
         {
-            throw new NotImplementedException();
+            return GameState.Players
+                .OrderByDescending(p => p.Tableau.Sum(c => c.VictoryPoints) + p.AcquiredLeaders.Count * 3)
+                .ThenBy(p => p.Tableau.Count)
+                .ToList();
         }
 
         public bool ValidateCommand(GameAction command)

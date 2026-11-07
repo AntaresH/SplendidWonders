@@ -1436,5 +1436,23 @@ namespace SplendidWonders.Common {
                 return ResourceManager.GetString("ValidCommands", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GyP.
+        /// </summary>
+        public static string VP {
+            get {
+                return ResourceManager.GetString("VP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Győztes.
+        /// </summary>
+        public static string Winner {
+            get {
+                return ResourceManager.GetString("Winner", resourceCulture);
+            }
+        }
     }
 }

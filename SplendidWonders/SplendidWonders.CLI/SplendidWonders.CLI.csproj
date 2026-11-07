@@ -16,4 +16,8 @@
     <ProjectReference Include="..\SplendidWonders.Gameplay\SplendidWonders.Gameplay.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Input\Wizards\" />
+  </ItemGroup>
+
 </Project>

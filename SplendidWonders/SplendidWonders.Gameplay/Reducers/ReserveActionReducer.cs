@@ -11,7 +11,7 @@ namespace SplendidWonders.Gameplay.Reducers
             return baseState
                 .Transform(action, ResolveBoardReserve)
                 .Transform(action, ResolveReplacement)
-                .Transform(ResolveActivePlayer);
+                .Transform(ResolveGameProgression);
         }
 
         public GameState Reduce(GameState baseState, ReserveFromDeckAction action)
@@ -19,7 +19,7 @@ namespace SplendidWonders.Gameplay.Reducers
             return baseState
                 .Transform(action, ResolveDeckReserve)
                 .Transform(action, ResolveDeckDraw)
-                .Transform(ResolveActivePlayer);
+                .Transform(ResolveGameProgression);
         }
 
         private GameState ResolveDeckDraw(GameState baseState, ReserveFromDeckAction action)

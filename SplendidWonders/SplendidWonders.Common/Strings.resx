@@ -576,4 +576,10 @@
   <data name="ListReservedCardsPresentationCommandDescription" xml:space="preserve">
     <value>Foglalt kártyák listázása</value>
   </data>
+  <data name="Winner" xml:space="preserve">
+    <value>Győztes</value>
+  </data>
+  <data name="VP" xml:space="preserve">
+    <value>GyP</value>
+  </data>
 </root>

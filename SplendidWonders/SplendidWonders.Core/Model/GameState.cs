@@ -34,6 +34,10 @@ namespace SplendidWonders.Core.Model
             }
         }
 
+        public GameProgression Progression { get; set; }
+
+        public bool IsFinalTurn { get; set; }
+
         public CardGroup this[int level]
         {
             get

@@ -29,13 +29,13 @@ internal class GameOrchestrator
         {
             _game.Start();
 
-            while (!_game.IsGameOver)
+            while (_game.GameState.Progression == GameProgression.InProgress)
             {
                 _gameView.DisplayTurnStart(_game.GameState.ActivePlayer);
                 HandleCommand();
             }
 
-            _gameView.DisplayGameOver(_game.GetFinalScores());
+            _gameView.DisplayGameOver(_game.GetFinalStandings());
         }
         catch (UserAbortException ex)
         {

@@ -13,7 +13,23 @@ namespace SplendidWonders.Gameplay.Reducers
                 .Transform(action, ResolvePurchase)
                 .Transform(action, ResolveReplacement)
                 .Transform(ResolveLeaders)
-                .Transform(ResolveActivePlayer);
+                .Transform(ResolveGameEndTrigger)
+                .Transform(ResolveGameProgression);
+        }
+
+        private GameState ResolveGameEndTrigger(GameState baseState)
+        {
+            if (!baseState.IsFinalTurn)
+            {
+                int totalVPs = baseState.ActivePlayer.Tableau.Sum(c => c.VictoryPoints) + baseState.ActivePlayer.AcquiredLeaders.Count * 3;
+
+                if (totalVPs >= 15)
+                {
+                    return baseState with { IsFinalTurn = true };
+                }
+            }
+
+            return baseState;
         }
 
         private GameState ResolvePurchase(GameState baseState, PurchaseAction action)

@@ -3,36 +3,11 @@ using SplendidWonders.Gameplay.Actions;
 
 namespace SplendidWonders.Gameplay.Reducers
 {
-    public class TokenActionReducer : IStateReducer<DrawDoubleTokensAction>, IStateReducer<DrawThreeTokensAction>, IStateReducer<ReturnTokensAction>
+    public class TokenActionReducer : ReducerBase, IStateReducer<DrawDoubleTokensAction>, IStateReducer<DrawThreeTokensAction>, IStateReducer<ReturnTokensAction>
     {
-        private GameState ReduceGeneralTokenAction(GameState baseState, int[] selectedTokens)
+        public GameState Reduce(GameState baseState, DrawThreeTokensAction action)
         {
-            var playerStore = baseState.ActivePlayer.Store.ToArray();
-            var tokenSupply = baseState.TokenSupply.ToArray();
-
-            var reducedStateBuilder = new GameStateBuilder(baseState);
-
-            for (int i = 0; i < 5; i++)
-            {
-                playerStore[i] += selectedTokens[i];
-                tokenSupply[i] -= selectedTokens[i];
-            }
-
-            reducedStateBuilder.WithPlayerStore(baseState.ActivePlayer.Id, TokenGroup.FromArray(playerStore));
-            reducedStateBuilder.WithTokenSupply(TokenGroup.FromArray(tokenSupply));
-
-            int allPlayerTokens = playerStore[0] + playerStore[1] + playerStore[2] + playerStore[3] + playerStore[4] + playerStore[5];
-            var currentPlayerId = allPlayerTokens <= 10
-                ? baseState.ActivePlayer.Id % baseState.Players.Count + 1
-                : baseState.ActivePlayer.Id;
-
-            reducedStateBuilder.WithCurrentPlayer(currentPlayerId);
-            return reducedStateBuilder.Build();
-        }
-
-        public GameState Reduce(GameState state, DrawThreeTokensAction action)
-        {
-            return ReduceGeneralTokenAction(state, action.Tokens.ToArray());
+            return ReduceGeneralTokenAction(baseState, action.Tokens.ToArray());
         }
 
         public GameState Reduce(GameState state, DrawDoubleTokensAction action)
@@ -45,6 +20,28 @@ namespace SplendidWonders.Gameplay.Reducers
             var invertedValues = action.Tokens.ToArray().Select(t => t * -1);
 
             return ReduceGeneralTokenAction(state, invertedValues.ToArray());
+        }
+
+        private GameState ReduceGeneralTokenAction(GameState baseState, int[] selectedTokens)
+        {
+            return baseState
+                .Transform(selectedTokens, MoveTokens)
+                .Transform(ResolveGameProgression);
+        }
+
+        private GameState MoveTokens(GameState baseState, int[] selectedTokens)
+        {
+            var playerStore = baseState.ActivePlayer.Store.ToArray();
+            var tokenSupply = baseState.TokenSupply.ToArray();
+
+            for (int i = 0; i < 5; i++)
+            {
+                playerStore[i] += selectedTokens[i];
+                tokenSupply[i] -= selectedTokens[i];
+            }
+
+            return baseState.UpdatePlayerData(baseState.ActivePlayer.Id, TokenGroup.FromArray(playerStore), baseState.ActivePlayer.ReservedCards, baseState.ActivePlayer.Tableau, baseState.ActivePlayer.AcquiredLeaders)
+                            .UpdateTokenSupply(TokenGroup.FromArray(tokenSupply));
         }
     }
 }
